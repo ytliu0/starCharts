@@ -8,7 +8,7 @@ The [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS_min.h
 
 All calculations are done using JavaScript. The physics and mathematics involved in creating the star charts is explained briefly in this [pdf document](https://ytliu0.github.io/starCharts/docs/star_charts.pdf).
 
-##Files:
+## Files:
 
 - sidereal.html: HTML page for the local star charts. This should be used for code development. Use index.html to optimize performance.
 - chartGCRS.html: HTML page for the equatorial star charts. This should be used for code development. Use chartGCRS_min.html to optimize performance.
