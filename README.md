@@ -1,8 +1,8 @@
 # Star Charts
 
-This package contains two HTML pages [local star charts](https://ytliu0.github.io/starCharts/index.html) and [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS_min.html). 
+This package contains two HTML pages [local star charts](https://ytliu0.github.io/starCharts/) and [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS_min.html). 
 
-The [local star charts](https://ytliu0.github.io/starCharts/index.html) webpage uses the computer's clock to obtain the current local time and then uses it to calculate the local sidereal times and plot star charts on two locations. 
+The [local star charts](https://ytliu0.github.io/starCharts/) webpage uses the computer's clock to obtain the current local time and then uses it to calculate the local sidereal times and plot star charts on two locations. 
 
 The [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS_min.html) webpage uses the computer's clock to obtain the current time and plot star charts showing the positions of the Sun, Moon, planets and stars on three star charts based on the equatorial coordinate system associated with J2000.0 mean equator and equinox. 
 
