@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<meta name="keywords" content="star charts" />
+<meta charset="UTF-8" />
+
+<head>
+<title>Equatorial Star Charts</title>
+<link rel="stylesheet" href="sidereal.css">
+<script src="jquery-3.3.1.min.js"></script>
+<script src="brightStars.js"></script>
+<script src="milkyWay.js"></script>
+<script src="precession.js"></script>
+<script src="SunMoonPlanets.js"></script>
+<script src="dateAndTime.js"></script>
+<script src="chartGCRS.js"></script>
+<script src="MoonElpMpp02DE.js"></script> 
+<script src="Mercury.js"></script> 
+<script src="Venus.js"></script> 
+<script src="Earth.js"></script> 
+<script src="Mars.js"></script> 
+<script src="Jupiter.js"></script> 
+<script src="Saturn.js"></script> 
+<script src="Uranus.js"></script> 
+<script src="Neptune.js"></script> 
+<script src="planetPosVSOP87.js"></script> 
+</head>
+
+<body onload="init()">
+<div id="wrapper">    
+
+<br /> 
+<div id="starCharts">
+<p><button class="menu" onclick="location.href='sidereal.html'">Local Star Chart</button>
+    <button class="menu" onclick="displayChangeTime()">Date and Time</button>
+</p>
+<br />
+    
+<!-- Change Date and Time -->
+<div id="changeTime" class="input">
+</div>
+
+<h1>Star Charts in Geocentric Equatoral Coordinate System</h1>
+    
+<p>Time: <span id="timeNorth"></span>, northern hemisphere. Rotate the chart counterclockwisely by 
+<select id="rotateNorth">
+    <option value="0" selected onclick="starCharts()">0&deg;</option>
+    <option value="30" onclick="starCharts()">30&deg;</option>
+    <option value="60" onclick="starCharts()">60&deg;</option>
+    <option value="90" onclick="starCharts()">90&deg;</option>
+    <option value="120" onclick="starCharts()">120&deg;</option>
+    <option value="150" onclick="starCharts()">150&deg;</option>
+    <option value="180" onclick="starCharts()">180&deg;</option>
+    <option value="210" onclick="starCharts()">210&deg;</option>
+    <option value="240" onclick="starCharts()">240&deg;</option>
+    <option value="270" onclick="starCharts()">270&deg;</option>
+    <option value="300" onclick="starCharts()">300&deg;</option>
+    <option value="330" onclick="starCharts()">330&deg;</option>
+</select>.
+    </p>
+    
+<div class="warning"></div>
+
+<div class="canvaswrapper" style="margin-left:50px;">
+<canvas id="canvasNorth" width="700" height="700">
+  CANVAS NOT SUPPORTED IN THIS BROWSER!
+</canvas>
+<div id="tipNorth" class="tip">
+    <div class="close" onclick="closePopup('tipNorth')">&#10005;</div>
+    <div id="tipNorthText"></div>
+</div>
+</div>
+    
+<p class="animate">
+    <button class="setupAnimate" onclick="displayAnimationSetup('animateDisplayNorth')">Animation Setup</button>
+    <button class="controlAnimate" onclick="Animate()" id="animateNorth">Play Animation</button> 
+    <button class="controlAnimate" onclick="playAnimation(1)">+1 Frame</button>
+    <button class="controlAnimate" onclick="playAnimation(-1)">-1 Frame</button>
+</p>
+    
+<div id="animateDisplayNorth" class="input"></div>
+    
+    <br />
+<p>Time: <span id="timeCentral"></span>, whole sky. The Ra at the center is 
+   <select id="raCentral">
+    <option value="0" selected onclick="starCharts()">0<sup>h</sup></option>
+    <option value="2" onclick="starCharts()">2<sup>h</sup></option>
+    <option value="4" onclick="starCharts()">4<sup>h</sup></option>
+    <option value="6" onclick="starCharts()">6<sup>h</sup></option>
+    <option value="8" onclick="starCharts()">8<sup>h</sup></option>
+    <option value="10" onclick="starCharts()">10<sup>h</sup></option>
+    <option value="12" onclick="starCharts()">12<sup>h</sup></option>
+    <option value="14" onclick="starCharts()">14<sup>h</sup></option>
+    <option value="16" onclick="starCharts()">16<sup>h</sup></option>
+    <option value="18" onclick="starCharts()">18<sup>h</sup></option>
+    <option value="20" onclick="starCharts()">20<sup>h</sup></option>
+    <option value="22" onclick="starCharts()">22<sup>h</sup></option>
+</select> (GCRS).</p>
+    
+<div class="warning"></div>
+    
+<div class="canvaswrapper">
+<canvas id="canvasCentral" width="800" height="400">
+  CANVAS NOT SUPPORTED IN THIS BROWSER!
+</canvas>
+<div id="tipCentral" class="tip">
+    <div class="close" onclick="closePopup('tipCentral')">&#10005;</div>
+    <div id="tipCentralText"></div>
+</div>
+</div>
+    
+<p class="animate">
+    <button class="setupAnimate" onclick="displayAnimationSetup('animateDisplayCentral')">Animation Setup</button>
+    <button class="controlAnimate" onclick="Animate()" id="animateCentral">Play Animation</button> 
+    <button class="controlAnimate" onclick="playAnimation(1)">+1 Frame</button>
+    <button class="controlAnimate" onclick="playAnimation(-1)">-1 Frame</button>
+</p>
+    
+<div id="animateDisplayCentral" class="input"></div>
+
+    <br />
+<p>Time: <span id="timeSouth"></span>, southern hemisphere. Rotate the chart counterclockwisely by 
+<select id="rotateSouth">
+    <option value="0" selected onclick="starCharts()">0&deg;</option>
+    <option value="30" onclick="starCharts()">30&deg;</option>
+    <option value="60" onclick="starCharts()">60&deg;</option>
+    <option value="90" onclick="starCharts()">90&deg;</option>
+    <option value="120" onclick="starCharts()">120&deg;</option>
+    <option value="150" onclick="starCharts()">150&deg;</option>
+    <option value="180" onclick="starCharts()">180&deg;</option>
+    <option value="210" onclick="starCharts()">210&deg;</option>
+    <option value="240" onclick="starCharts()">240&deg;</option>
+    <option value="270" onclick="starCharts()">270&deg;</option>
+    <option value="300" onclick="starCharts()">300&deg;</option>
+    <option value="330" onclick="starCharts()">330&deg;</option>
+</select>.</p>
+    
+<div class="warning"></div>
+    
+<div class="canvaswrapper" style="margin-left:50px;">
+<canvas id="canvasSouth" width="700" height="700">
+  CANVAS NOT SUPPORTED IN THIS BROWSER!
+</canvas>
+<div id="tipSouth" class="tip">
+    <div class="close" onclick="closePopup('tipSouth')">&#10005;</div>
+    <div id="tipSouthText"></div>
+</div>
+</div>
+    
+<p class="animate">
+    <button class="setupAnimate" onclick="displayAnimationSetup('animateDisplaySouth')">Animation Setup</button>
+    <button class="controlAnimate" onclick="Animate()" id="animateSouth">Play Animation</button> 
+    <button class="controlAnimate" onclick="playAnimation(1)">+1 Frame</button>
+    <button class="controlAnimate" onclick="playAnimation(-1)">-1 Frame</button>
+</p>
+<div id="animationSetup">
+</div>
+
+<div id="animateDisplaySouth" class="input"></div>
+    
+<div class="control">
+<p>Show/Hide: 
+    <button id="showPlanets" class="active" onclick="showHide('Planets')">Sun, Moon, Planets</button> 
+    <button id="showPrecession" class="active" onclick="showHide('Precession')">Precession</button> 
+    <button id="showEcliptic" onclick="showHide('Ecliptic')">Ecliptic</button>
+    <button id="showMilkyWay" onclick="showHide('MilkyWay')">Milky Way</button>
+    <button id="showConLines" class="active"  onclick="showHide('ConLines')">Con. lines</button>
+    <button id="showConLab" onclick="showHide('ConLab')">Con. labels</button>
+    </p>
+</div>
+    
+<br /><br />
+<p style="margin-left:350px;"><a href="Constellations.html">Constellation List</a></p>
+<canvas id="legend" width="500" height="150">
+  CANVAS NOT SUPPORTED IN THIS BROWSER!
+</canvas>
+<br /><br />
+    
+<h2>Description</h2>
+<p>This webpage uses the computer's clock to obtain the current time and plot star charts showing the positions of the Sun, Moon, planets and stars. The three star charts are based on the coordinate system whose center is at Earth's center and whose axes are oriented to the same directions as those of the International Celestial Reference System (ICRS). For simplicity, we will use GCRS to refer to this coordinate system. GCRS is practically the same as the equatorial coordinate system based on the mean equator and equinox of J2000.0. When the precession button is active, the Ra and Dec grids show the Ra and Dec lines with respect to the mean equator and equinox of date. When it is inactive, the grid lines are the Ra and Dec lines of the GCRS. The Ra labels in the polar charts always refer to the Ra of the GCRS.</p>
+    
+<p>The first chart shows the stars to the north of the GCRS equator. It is created using the <a href="https://en.wikipedia.org/wiki/Stereographic_projection" target="_blank">stereographic projection</a> with the GCRS south pole as the projection point. The third chart shows the stars to the south of the GCRS equator. It is created using the stereographic projection with the GCRS north pole as the projection point. The second chart shows the all-sky map using the <a href="https://en.wikipedia.org/wiki/Mollweide_projection" target="_blank">Mollweide projection</a>. Stereographic projection preserves angles but not areas, whereas Mollweide projection preserves areas but not angles.</p>
+    
+<p>Constellation labels, when active, are shown in the abbreviated form. The full names of the constellations are listed on <a href="Constellations.html">this webpage</a>.</p> 
+    
+<p>Unlike the local star charts, the animation buttons apply to all 3 charts. When an animation plays, all 3 charts will be updated.</p>
+    
+<p>Stars in the charts can be clicked and a popup box will appear. The popup box shows further information about the star. When the time is between 3000 BC and 3000 AD, positions of the stars with respect to J2000.0 mean equator and equinox are corrected for proper motion and annual parallax. The apparent position with respect to the true equator and equinox of date are corrected for precession, nutation, and <a href="https://en.wikipedia.org/wiki/Aberration_of_light" target="_blank">aberration of light</a> in addition to proper motion and parallax. Outside the time interval 3000 BC - 3000 AD, only proper motion is included in the J2000.0 position and only precession and proper motion are included in the "of date" position.</p>
+    
+<p>Sun, Moon and planets are displayed on the charts by symbols indicated above. They can also be clicked and a popup box will appear. In the popup box, the term "elongation" is the angular separation of the planet and the Sun as seen from Earth; "heliocentric" refers to quantities measured from the Sun's center; "geocentric" refers to quantities measured from Earth's center.</p>
+    
+<p>Since the resolution of the star charts is low, the positions of the Sun and planets in the star charts are calculated using <a href="https://ssd.jpl.nasa.gov/?planet_pos" target="_blank">low-precision formulae</a>. These formulae are only accurate between 3000 BC and 3000 AD. Position of the Moon is calculated by a truncated <a href="http://adsabs.harvard.edu/abs/2003A%26A...404..735C" target="_blabk">ELP/MPP02</a> series. Positions stated in the popup box are calculated using more accurate formulae (<a href="http://neoprogrammics.com/vsop87/" target="_blank">VSOP87</a> for the Sun and planets and <a href="http://adsabs.harvard.edu/abs/2003A%26A...404..735C" target="_blabk">ELP/MPP02</a> for the Moon). In the popup box, when the time is between 3000 BC and 3000 AD, the J2000.0 position only includes the <a href="https://en.wikipedia.org/wiki/Light-time_correction" target="_blank">light-time correction</a>. The "of date" apparent position includes precession, nutation and aberration of light in addition to the light-time correction. Outside the time interval 3000 BC and 3000 AD, only precession and light-time correction are included in the "of date" position.</p>
+
+<p>When plotting the celestial objects on the charts, only the precession of the Earth's spin axis is included. The <a href="http://adsabs.harvard.edu/abs/2011A%26A...534A..22V" target="_blank">formulae</a> used in the precession calculation are valid within 200,000 years before and after the years 2000.</p>
+    
+<p>Positions and apparent magnitudes of stars are adjusted based on their 3D motion in space, assuming they move in a straight line relative to the solar system barycenter. Since stars are very far away, only nearby stars show noticeable motion over a time span of millennia. The positions and 3D motion of the stars are obtained from the <a href="http://astronexus.com/node/34" target="_blank">HYG 3.0 database</a>. The milky way boundary is based on the data <a href="http://www.skymap.com/smp_overlays.htm#milky" target="_blank">Milky Way and Magellanic Clouds</a> provided by Jarmo Moilanen. Deep sky objects are not included.</p>
+
+<p>The physics and mathematics involved in creating the star charts is explained briefly in this <a href="docs/star_charts.pdf" target="_blank">pdf document</a>.</p>
+</div><!-- end of starCharts -->
+<br />
+</div> 
+
+</body>
+</html>
