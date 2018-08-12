@@ -26,7 +26,7 @@
   - terms with amplitudes less than 0.1km/(50cy)^3 in ELP_PERT_dist3; 
   
   By performing calculations with random values of time 
-  uniformly distributed between -50 and 50 centuries from the year 2000, I find that the maximum deviations between this abridged version and the full version are 0.09" for the longitude, 0.08" for the latitude, and 1.9km for the distance. The standard deviations of the errors are 0.02" for longitude, 0.01" for latitude and 0.4 km for distance.
+  uniformly distributed between -50 and 50 centuries from the year 2000, I find that the maximum deviations between this abridged version and the full version are 0.09" for the longitude, 0.08" for the latitude, and 1.9km for the distance. The root mean square errors are 0.02" for longitude, 0.01" for latitude and 0.4 km for distance.
   
   The JavaScript code for the full version is available in the file MoonELP82Unabridged.js
 */

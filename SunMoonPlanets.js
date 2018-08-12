@@ -102,7 +102,7 @@ function MiniMoon(T) {
 }
 
 // Compute the approximate distance of the Moon in km.
-// Accuracy: +/- 300km for |T| < 50, sd of error approx. 85km
+// Accuracy: +/- 300km for |T| < 50, rms error approx. 85km
 // The formula is obtained by truncating the ELP 2000-82b 
 // distance series: terms with amplitudes less 
 // than 100km are removed.
@@ -155,7 +155,7 @@ function MiniMoonDist(T) {
 
 // Compute the approximate position of the Moon.
 // Accuracy: +/- 250 arcsec for |T| < 50, 
-// sd of error approx. 58 arcsec
+// rms error approx. 58 arcsec
 // The formula is obtained by truncating the ELP/MPP02 
 // series: terms with amplitudes less than 30 arcsec for 
 // longitude and latitude and 100km in distance are removed, 
