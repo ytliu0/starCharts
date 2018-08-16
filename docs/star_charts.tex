@@ -2006,12 +2006,12 @@ and $0.8''$ in ecliptic latitude over the time span from 3000~BC to 3000~AD.
 
 The full ELP/MPP02 series can be written in the form 
 \beqn
-  U(T) &=& W(T) + \sum_{i=0}^3 T^i \sum_j A^{(U)}_{ij} \sin\left[ \phi^{(U)}_{ij}(T)\right] \\ 
-  V(T) &=& \sum_{i=0}^3 T^i \sum_j A^{(V)}_{ij} \sin\left[ \phi^{(V)}_{ij}(T)\right] \\ 
+  V(T) &=& W(T) + \sum_{i=0}^3 T^i \sum_j A^{(V)}_{ij} \sin\left[ \phi^{(V)}_{ij}(T)\right] \\ 
+  U(T) &=& \sum_{i=0}^3 T^i \sum_j A^{(U)}_{ij} \sin\left[ \phi^{(U)}_{ij}(T)\right] \\ 
   r(T) &=& r_0 + \sum_{i=0}^3 T^i \sum_j A^{(r)}_{ij} \sin\left[ \phi^{(r)}_{ij}(T)\right] ,
 \label{eq:Dmoon}
 \eeqn
-where $U$, $V$, and $r$ are the ecliptic longitude, ecliptic latitude, and geocentric 
+where $V$, $U$, and $r$ are the ecliptic longitude, ecliptic latitude, and geocentric 
 distance of the Moon, respectively, $T$ is the TT Julian century from J2000.0, 
 $W$ is the mean longitude of the Moon, $r_0$ is a constant. For the terms in the 
 sum, $A^{(U)}_{ij}$, $A^{(V)}_{ij}$, $A^{(r)}_{ij}$ are constants. The phase 
@@ -2046,8 +2046,8 @@ The accuracy of ELP/MPP02L is estimated by comparing it with the full series.
 Specifically, 10,000 random values of $T$ are chosen between -50 and 50. Values of 
 $U(T)$, $V(T)$, and $r(T)$ at these times are computed for both the ELP/MPP02L series and the 
 full series. We find that the maximum differences between ELP/MPP02L and ELP/MPP02 
-are $233''$ for $U$, $152''$ for $V$ and $352$~km for $r$. The root mean square 
-of the differences are $47''$ for $U$, $33''$ for $V$ and $86$~km for $r$. This accuracy 
+are $233''$ for $V$, $152''$ for $U$ and $352$~km for $r$. The root mean square 
+of the differences are $47''$ for $V$, $33''$ for $U$ and $86$~km for $r$. This accuracy 
 is sufficient for our plotting purpose.
 
 ELP/MPP02C is created using $A^{(U)}_{\rm th}=A^{(V)}_{\rm th}=0.001''$, 
@@ -2055,9 +2055,9 @@ $A^{(r)}_{\rm th}=0.1$~km, and $\tau = 50$~Julian centuries. It is used in
 the calculation in the popup box. The resulting series consists of about 3750 terms. 
 The accuracy of ELP/MPP02C is estimated in the same way as above. We find that 
 the maximum differences between ELP/MPP02C and ELP/MPP02 over the time 
-span $|T|<50$ are $0.1''$ for $U$, $0.08''$ for $V$ and $1.9$~km for $r$. 
-The root mean square of the differences are $0.02''$ for $U$, $0.01''$ for 
-$V$ and $0.4$~km for $r$. The error of this truncated series is lower than 
+span $|T|<50$ are $0.1''$ for $V$, $0.08''$ for $U$ and $1.9$~km for $r$. 
+The root mean square of the differences are $0.02''$ for $V$, $0.01''$ for 
+$U$ and $0.4$~km for $r$. The error of this truncated series is lower than 
 the error of the apparent position caused by our ignoring the effect of 
 polar motion.
 
