@@ -1567,9 +1567,9 @@ function displayPopupSun(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
-    txt += '<tr><td>Altitute, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
+    txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
-    txt += '<tr><td>Transit (Altitute)</td> <td>'+Transit+'</td></tr>';
+    txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
     txt += '<tr><td>Civ. Twi. beg., end</td> <td>'+civ+'</td></tr>';
     txt += '<tr><td>Nat. Twi. beg., end</td> <td>'+nat+'</td></tr>';
     txt += '<tr><td>Ast. Twi. beg., end</td> <td>'+ast+'</td></tr>';
@@ -1696,9 +1696,9 @@ function displayPopupMoon(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+topoRa+', '+topoDec+'</td></tr>';
     }
-    txt += '<tr><td>Altitute, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
+    txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azimuth)</td> <td>'+Rise+'</td></tr>';
-    txt += '<tr><td>Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
+    txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
     txt += '<tr><td>Set (Azimuth)</td> <td>'+Set+'</td></tr>';
     
     var tipText = "#tip"+para.loc+"text";
@@ -1830,9 +1830,9 @@ function displayPopupPlanet(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
-    txt += '<tr><td>Altitute, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
+    txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
-    txt += '<tr><td>Transit (Altitute)</td> <td>'+Transit+'</td></tr>';
+    txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
     
     $(tipText).append(txt);
 }
@@ -1969,7 +1969,7 @@ function displayPopupStar(tip, para) {
     alt = -0.009890199094634533; // -34' in radians
     var t = riseSetStar(para.LST0, alt, para.lat, ra, dec);
     var transit = t.transit+' ('+t.altTransit+')';
-    txt += '<tr><td>Transit (Alt)</td> <td>'+transit+'</td></tr>';
+    txt += '<tr><td>Upper Transit (Alt)</td> <td>'+transit+'</td></tr>';
     var riseSet = t.rise+' ('+t.azRise+'), '+t.set;
     if (t.rise=="above") {
         riseSet = "circumpolar";
