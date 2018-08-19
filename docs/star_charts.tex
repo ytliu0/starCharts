@@ -1994,7 +1994,7 @@ code is created based on the source code provided by the authors on
 \href{ftp://cyrano-se.obspm.fr/pub/2_lunar_solutions/2_elpmpp02/}{this ftp site}. 
 The JavaScript code has been tested by comparing the results with those of the 
 FORTRAN code on the ftp site. We find agreement to within 12 to 13 significant figures. 
-The deviation is most likely caused by the accumulated roundoff error.
+The deviation is most likely caused by the accumulated roundoff error. 
 
 \href{http://adsabs.harvard.edu/abs/2003A%26A...404..735C}{ELP/MPP02} \
 is a semi-analytic solution for the lunar motion. There are 
@@ -2021,7 +2021,10 @@ parameters of the Moon and solar system planets. The functions $W(T)$ and $a_k(T
 are expressed as polynomial functions of $T$ up to and including $T^4$. 
 
 The full series involves about 36,000 terms. Since high accuracy is not 
-needed for our use, we truncate the series by the following procedure:
+needed for our use, we truncate the series by the following procedure:\footnote{I 
+have created \href{https://github.com/ytliu0/ElpMpp02}{this GitHub repository} to 
+provide C++ subroutines to implement the ELP/MPP02 series, construct 
+truncated series, and generate JavaScript code to calculate the truncated series.}
 
 \begin{itemize}
 \item Choose four parameters $A^{(U)}_{\rm th}$, $A^{(V)}_{\rm th}$, 
