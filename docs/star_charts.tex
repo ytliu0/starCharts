@@ -2161,10 +2161,10 @@ without using the approximation.
 The apparent magnitude of the Moon is calculated using the following 
 approximate formula. 
 \beq
-  m = -12.778 + 1.876 \phi - 0.55025 \phi^2 + 0.27093 \phi^3 
-+ 5\log_{10} (D/384400~{\rm km}) ,
+  m = -12.784 + 1.874 \phi - 0.5449 \phi^2 + 0.2698 \phi^3 
++ 5\log_{10}\left( \frac{r}{384400~{\rm km}}\cdot \frac{r_M}{1~{\rm AU}}\right) ,
 \eeq
-where $\phi$ is the phase angle in radians and $D$ is the distance of the Moon. 
+where $\phi$ is the phase angle in radians. 
 This formula is obtained by fitting the apparent magnitude data from 
 \href{https://ssd.jpl.nasa.gov/horizons.cgi}{JPL's Horizons website}. 
 The formula fits the data to within 0.2 magnitude.

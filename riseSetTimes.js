@@ -529,8 +529,9 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     var raMoon = parray[12][1].ra, decMoon = parray[12][1].dec;
     var Dmoon = parray[12][1].rGeo;
     var Lsun = parray[12][0].lam2000;
+    var Dsun = parray[12][0].rGeo;
     var Lmoon = parray[12][1].lam2000;
-    var illumPhase = moonIlluminated(raSun,decSun,raMoon,decMoon, Lsun,Lmoon, Dmoon);
+    var illumPhase = moonIlluminated(raSun,decSun,raMoon,decMoon, Lsun,Lmoon, Dmoon, Dsun);
     var illum = illumPhase.illuminated, phase = illumPhase.phase;
     var mag = illumPhase.mag.toFixed(1);
     
@@ -824,10 +825,10 @@ function calcRiseSetMultipleDates(input) {
                 // Illumination and phase
                 calculate[2] = true;
                 var sun = planetPos(T+dT+0.5/36525, calculate)[2];
-                var raSun = sun.ra, decSun = sun.dec;
+                var raSun = sun.ra, decSun = sun.dec, Dsun = sun.rGeo;
                 var raMoon = ra[12], decMoon = dec[12];
                 var illumPhase = moonIlluminated(sun.ra,sun.dec,ra[12],dec[12], 
-                                                 sun.lam2000,lam12,Dmoon);
+                                sun.lam2000,lam12,Dmoon,Dsun);
                 var illum = illumPhase.illuminated.toFixed(2);
                 var phase = illumPhase.phase;
                 var mag = illumPhase.mag.toFixed(1);

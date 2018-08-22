@@ -983,19 +983,21 @@ function displayPopupSun(tip,para) {
 
 // Display popup box for the Moon
 function displayPopupMoon(tip,para) {
-    var moon,sun, Dmoon, Lmoon, Lsun;
+    var moon,sun, Dmoon, Lmoon, Lsun, Dsun;
     var TD = date.T + date.dT;
     if (highPrecCalInTips) {
         moon = MoonPosElpMpp02(TD, true);
         Dmoon = moon.rGeo;
         var calculate = [false,false,true,false,false,false,false,false];
         sun = planetPos(TD, calculate)[2];
+        Dsun = sun.rGeo;
         Lsun = sun.lam2000;
         Lmoon = moon.lam2000;
     } else {
         moon = MediumMoon(TD);
         sun = MiniSun(TD);
         Lsun = sun.lam;
+        Dsun = 1.0;
         Lmoon = moon.lam;
         Dmoon = moon.rGeo;
     }
@@ -1015,7 +1017,7 @@ function displayPopupMoon(tip,para) {
     var dec = convertDM(raDec.dec*rad_to_deg, "dm");
     // illumination, phase and solar elongation
     var illumPhase = moonIlluminated(sun.ra,sun.dec,moon.ra,moon.dec, 
-                                     Lsun,Lmoon, Dmoon);
+                                     Lsun,Lmoon, Dmoon, Dsun);
     var illum = illumPhase.illuminated.toFixed(2);
     var phase = illumPhase.phase;
     var elong = illumPhase.elongTxt;

@@ -799,25 +799,27 @@ function aberration(ra, dec, para) {
 // sunRa, sunDec: Ra and Dec of the Sun (in radians)
 // moonRa, moonDec: Ra and Dec of the Moon (in radians)
 // sunLam, moonLam: ecliptic longitude of the Sun and Moon.
-// Dmoon: distance of the moon
+// Dmoon: distance of the moon (in km)
+// Dsun: Earth-Sun distance (in AU)
 // Note: sunRa, sunDec, moonRa, moonDec must be in the same ref. frame,
 //       sunLam, moonLam must also be in the same ref. frame. 
 //       But the ref. frames of sunRa and sunLam may differ.
 function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam, 
-                           Dmoon) {
-    var dEM = Dmoon/149597870.7; // moon dist. in AU
+                           Dmoon, Dsun) {
+    // Earth-Moon dist/Earth-Sun dist.
+    var sigma = Dmoon/(149597870.7*Dsun); 
     // cos(angle between Sun and Moon)
     var cosE = Math.sin(sunDec)*Math.sin(moonDec) +  
         Math.cos(sunDec)*Math.cos(moonDec)*Math.cos(sunRa-moonRa);
-    // Moon-Sun distance in AU
-    var dMS = Math.sqrt(1 - 2*dEM*cosE + dEM*dEM);
+    // Moon-Sun distance/Earth-Sun distance
+    var dMS = Math.sqrt(1 - 2*sigma*cosE + sigma*sigma);
     // Moon's cos(phase angle)
-    var cosi = (dEM - cosE)/dMS;
+    var cosi = (sigma - cosE)/dMS;
     var illum = 0.5*(1+cosi);
     
     // apparent magnitude
     var i = Math.acos(cosi);
-    var mag = -12.778 + 1.876*i -0.55025*i*i + 0.27093*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon/384400.0);
+    var mag = -12.784 + 1.874*i - 0.5449*i*i + 0.2698*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon*dMS*Dsun/384400.0);
     
     // phase 
     // waxing or waning?
