@@ -793,18 +793,19 @@ function aberration(ra, dec, para) {
     return {ra:Math.atan2(y,x), dec:Math.asin(z/norm)};
 }
 
-// Calculate fraction of Moon illuminated (approximately), and 
-// Moon's phase.
-// Assume: Earth-Moon distance and Sun-Earth distance are constants
+// Calculate fraction of Moon illuminated, apparent magnitude, 
+// and Moon's phase.
 // Input parameters: 
 // sunRa, sunDec: Ra and Dec of the Sun (in radians)
 // moonRa, moonDec: Ra and Dec of the Moon (in radians)
 // sunLam, moonLam: ecliptic longitude of the Sun and Moon.
+// Dmoon: distance of the moon
 // Note: sunRa, sunDec, moonRa, moonDec must be in the same ref. frame,
 //       sunLam, moonLam must also be in the same ref. frame. 
 //       But the ref. frames of sunRa and sunLam may differ.
-function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam) {
-    var dEM = 384400/149597870.7; // Earth-moon dist. in AU
+function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam, 
+                           Dmoon) {
+    var dEM = Dmoon/149597870.7; // moon dist. in AU
     // cos(angle between Sun and Moon)
     var cosE = Math.sin(sunDec)*Math.sin(moonDec) +  
         Math.cos(sunDec)*Math.cos(moonDec)*Math.cos(sunRa-moonRa);
@@ -815,11 +816,8 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam) {
     var illum = 0.5*(1+cosi);
     
     // apparent magnitude
-    //var phaseAng = Math.acos(cosi);
-    //p = (1-phaseAng/Math.PI)*cosi + Math.sqrt(1-cosi*cosi)/Math.PI;
-    //var albedo = 0.12, Rm_Dm = 1737/384400;
-    //var F = 2*albedo*p/3*Rm_Dm*Rm_Dm;
-    //var mag = -26.73 - 2.5*Math.LOG10E*Math.log(F);
+    var i = Math.acos(cosi);
+    var mag = -12.778 + 1.876*i -0.55025*i*i + 0.27093*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon/384400.0);
     
     // phase 
     // waxing or waning?
@@ -865,7 +863,7 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam) {
         elongTxt += " W";
     }
     
-    return {illuminated:illum, phase:phase, elong:elong, elongTxt:elongTxt};
+    return {illuminated:illum, phase:phase, elong:elong, elongTxt:elongTxt, mag:mag};
 }
 
 // Elongation, phase angle and fraction illuminated for planets

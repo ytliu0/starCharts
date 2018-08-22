@@ -176,7 +176,7 @@ equation~(3.4) in \expl:
 \eeq
 where $T= ({\rm JD} - 2451545)/36525$ is the Julian century from J2000.0, measured in 
 the {\em terrestrial time} (TT, see the next section). The expression for 
-$E_e$ is given by equation~(3.5) in \expl. We only consider the dominant term:
+$E_e$ is given by equation~(3.5) in \expl. I only consider the dominant term:
 \beq
   E_e = \Delta \psi \cos \epsilon_A ,
 \label{eq:Ee}
@@ -436,7 +436,7 @@ points very close to the mean celestial north pole of J2000.0, and the $y$-axis
 is $90^\circ$ to the east of the $x$-axis on the ICRS equatorial plane. So the ICRS 
 is a right-handed rectangular coordinate system. The ICRS can be transformed to the 
 equatorial system of J2000.0 by the {\em frame bias matrix}. However, since the 
-difference between the two systems is tiny, we will not distinguish them.
+difference between the two systems is tiny, I will not distinguish them.
 
 It is assumed that the distant quasars and extragalactic radio sources do not 
 rotate with respect to asymptotically flat reference systems like BCRS. In \
@@ -454,12 +454,12 @@ $\alpha$ and {\em declination} $\delta$ are defined by the relation
 \eeq
 where $r=\sqrt{x^2+y^2+z^2}$. Hence $\alpha = \tan^{-1} (y/x)$ and 
 $\delta = \sin^{-1}(z/r)$. The quadrant of $\alpha$ has to be determined
-appropriately from $x$ and $y$. Hereafter, we will write $\alpha = {\rm arg}(x+iy)$ 
+appropriately from $x$ and $y$. Hereafter, I will write $\alpha = {\rm arg}(x+iy)$ 
 to indicate that an appropriate quadrant should be used. Here ${\rm arg}(z)$ denotes 
 the argument of a complex number $z$. Any complex number $z=x+iy$ can be written in 
 the polar form $z=|z| e^{i\theta}$ and ${\rm arg}(z)$ is defined to be $\theta$. 
 Thus, given a pair $(x,y)$, ${\rm arg}(x+iy)~{\rm mod}~2\pi$ is unique.
-In our code, the function {\tt atan2()} is used in favor of {\tt atan()} 
+In the code, the function {\tt atan2()} is used in favor of {\tt atan()} 
 since the quadrant is taken care of by {\tt atan2()} automatically.
 
 \subsection{Geocentric Celestial Reference System (GCRS)}
@@ -473,8 +473,8 @@ are related to the BCRS spatial coordinates $x^i$ by
 \label{eq:GCRSX}
 \eeq
 where $x^i_E$ are the BCRS coordinates of Earth's center of mass. Relativistic 
-correction adds terms of order $(v_E/c)^2 \sim 10^{-8}$, which we ignore. Like 
-BCRS, GCRS is a dynamical concept. In the following, we will also use GCRS 
+correction adds terms of order $(v_E/c)^2 \sim 10^{-8}$, which I ignore. Like 
+BCRS, GCRS is a dynamical concept. In the following, I will also use GCRS 
 to refer to the coordinate system whose origin is at the geocenter and whose 
 axes are oriented to the same directions as those of the ICRS.
 
@@ -545,7 +545,7 @@ was formerly called the planetary precession. They are renamed because the
 terminologies are misleading. Planetary perturbation also contributes to 
 the precession of the equator, although the magnitude is much smaller.}. 
 
-We do not include polar motion on our webpages.
+I do not include polar motion on the two webpages.
 
 \subsection{Equator, Ecliptic and Equinoxes}
 
@@ -620,7 +620,7 @@ the precession matrix from the epoch J2000.0 to the epoch $T$. Then
 \ve{P_0}(T_2) \ve{P_0}^T(T_1) \ve{X_1} .
 \eeq
 
-On our webpages, the matrix $\ve{P_0}$ is computed based on 
+On the two webpages, the matrix $\ve{P_0}$ is computed based on 
 \href{http://adsabs.harvard.edu/abs/2011A%26A...534A..22V}{Vond\'rak, 
 Capitaine and Wallace, A\&A 534, A22 (2011)} (see also the 
 \href{https://www.aanda.org/articles/aa/pdf/2012/05/aa17274e-11.pdf}{corrigendum, 
@@ -634,8 +634,8 @@ in the paper. The formulae are accurate within 200 millennia from J2000.0.
 
 Nutation is computed according to the IAU 2000A Theory of Nutation. The formulae 
 are given by Kaplan in \kaplan, U.S. Naval Observatory, Washington, D.C. 
-The computation involves over 1000 terms. Since we do not need high precision, 
-only the dominant terms are kept in our calculation.
+The computation involves over 1000 terms. Since high precision is not needed, 
+only the dominant terms are kept in the calculation.
 
 Let $\ve{X_0}$ be the column vector corresponding to the position of an object 
 with respect to the mean equator and equinox of date, and $\ve{X}$ be the column 
@@ -668,8 +668,8 @@ where $T$ is the TT Julian centuries from J2000.0. The nutation in longitude $\D
 and nutation in obliquity $\Delta \epsilon$ are each expressed by a sum over 1000 terms. 
 The full formulae 
 are given by equations~(5.15)--(5.19) of \kaplan with amplitudes and coefficients listed on 
-pages 88--103. Since high precision is not required, we only keep terms with 
-amplitudes greater than $0.05''$ for $|T| < 50$. Specifically, we use the following formulae 
+pages 88--103. Since high precision is not required, I only keep terms with 
+amplitudes greater than $0.05''$ for $|T| < 50$. Specifically, I use the following formulae 
 for $\Delta \psi$ and $\Delta \epsilon$. 
 \beqn
   \Delta \psi &=& -(17.''2064161 + 0.''0174666T) \sin \Omega 
@@ -698,7 +698,7 @@ five angles are given by equation~(5.19) of \kaplan:
 \eeqn
 The expressions are taken from \href{http://adsabs.harvard.edu/abs/1994A%26A...282..663S}
 {Simon et al.\ (1994)}, which recommends the optimal use in the time span between 
-4000~BC and 8000~AD. On our webpages, nutation is implemented in the time span 
+4000~BC and 8000~AD. On the two webpages, nutation is implemented in the time span 
 between 3000~BC and 3000~AD ($-50 < T < 10$).
 
 \subsection{Ecliptic North Pole}
@@ -708,7 +708,7 @@ at a specific time on the \href{../sidereal.html}{horizontal star charts}
 and \href{../chartGCRS.html}{GCRS charts}. For the horizontal star charts, 
 the right ascension and declination of the pole associated with the 
 equator and equinox of date are required. For the GCRS charts, the GCRS 
-right ascension and declination of the ecliptic pole is required. We ignore 
+right ascension and declination of the ecliptic pole is required. I ignore 
 nutation and the difference between GCRS and J2000.0 mean equatorial system. 
 So only precession is included in the calculation.
 
@@ -736,7 +736,7 @@ $\gamma$ is about $13^\circ$ over a time span of 400,000 years.
 \subsection{Galactic North Pole} 
 
 The position of the galactic north pole is required to plot the galactic 
-equator. We assume that the galactic north pole is fixed in space, at 
+equator. I assume that the galactic north pole is fixed in space, at 
 least on a time span of 400 millennia. The right ascension and declination 
 of the galactic north pole with respect to the J2000.0 mean equator and equinox 
 are $\alpha_0 = 12^{\rm h} 51^{\rm m} 26^{\rm s}$ and $\delta_0 = 27^\circ 07' 
@@ -782,8 +782,8 @@ where $t_s$ is the local apparent sidereal time LAST, and
   S = (1-f)^2 C .
 \label{eq:topoCS}
 \eeq
-On our local star chart webpage, nutation is also ignored and so $t_s$ 
-is replaced by the local mean sidereal time LMST. We also set $h=0$, which 
+On the local star chart webpage, nutation is also ignored and so $t_s$ 
+is replaced by the local mean sidereal time LMST. I also set $h=0$, which 
 causes an error smaller than $0.5''$ for the Moon if $h<1$~km. 
 
 The topocentric right ascension and declination are defined by 
@@ -831,7 +831,7 @@ in rectangular coordinates with respect to the true equator and equinox of date:
 \label{eq:vspin}
 \eeq
 where $\omega=dt_s/dt = 7.292115855\times 10^{-5}$~rad/s is the angular velocity 
-of Earth's spin. We again ignore the location's height above the sea level and 
+of Earth's spin. I again ignore the location's height above the sea level and 
 set $h=0$ in the actual calculation. 
 
 While $\ve{v_{\rm spin}}$ is conveniently expressed in the coordinate system based 
@@ -868,8 +868,8 @@ The astronomical meridian defined by the CIP and zenith deviates slightly from t
 geodetic meridian that passes through the observer's location and the actual axis 
 of figure through the center of the Earth. The deviation between these two sets 
 of longitude and latitude is usually a few arcseconds. Larger deviation may result 
-in regions with large gravity anomaly. We ignore the difference between these 
-two sets of longitude and latitude on our webpages.
+in regions with large gravity anomaly. I ignore the difference between these 
+two sets of longitude and latitude on the two webpages.
 
 \begin{figure}[h]
 \begin{center}
@@ -910,7 +910,7 @@ can raise the altitude of an object by $34'$. Atmospheric refraction
 depends on the local temperature, pressure, humidity and other conditions. 
 Sophisticated atmospheric refraction models involve numerical integration, 
 but the accuracy depends on the local conditions.
-On our local star chart webpage, we use a low-precision fitting formula 
+On the local star chart webpage, I use a low-precision fitting formula 
 to model the atmospheric refraction. 
 \href{https://en.wikipedia.org/wiki/Atmospheric_refraction#cite_note-Saemundsson1986-24}{S{\ae}mundsson's formula} 
 is used in which the change in altitude $\Delta a$ is given by 
@@ -920,8 +920,8 @@ is used in which the change in altitude $\Delta a$ is given by
 \cot \left(a + \frac{10.3^\circ}{a + 5.11^\circ}\right) ,
 \label{eq:atmRefraction}
 \eeq
-where $T$ is temperature and $P$ is pressure. In all of our calculations, 
-we use $T=286$~K and $P=101~{\rm kPa}$.
+where $T$ is temperature and $P$ is pressure. In all calculations, 
+I use $T=286$~K and $P=101~{\rm kPa}$.
 
 \section{Map Projections}
 \label{sec:maps}
@@ -975,7 +975,7 @@ As shown in Figure~\ref{fig:computerGraphics}, in the HTML canvas coordinates $(
 the upper-left corner is the origin $(x_g,y_g)=(0,0)$. The $x$ coordinate increases to the 
 right and $y$ coordinates increases downward. The coordinate of the lower-right 
 corner is $(x_g,y_g)=(w,h)$, where $w$ is the width and $h$ is the height of the canvas 
-in pixels. In the local star charts, we set $w=h=800$~pixels.
+in pixels. In the local star charts, I set $w=h=800$~pixels.
 
 The mapping $(a,A) \rightarrow (x_g,y_g)$ is given by 
 \beq 
@@ -1057,7 +1057,7 @@ a semi-minor axis of $r_h/2$.
 
 \subsection{Joining Two Points by a Straight Line}
 
-In some cases (e.g.\ drawing constellation lines), we want to join 
+In some cases (e.g.\ drawing constellation lines), I want to join 
 two points $\ve{r_{g1}}=(x_{g1},y_{g1})$ 
 and $\ve{r_{g2}}=(x_{g2},y_{g2})$ by a straight line on canvas. 
 This is straightforward in most cases. However, 
@@ -1073,7 +1073,7 @@ boundary of the chart. In this case, the line should be broken into two: one
 joining $\ve{r_{g1}}$ to the boundary and another joining $\ve{r_{g2}}$ to the 
 boundary on the other side. 
 
-In the following we describe the mathematical detail in handling these 
+In the following I describe the mathematical detail in handling these 
 cases.
 
 \subsubsection{Stereographic Charts}
@@ -1082,14 +1082,14 @@ A point $\ve{r_g}$ is inside the chart if $|\ve{r_g}-\ve{r_c}| \leq r_h$,
 where $\ve{r_c}=(w/2,h/2)$ is the position vector of the canvas center. 
 Let $\ve{\xi}=\ve{r_g}-\ve{r_c}$. Also denote $\ve{\xi_1}=\ve{r_{g1}}-\ve{r_c}$ 
 and $\ve{\xi_2}=\ve{r_{g2}}-\ve{r_c}$. Suppose that one of the two points is 
-outside the chart. Then we have either $|\ve{\xi_1}|>r_h$ or $|\ve{\xi_2}|>r_h$. 
-We will then replace the point outside the chart by a point on the line and on 
+outside the chart. Then either $|\ve{\xi_1}|>r_h$ or $|\ve{\xi_2}|>r_h$. 
+I will then replace the point outside the chart by a point on the line and on 
 the chart boundary. Points on the straight line joining $\ve{r_{g1}}$ and 
 $\ve{r_{g2}}$ can be described by the parametric equation 
 \beq
   \ve{\xi}(s) = \ve{\xi_1} + s(\ve{\xi_2}-\ve{\xi_1}) ,
 \eeq
-where $s \in [0,1]$. We want to find $s$ so that $|\ve{\xi}(s)|=r_h$, 
+where $s \in [0,1]$. The goal is to find $s$ so that $|\ve{\xi}(s)|=r_h$, 
 which is a quadratic equation in $s$. The solution of the quadratic equation 
 is given by 
 \beq
@@ -1115,8 +1115,8 @@ the line joining $\ve{r_{g2}}$ to $\ve{r_{g3}}$, where
 
 The central GCRS Ra is specified by the parameter $\alpha_c$. The left and 
 right boundary of the chart is $\alpha=\alpha_c +\pi$. Given two points 
-$\ve{r_{g1}}$ and $\ve{r_{g2}}$, we need to determine whether the line 
-joining them crosses the boundary. First, calculate the following three quantities
+$\ve{r_{g1}}$ and $\ve{r_{g2}}$, first determine whether the line 
+joining them crosses the boundary by calculating the following three quantities
 \beq
   \Delta x_1 = P \left(\frac{\alpha_1-\alpha_c-\pi}{\pi}\right) \ \ , \ \ 
   \Delta x_2 = P\left(\frac{\alpha_2-\alpha_c-\pi}{\pi}\right) \ \ , \ \
@@ -1140,7 +1140,7 @@ $\Delta x_1=-1/4$, $\Delta x_2=1/2$, $\Delta x_{12}=-3/4$, and both
 conditions are indeed satisfied.
 
 Suppose that the shortest line joining the two points does cross the 
-boundary Ra. We need to split the line into two: a line joining 
+boundary Ra. The line will be split into two: a line joining 
 $\ve{r_{g1}}$ and $\ve{r_{g3}}$, and a line joining $\ve{r_{g2}}$ and 
 $\ve{r_{g4}}$, where $\ve{r_{g3}}$ is on the chart boundary closest 
 to $\ve{r_{g1}}$ and $\ve{r_{g4}}$ is on the chart boundary closest to 
@@ -1158,7 +1158,7 @@ Next compute $\ve{\xi'_2} = (\xi'_{2x} , \xi_{2y})$, where
 \eeq
 and $\theta_2$ satisfies the equation $2\theta_2 + \sin 2\theta_2 = \pi \sin \delta_2$. 
 Defined in this way, the point $\ve{r'_{g2}}=\ve{x_c}+r_h \ve{\xi'_2}$ is outside the 
-chart. Now we want to find $\ve{r_{g3}}$ on the line joining $\ve{r_{g1}}$ and 
+chart. Next find $\ve{r_{g3}}$ on the line joining $\ve{r_{g1}}$ and 
 $\ve{r'_{g2}}$ and on the chart boundary. Points on the line joining 
 $\ve{r_{g1}}$ and $\ve{r'_{g2}}$ can be parameterized by the equation 
 \beq
@@ -1196,7 +1196,7 @@ on a local star chart when the Milky Way button below the chart is active.
 Galactic equator, as well as Milky Way boundary, is plotted on the GCRS 
 charts when the Milky Way button on the GCRS page is active. 
 
-In this section, we discuss the mathematical detail in plotting the 
+In this section, I discuss the mathematical detail in plotting the 
 equator, ecliptic and galactic equator, which are all great circles on 
 the celestial sphere. They can be defined as the plane perpendicular to 
 a pole. The general strategy is first to calculate the position of the pole 
@@ -1207,8 +1207,8 @@ $\theta$.
 \subsection{Local Star Charts} 
 
 The coordinate system the local star charts based on is the horizontal 
-coordinate system. We first calculate the altitude $a_p$ and azimuth $A_p$ 
-of the pole. Either a north pole or a south pole will work. We choose the 
+coordinate system. First calculate the altitude $a_p$ and azimuth $A_p$ 
+of the pole. Either a north pole or a south pole will work. I choose the 
 north pole. 
 
 The ``of date'' declination of the celestial north pole is $\delta=\pi/2$. 
@@ -1239,8 +1239,8 @@ Having computed the ``of date'' mean equatorial position of the pole, the hour a
 is calculated approximately by $H_p=t_s - \alpha_p$, where $t_s$ is the local mean 
 sidereal time (LMST) computed by $t_s = {\rm GMST}+\lambda$. 
 Here $\lambda$ is the longitude of the location and GMST is computed
-by equation~(\ref{eq:GMST}). Note that we do not
-use LAST and the apparent position in the computation because the correction is
+by equation~(\ref{eq:GMST}). Note that LAST and the apparent position are not 
+used in the computation because the correction is
 small and can be ignored for plotting purpose.
 
 The altitude $a_p$ and azimuth $A_p$ are obtained by 
@@ -1254,7 +1254,7 @@ unit vectors $\ve{V}$ and $\ve{W}$ as follows:
   \ve{W} = \ve{r_p} \times \ve{V} .
 \eeq
 It follows that both $\ve{V}$ and $\ve{W}$ are perpendicular to $\ve{r_p}$ and so 
-are on the great circle we want to plot. The great circle can be parameterized by 
+are on the great circle of interest. The great circle can be parameterized by 
 the unit vector
 \beq
   \ve{C}(\theta) = \cos \theta \, \ve{V} + \sin \theta \, \ve{W} ,
@@ -1279,7 +1279,7 @@ curve representing the great circle on the canvas.
 
 The coordinate system is the GCRS equatorial coordinate system, which is essentially 
 the same as the J2000.0 mean equatorial coordinate system except for the 
-23-milliarcsecond offset between their poles. We treat these two systems 
+23-milliarcsecond offset between their poles. I treat these two systems 
 as identical because of the small offset. In this coordinate system, the 
 coordinates of the north pole of the ecliptic of date are $\alpha_p = \gamma-\pi/2$ 
 and $\delta_p = \pi/2 - \varphi$. The angles $\gamma$ and $\varphi$ are 
@@ -1299,7 +1299,7 @@ Define two unit vectors
   \ve{W} = \ve{r_p} \times \ve{V} .
 \eeq
 It follows that both $\ve{V}$ and $\ve{W}$ are perpendicular to $\ve{r_p}$ and so 
-are on the great circle we want to plot. The great circle can now be parameterized 
+are on the great circle of interest. The great circle can now be parameterized 
 by the unit vector 
 \beq
   \ve{C}(\theta) = \cos \theta \, \ve{V} + \sin \theta \, \ve{W} ,
@@ -1338,8 +1338,8 @@ $z_0=D_0 \sin \delta_0$. These are components of the ICRS position vector
 $\ve{r(t)}$ at $t=$J2000.0. 
 Note that a value of 100,000 is assigned to $D_0$ if the distance of 
 a star is unknown or its value is dubious. This will not cause 
-much trouble since it is the angular direction of the star we 
-are interested in, but it needs to be kept in mind for calculations 
+much trouble since it is the angular direction of the star that is  
+important, but it needs to be kept in mind for calculations 
 involving $D_0$.
 
 \item ICRS components of a star's 3D velocity is computed 
@@ -1367,13 +1367,13 @@ calculated as follows. The ICRS position vector of the star as a function of $t$
   \ve{r}(t) = \ve{r_0} + \ve{v} \Delta t ,
 \eeq
 where $\ve{r_0}$ is the position vector of the star at $t=t_0$=J2000.0 and 
-$\Delta t = t-t_0$. Here we assume that the star moves with a constant 
+$\Delta t = t-t_0$. Here it is assumed that the star moves with a constant 
 velocity $\ve{v}$. The distance is minimum when $\ve{v}\cdot \ve{r}(t)=0$, 
 which gives 
 \beq
   \Delta t_{\rm min} = -\frac{\ve{r_0}\cdot \ve{v}}{v^2} .
 \eeq
-Since we are only interested in $|\Delta t|<2\times 10^5$~years, we set 
+Since time is restricted to $|\Delta t|<2\times 10^5$~years, set 
 $\Delta t_{\rm min} =-2\times 10^5$~years if $\Delta t_{\rm min}< -2\times 10^5$~years  
 and $\Delta t_{\rm min} =2\times 10^5$~years if $\Delta t_{\rm min}> 2\times 10^5$~years. 
 Then the minimum distance in the time interval is 
@@ -1475,10 +1475,10 @@ by the special relativistic Doppler formula
 where $\beta = v/c = \sqrt{v_T^2+v_r^2}/c$. Thus, equations~(\ref{eq:vTstar}) 
 and (\ref{eq:z}) must be solved together to obtain $\ve{v}_T$ and $v_r$ 
 from the observed quantities $\ve{v^*}_T$ and $z$. Once $\ve{v}_T$ and 
-$v_r$ are computed, the true velocity $\ve{v}(t_r)$ is obtained. We will assume that 
+$v_r$ are computed, the true velocity $\ve{v}(t_r)$ is obtained. I assume that 
 $\ve{v}$ is constant, which is in general a good approximation since the time scale of 
-galactic rotation in the solar neighborhood is $10^8$ years and we are considering 
-a much shorter time span.
+galactic rotation in the solar neighborhood is $10^8$ years and is much longer 
+than the time span considered here.
 
 Suppose the apparent position at time $t_0$, $\ve{r^*}(t_0)$, and the 
 velocity $\ve{v}$ is known, the observed position at time $t=t_0+\Delta t$ 
@@ -1567,8 +1567,8 @@ in a star's position by $20.5''$ over the course of a year. The effect of
 nutation is about $9''$. The effect of diurnal aberration is smaller than $0.32''$. Polar 
 motion affects a star's position by about $0.3''$. Atmospheric refraction 
 can change a star's position by $34'$ if it is close to the horizon. 
-On our webpages, we only include the space motion, precession and atmospheric 
-refraction for plotting stars.
+On the two webpages, only the space motion, precession and atmospheric 
+refraction ae included when plotting stars.
 
 A star's ICRS position at time $t$ (neglecting light-time correction) 
 is calculated according to the equation 
@@ -1593,8 +1593,8 @@ star charts are given by equations~(\ref{eq:stereographicXg})--(\ref{eq:mollweid
 A star is represented by a filled circle with size proportional to its 
 magnitude $m(t)$.
 
-To plot a star on the local star charts, we need to compute its altitude $a$ 
-and azimuth $A$ at the given location. First, the ``of date'' equatorial 
+To plot a star on the local star charts, altitude $a$ 
+and azimuth $A$ are required at the given location. First, the ``of date'' equatorial 
 coordinates are computed by the precession matrix: $\ve{X'}(t)=\ve{P_0}(T)\ve{X}(t)$, 
 where $T$ is the TT Julian centuries of $t$ from $t_0$. The precession matrix 
 $\ve{P_0}(T)$ is calculated by equations~(20), (11), (13), Tables~4, 6 in
@@ -1649,7 +1649,7 @@ of date are computed using the precession and nutation matrix:
 $\ve{X'}=\ve{NPX}$. Here $\ve{P}$ is the precession matrix $\ve{P_0}(T)$ and 
 $\ve{N}$ is nutation matrix calculated by equation~(\ref{eq:nutationMatrix}).
 
-To compute the aberration of light, we have to calculate $\ve{v_E}=\ve{\dot{r}_E}$ 
+To compute the aberration of light, $\ve{v_E}=\ve{\dot{r}_E}$ has to be calculated 
 first. This is done by differentiating JPL's approximate formula for $\ve{r_E}$ 
 (see the next section). The resulting $\ve{v_E}$ is expressed in the ICRS rectangular 
 coordinate system. It is then transformed to the rectangular equatorial coordinate system 
@@ -1661,7 +1661,7 @@ $\ve{\beta} = \ve{N P v_E}/c$. The corrected $\alpha$ and $\delta$ are given by
 $\alpha = {\rm arg}(n'_x + i n'_y)$ and $\delta = \sin^{-1} n'_z$. These are the 
 apparent Ra and Dec of date displayed in the popup box of stars in the GCRS charts. 
 
-For the popup box in the local star charts, we also include diurnal aberration of 
+For the popup box in the local star charts, I also include diurnal aberration of 
 light by adding $\ve{NPv_E}$ to $\ve{v_{\rm spin}}$ calculated from 
 equation~(\ref{eq:vspin}). The vector $\ve{n'}$ is calculated by 
 equation~(\ref{eq:aberration}) with $\ve{\beta}=(\ve{NPv_E}+\ve{v_{\rm spin}})/c$. 
@@ -1714,7 +1714,7 @@ using the equation
 where $\ve{r}_{EM}$ is the heliocentric position of the 
 Earth-Moon barycenter and the light time is approximated by 
 $\Delta t \approx |\ve{r}(t) - \ve{r}_{EM}(t)|/c$. 
-Note that we ignore the small difference between the heliocentric position of 
+Note that I ignore the small difference between the heliocentric position of 
 the Earth-Moon barycenter and that of the Earth barycenter, which causes 
 an error of order $6.5''/(D_{\rm geo}/{\rm AU})$, where $D_{\rm geo}$ is the distance of the 
 planet/Sun from Earth's barycenter. This error is in general smaller than the accuracy 
@@ -1729,7 +1729,7 @@ the GCRS position is simply
 The effect of light-time correction is of order $v/c$, 
 where $v$ is the orbital speed of the planet around the Sun. It follows from 
 Kepler's laws that $v/c \sim 20.5''/\sqrt{a/{\rm AU}}$, where $a$ is the orbital 
-semi-major axis of the planet. We see that the light-time correction is 
+semi-major axis of the planet. The light-time correction is 
 not very big and can be ignored for plotting purpose. It is included 
 in the calculation simply because the computation of $\dot{\ve{r}}$ is 
 not expensive.
@@ -1751,7 +1751,7 @@ effects including the gravitational deflection of light
 and annual aberration of light are required to compute the apparent GCRS 
 positions of the planets. For topocentric positions, geocentric parallax, 
 diurnal aberration of light, precession, nutation, polar motion and 
-atmospheric refraction should also be included. On our webpages, we only include 
+atmospheric refraction should also be included. On the two webpages, I only include 
 the light-time correction, precession and atmospheric refraction. The geocentric 
 parallax for the Sun and planets are small enough (usually $< 10''$) to be 
 neglected for plotting purpose.
@@ -1763,8 +1763,8 @@ where $D_{\rm geo}=\sqrt{X^2+Y^2+Z^2}$ is the geocentric distance. The Sun
 and planets can now be plotted on the GCRS charts: their canvas coordinates on the
 charts are given by equations~(\ref{eq:stereographicXg})--(\ref{eq:mollweide}). 
 
-For the local star charts, we need to compute the altitude $a$
-and azimuth $A$ at the given location. First, the ``of date'' equatorial
+For the local star charts, the altitude $a$
+and azimuth $A$ are required at the given location. First, the ``of date'' equatorial
 coordinates are computed by the precession matrix: $\ve{X'}(t)=\ve{P_0}(T)\ve{X}(t)$,
 where $T$ is the TT Julian centries from J2000.0. The ``of date'' Ra and Dec
 are then calculated by $\alpha = {\rm arg}(X'+iY')$ and $\delta=\sin^{-1} (Z'/D_{\rm geo})$.
@@ -1873,8 +1873,8 @@ is required. More accurate formulae are
 {|\ve{r_E}(t_r)-\ve{r_p}(t)| |\ve{r_p}(t_r)|} ,
 \eeq
 where the retarded time $t_r$ satisfies the equation 
-$t_r=t-|\ve{r_E}(t_r)-\ve{r_p}(t)|/c$ and 
-we ignore the Sun's motion with repsect to the solar system barycenter, aberration 
+$t_r=t-|\ve{r_E}(t_r)-\ve{r_p}(t)|/c$ and I ignore 
+the Sun's motion with repsect to the solar system barycenter, aberration 
 of light and gravitational deflection of light.
 The equation for the elongation is easy to calculate. It follows 
 from 
@@ -1896,7 +1896,7 @@ and the addition formula of the cosine function that
 Accurate computation of $\phi$ is slightly more involved. 
 However, elongation and phase angle are usually not
 quantities of great interest and so they are not calculated to 
-high precision. We simply use 
+high precision. I simply use 
 equation~(\ref{eq:ElongPhaseAng}) and light-time correction is not done 
 carefully for the three distances. 
 
@@ -1993,7 +1993,7 @@ Position of the Moon is calculated based on the ELP/MPP02 series. A JavaScript
 code is created based on the source code provided by the authors on 
 \href{ftp://cyrano-se.obspm.fr/pub/2_lunar_solutions/2_elpmpp02/}{this ftp site}. 
 The JavaScript code has been tested by comparing the results with those of the 
-FORTRAN code on the ftp site. We find agreement to within 12 to 13 significant figures. 
+FORTRAN code on the ftp site. I find agreement to within 12 to 13 significant figures. 
 The deviation is most likely caused by the accumulated roundoff error. 
 
 \href{http://adsabs.harvard.edu/abs/2003A%26A...404..735C}{ELP/MPP02} \
@@ -2021,7 +2021,7 @@ parameters of the Moon and solar system planets. The functions $W(T)$ and $a_k(T
 are expressed as polynomial functions of $T$ up to and including $T^4$. 
 
 The full series involves about 36,000 terms. Since high accuracy is not 
-needed for our use, we truncate the series by the following procedure:\footnote{I 
+needed for our use, I truncate the series by the following procedure:\footnote{I 
 have created \href{https://github.com/ytliu0/ElpMpp02}{this GitHub repository} to 
 provide C++ subroutines to implement the ELP/MPP02 series, construct 
 truncated series, and generate JavaScript code to calculate the truncated series.}
@@ -2039,7 +2039,7 @@ It is clear that the smaller the parameters $A^{(U)}_{\rm th}$, $A^{(V)}_{\rm th
 and $A^{(r)}_{\rm th}$, the closer the truncated series is to the original series. 
 The parameter $\tau$ has a unit of time and is chosen to be 50~Julian centuries, 
 which is the time span covered by the ELP/MPP02 series. Two sets of truncated 
-series are created using two set of parameters. We call the two sets of 
+series are created using two set of parameters. I call the two sets of 
 truncated series ELP/MPP02L and ELP/MPP02C.
 
 ELP/MPP02L is a low-precision series, created using 
@@ -2048,7 +2048,7 @@ The resulting series consists of about 40 terms.
 The accuracy of ELP/MPP02L is estimated by comparing it with the full series. 
 Specifically, 10,000 random values of $T$ are chosen between -50 and 50. Values of 
 $U(T)$, $V(T)$, and $r(T)$ at these times are computed for both the ELP/MPP02L series and the 
-full series. We find that the maximum differences between ELP/MPP02L and ELP/MPP02 
+full series. I find that the maximum differences between ELP/MPP02L and ELP/MPP02 
 are $233''$ for $V$, $152''$ for $U$ and $352$~km for $r$. The root mean square 
 of the differences are $47''$ for $V$, $33''$ for $U$ and $86$~km for $r$. This accuracy 
 is sufficient for our plotting purpose.
@@ -2056,7 +2056,7 @@ is sufficient for our plotting purpose.
 ELP/MPP02C is created using $A^{(U)}_{\rm th}=A^{(V)}_{\rm th}=0.001''$, 
 $A^{(r)}_{\rm th}=0.1$~km, and $\tau = 50$~Julian centuries. It is used in 
 the calculation in the popup box. The resulting series consists of about 3750 terms. 
-The accuracy of ELP/MPP02C is estimated in the same way as above. We find that 
+The accuracy of ELP/MPP02C is estimated in the same way as above. I find that 
 the maximum differences between ELP/MPP02C and ELP/MPP02 over the time 
 span $|T|<50$ are $0.1''$ for $V$, $0.08''$ for $U$ and $1.9$~km for $r$. 
 The root mean square of the differences are $0.02''$ for $V$, $0.01''$ for 
@@ -2073,12 +2073,12 @@ by rotating the ecliptic coordinates by the angle $\epsilon_0=23^\circ 26' 21.40
 (obliquity of the ecliptic at J2000.0) about the $x$-axis. 
 The J2000.0 equatorial coordinates are basically the GCRS coordinates, 
 apart from the tiny difference 
-between these two systems caused by the 23-milliarcsecond offset, which we ignored. 
+between these two systems caused by the 23-milliarcsecond offset, which I ignored. 
 Light-time correction is implemented by first computing the geocentric 
 distance $r(t)$ using equation~(\ref{eq:Dmoon}). Then the retarded geocentric 
 position is calculated by $\ve{X}(t_r) = \ve{X}(t-r(t)/c)$. Light-time correction 
-shifts the Moon's position by about $1''$. Hence we ignore the light-time 
-correction when using the low-precision ELP/MPP02L series. 
+shifts the Moon's position by about $1''$. Hence the light-time 
+correction is ignored when using the low-precision ELP/MPP02L series. 
 
 \subsection{Plotting the Moon} 
 
@@ -2088,11 +2088,11 @@ and $\delta=\sin^{-1}(Z/r)$. The Moon can now be plotted
 on the GCRS charts: its canvas coordinates are given by 
 equations~(\ref{eq:stereographicXg})--(\ref{eq:mollweide}).
 
-For the local star charts, we need to compute the altitude $a$
-and azimuth $A$ at the given location. First, the ``of date'' geocentric equatorial
+For the local star charts, the altitude $a$
+and azimuth $A$ are required at the given location. First, the ``of date'' geocentric equatorial
 coordinates are computed by applying the precession matrix on $\ve{X}$. 
-Since the Moon is close to the Earth, we need to account for the geocentric 
-parallax by computing its topocentric position using 
+Since the Moon is close to the Earth, the geocentric parallax is significant, which 
+is accounted for by computing its topocentric position using 
 equations~(\ref{eq:topoX})--(\ref{eq:topoCS}). The ``of date'' topocentric Ra and Dec
 is then calculated by $\alpha_{\rm topo} = {\rm arg}(X_{\rm topo}+iY_{\rm topo})$ and 
 $\delta_{\rm topo}=\sin^{-1} (Z_{\rm topo}/D_{\rm topo})$, where 
@@ -2128,8 +2128,8 @@ as those described in Section~\ref{sec:starsPopup}.
 
 Elongation $E$ and phase angle $\phi$ can be calculated using equations similar to 
 equation~(\ref{eq:ElongPhaseAng}). However, it is easier to use 
-equation~(\ref{eq:Elong}) to calculate $E$. For $\phi$, we need to 
-compute the Moon's heliocentric position $\ve{r_M}$. As shown in 
+equation~(\ref{eq:Elong}) to calculate $E$. For $\phi$, 
+the Moon's heliocentric position $\ve{r_M}$ needs to be computed. As shown in 
 Figure~\ref{fig:SunMoonEarth}, $\ve{r_M}=\ve{r_E}+\ve{r}$, where 
 $\ve{r_E}$ is the heliocentric 
 position of the Earth and $\ve{r}$ is the geocentric position of the Moon. 
@@ -2138,7 +2138,7 @@ It follows that
   r_M^2 = |\ve{r_E}+\ve{r}|^2 = r_E^2 + 2\ve{r}\cdot \ve{r_E} + r^2 = 
 r_E^2 - 2 r r_E \cos E+r^2 = r_E^2(1-2\sigma \cos E + \sigma^2) ,
 \eeq
-where $\sigma=r/r_E$ and we have used the fact that 
+where $\sigma=r/r_E$ and I have used the fact that 
 $\ve{r}\cdot \ve{r_E}=-r r_E \cos E$. The phase angle can be written as 
 \beq
   \cos \phi = \frac{r_M^2+r^2-r_E^2}{2rr_M} = \frac{\sigma - \cos E}
@@ -2154,18 +2154,20 @@ line joining the Earth and the Sun are nearly parallel. It follows from the
 Euclidean geometry that $\phi + E = \pi$ if the two lines were parallel. Since 
 the two lines are nearly parallel, the relation is approximate.
 The difference between $\phi$ and $\pi - E$ is of 
-order $\sigma \approx 2.5\times 10^{-3}$ radians or $0.15^\circ$. This accuracy 
-is in fact adequate for our purpose since $\phi$ is only used to compute the 
-fraction of the Moon illuminated $F=(1+\cos \phi)/2$. An error of $2.5\times 10^{-3}$ 
-in $\phi$ results in the error in $F$ of order $10^{-3}$. We only display 
-$F$ to 2 decimal places in the popup box 
-and so this error is an order of magnitude smaller. In our code, however, 
-we improve the approximation $\phi=\pi-E$ by replacing $r$ by its 
-average value $384400$~km and replacing 
-$r_E$ by its average value 1~AU$=149597870$~km. Hence $\sigma=r/r_E$ is replaced 
-by $\sigma=2.57\times 10^{-3}$ and equation~(\ref{eq:ElongMoon}) can still 
-be calculated easily. This correction pushes the error in $\cos \phi$ down to order 
-$10^{-4}$.
+order $\sigma \approx 2.5\times 10^{-3}$ radians or $0.15^\circ$. 
+In the popup box, $\phi$ is computed according to equation~(\ref{eq:ElongMoon}) 
+without using the approximation. 
+
+The apparent magnitude of the Moon is calculated using the following 
+approximate formula. 
+\beq
+  m = -12.778 + 1.876 \phi - 0.55025 \phi^2 + 0.27093 \phi^3 
++ 5\log_{10} (D/384400~{\rm km}) ,
+\eeq
+where $\phi$ is the phase angle in radians and $D$ is the distance of the Moon. 
+This formula is obtained by fitting the apparent magnitude data from 
+\href{https://ssd.jpl.nasa.gov/horizons.cgi}{JPL's Horizons website}. 
+The formula fits the data to within 0.2 magnitude.
 
 \section{Rise, Set, Upper Transit and Twilight}
 
@@ -2193,7 +2195,7 @@ the rise and set times are usually calculated to an accuracy of a couple of minu
 average values of $\Delta a$, $p$ and $s$ are used. The term $\Delta a$ is usually set 
 to $34'$. For the Sun, $p \approx 8.8''$, $s\approx 16'$ and so $a_{rs}=50'$ for 
 sunrise and sunset. For the Moon, $p\approx 57'$, $s\approx 15'$ and so $a_{rs}=8'$. 
-For planets and stars, $p \ll \Delta a$ and $s \ll \Delta a$, and so we simply 
+For planets and stars, $p \ll \Delta a$ and $s \ll \Delta a$, and so I simply 
 set $a_{rs}=-34'$. 
 
 Twilight is usually divided into three phases. The beginning and ending 
@@ -2205,7 +2207,7 @@ nautical twilight ends, the sky is so dark that the horizon is no longer visible
 The beginning and ending of the {\em astronomical twilight} are the times when 
 the Sun's center is $18^\circ$ below the horizon. They mark the beginning and ending 
 of the night time. When the astronomical twilight ends, the faintest stars 
-are visible (in regions with clear sky and no light pollution). Thus, we have $a_{rs}=-6^\circ$ 
+are visible (in regions with clear sky and no light pollution). Thus, $a_{rs}=-6^\circ$ 
 for civil twilight, $a_{rs}=-12^\circ$ for nautical twilight and 
 $a_{rs}=-18^\circ$ for astronomical twilight.
 
@@ -2231,7 +2233,7 @@ It follows from equation~(\ref{eq:aAFromHdel3}) that
 \label{eq:cosH}
 \eeq
 Here $\delta$ is the ``of date'' declination of the star. 
-Since $-1 \leq \cos H \leq 1$, we have 
+Since $-1 \leq \cos H \leq 1$, 
 \beq
   -1 \leq \frac{\sin a - \sin \delta \sin \phi}{\cos \delta \cos \phi} \leq 1
 \eeq
@@ -2248,11 +2250,11 @@ which can be written as
 \beq
   \sin (|\delta + \phi| - 90^\circ) \leq \sin a \leq \sin (90^\circ - |\delta -\phi|) .
 \eeq
-Since $|\delta|\leq 90^\circ$ and $|\phi| \leq 90^\circ$, we have 
+Since $|\delta|\leq 90^\circ$ and $|\phi| \leq 90^\circ$, 
 $|\delta + \phi| - 90^\circ \in [-90^\circ, 90^\circ]$ and 
 $90^\circ - |\delta -\phi| \in [-90^\circ, 90^\circ]$. By definition, the 
 amplitude $a \in [-90^\circ, 90^\circ]$. Since sine is an increasing function 
-in $[-90^\circ, 90^\circ]$, we have 
+in $[-90^\circ, 90^\circ]$, 
 \beq
   |\delta + \phi| - 90^\circ \leq a \leq 90^\circ - |\delta -\phi| .
 \eeq
@@ -2297,7 +2299,7 @@ where $\alpha$ is the ``of date'' right ascension of the star. Over the course
 of a day, the sidereal time advances at a rate 1.00273781191135448 faster than 
 the clock time based on UTC, as indicated by equation~(\ref{eq:GMST}) (terms involving 
 $T$ are practically constant over the course of a day). To calculate the 
-rise and set times at a given time zone, we first calculate the sidereal time $t_{s0}$ 
+rise and set times at a given time zone, first calculate the sidereal time $t_{s0}$ 
 at the midnight of the given time zone by 
 \beq
   t_{s0}={\rm LMST}(D_{Um},T(D_{Um})) = {\rm GMST}(D_{Um},T(D_{Um})) + \lambda ,
@@ -2332,7 +2334,7 @@ one sidereal day is $1/1.00273781191135448~{\rm days}=23^{\rm h} 56^{\rm m}
 time occurs bewteen $0^{\rm h}$ and $0^{\rm h} 03^{\rm m} 56^{\rm s}$, there will 
 be another rise/set/upper transit occurring on the same day with 
 $h' > 24/1.00273781191135448$. This occurs only once every year for each case 
-and we ignore them.
+and I ignore them.
 
 \subsection{Sun, Moon and Planets}
 
@@ -2353,7 +2355,7 @@ The two equations should be written more clearly as follows.
 These equations explicitly indicate that the rise/set/upper transit time 
 depends on the values of $\alpha$ and $\delta$ at the rise/set/upper transit time. 
 Since $\alpha$ and $\delta$ can no longer be considered as constants over the 
-course of a day, we have the unknown rise/set/upper transit time appearing 
+course of a day, the unknown rise/set/upper transit time appears  
 on both sides of the equations. The equations may be solved iteratively. For the 
 Sun and planets, $\alpha$ and $\delta$ change slowly over the course of a day. 
 Treating them as constants will not cause an error of more than a few minutes, 
@@ -2369,7 +2371,7 @@ a given day. Another complication is that at high latitudes, the rise and set
 times of the Sun, Moon and planets are sensitive to the change in declination 
 when the object is close to being circumpolar or close to being invisible all day. 
 These two complications make the iterative procedure difficult to implement. As 
-a result, we use the algorithm described in Sections~3.7 and 3.8 of the book 
+a result, I use the algorithm described in Sections~3.7 and 3.8 of the book 
 \href{https://www.springer.com/us/book/9783540672210#}{\it Astronomy on the 
 Personal Computer} by O.~Montenbruck and T.~Pfleger, 4th edition, Springer 2000 
 (corrected fourth printing 2009) to calculate the rise, set and transit times. 
@@ -2390,7 +2392,7 @@ For $h'$ in a particular time interval, define
 \beq
   x = h'-h'_0 \ \ \ , \ \ \ y = \sin [a(h')] - \sin a_{rs} ,
 \eeq
-where $h'_0$ is the mid-point of the time interval. Thus we have $x\in [-1,1)$ 
+where $h'_0$ is the mid-point of the time interval. Thus $x\in [-1,1)$ 
 and $y=0$ at the rise and set times. 
 Next, fit a quadratic curve $y(x)=c_2 x^2+c_1x+c_0$ in the interval 
 based on the three values of $y$ at $x=-1$, 0 and 1: 
@@ -2423,7 +2425,7 @@ $h'=h'_0+x_2$. If $y(x_m)<0$. The objects sets at $h'=h'_0+x_1$, reaches
 a minimum altitude at $h'=h'_0+x_m$ and rises at $h'=h'_0+x_2$. 
 
 By going through all the 12 intervals, the rise and set times can be found. 
-For the upper transit time, the calculation is done in a similar way. We set 
+For the upper transit time, the calculation is done in a similar way. I set 
 $y = H(h')$ in this case. Care must be taken when calculating the roots of $y=0$. 
 If $\alpha(h')$ and $\delta(h')$ are constants, $y$ will be a linear function of $x$ 
 and so $c_2=0$. For the Sun and planets, $\alpha(h')$ and $\delta(h')$ 
@@ -2436,7 +2438,7 @@ Since $|c_2|\ll 1$, it is almost certain that the root close to $-c_1/c_2$
 is outside the interval $[-1,1)$. Only the root close to $-c_1/c_2$ has a chance 
 of being inside the interval $[-1,1)$. Normal celestial objects are not moving 
 fast enough for there to be two upper transits occurring in a two-hour time interval 
-and so we will never encounter Case~3. 
+and so Case~3 will never occur.
 
 The algorithm described above has been tested on stars and the times computed 
 match those calculated using equations~(\ref{eq:riseSetStars}) and 

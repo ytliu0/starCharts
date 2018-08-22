@@ -1015,10 +1015,11 @@ function displayPopupMoon(tip,para) {
     var dec = convertDM(raDec.dec*rad_to_deg, "dm");
     // illumination, phase and solar elongation
     var illumPhase = moonIlluminated(sun.ra,sun.dec,moon.ra,moon.dec, 
-                                     Lsun,Lmoon);
+                                     Lsun,Lmoon, Dmoon);
     var illum = illumPhase.illuminated.toFixed(2);
     var phase = illumPhase.phase;
     var elong = illumPhase.elongTxt;
+    var mag = illumPhase.mag.toFixed(1);
     
     var txt ="<table>";
     txt += '<tr><th colspan="2">Moon</th></tr>';
@@ -1029,6 +1030,7 @@ function displayPopupMoon(tip,para) {
         (3475/Dmoon*10800/Math.PI).toFixed(1)+"'</td></tr>";
     txt += '<tr><td>Phase</td> <td>'+phase+'</td></tr>';
     txt += '<tr><td>Illuminated</td> <td>'+illum+'</td> </tr>';
+    txt += '<tr><td>Apparent Magnitude</td> <td>'+mag+'</td> </tr>';
     txt += '<tr><td>Solar Elongation</td> <td>'+elong+'</td> </tr>';
     txt += '<tr><td>Geocentric Ra, Dec (J2000)</td> <td>'+ra2000+', '+dec2000+'</td></tr>';
     if ("nu" in para) {

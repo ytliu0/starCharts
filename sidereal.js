@@ -1651,12 +1651,13 @@ function displayPopupMoon(tip,para) {
     var alt = (hor.alt + atmosphericRefraction(hor.alt, 101, 286))*rad_to_deg;
     var azi = Math.atan2(hor.sinA,hor.cosA)*rad_to_deg + 180;
     alt = alt.toFixed(2)+"&deg;";  azi = azi.toFixed(2)+"&deg;";
-    // illumination and phase
+    // illumination, phase and apparent magnitude
     var illumPhase = moonIlluminated(sun.ra,sun.dec,topo.raTopo,topo.decTopo, 
-                                     Lsun,Lmoon);
+                                     Lsun,Lmoon, rTopo);
     var illum = illumPhase.illuminated.toFixed(2);
     var phase = illumPhase.phase;
     var elong = illumPhase.elongTxt;
+    var mag = illumPhase.mag.toFixed(1);
     // rise, transit and set
     var T0 = TD - para.hours/876600;
     var ra = [], dec = [];
@@ -1687,6 +1688,7 @@ function displayPopupMoon(tip,para) {
         (3475/rTopo*10800/Math.PI).toFixed(1)+"'</td></tr>";
     txt += '<tr><td>Phase</td> <td>'+phase+'</td></tr>';
     txt += '<tr><td>Illuminated</td> <td>'+illum+'</td> </tr>';
+    txt += '<tr><td>Apparent Magnitude</td> <td>'+mag+'</td> </tr>';
     txt += '<tr><td>Solar Elongation</td> <td>'+elong+'</td> </tr>';
     txt += '<tr><td>Geocentric Ra, Dec (J2000)</td> <td>'+geoRa2000+', '+geoDec2000+'</td></tr>';
     txt += '<tr><td>Topocentric Ra, Dec (J2000)</td> <td>'+topoRa2000+', '+topoDec2000+'</td></tr>';

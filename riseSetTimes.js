@@ -527,14 +527,16 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     // Illumination and phase
     var raSun = parray[12][0].ra, decSun = parray[12][0].dec;
     var raMoon = parray[12][1].ra, decMoon = parray[12][1].dec;
+    var Dmoon = parray[12][1].rGeo;
     var Lsun = parray[12][0].lam2000;
     var Lmoon = parray[12][1].lam2000;
-    var illumPhase = moonIlluminated(raSun,decSun,raMoon,decMoon, Lsun,Lmoon);
+    var illumPhase = moonIlluminated(raSun,decSun,raMoon,decMoon, Lsun,Lmoon, Dmoon);
     var illum = illumPhase.illuminated, phase = illumPhase.phase;
+    var mag = illumPhase.mag.toFixed(1);
     
-    txt = "<p>Fraction of Moon illuminated (at 12:00 in the given time zone): "+illum.toFixed(2)+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase: "+phase+".</p>";
-    $(locid).append(txt);
-    txt = "<p>The solar elongation is "+illumPhase.elongTxt+".</p>";
+    txt ="<p>At 12:00 in the given time zone...<br />"
+    txt += "Fraction of Moon illuminated: "+illum.toFixed(2)+",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase: "+phase+",<br />";
+    txt += "Apparent Magnitude: "+mag+",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Solar elongation: "+illumPhase.elongTxt+".</p>";
     $(locid).append(txt);
     
     // Planets
@@ -771,14 +773,14 @@ function calcRiseSetMultipleDates(input) {
             break;
             
         case "Moon":
-            txt = "<p>In the table below, the angles beside the rise and set times are the azimuths of the Moon at the rise and set times. Azimuth is measured from north and turning positive towards the east. The angle and direction beside the upper transit time is the altitute and direction of the Moon's center at transit. Atmospheric refraction is added when the altitude is above -1&deg;. Illumination gives the fraction of the Moon illuminated in the middle of the day (at 12:00 in the given time zone). Elongation is the angular distance between the Moon and the Sun (at 12:00 in the given time zone).</p>";
+            txt = "<p>In the table below, the angles beside the rise and set times are the azimuths of the Moon at the rise and set times. Azimuth is measured from north and turning positive towards the east. The angle and direction beside the upper transit time is the altitute and direction of the Moon's center at transit. Atmospheric refraction is added when the altitude is above -1&deg;. Illumination gives the fraction of the Moon illuminated. Elongation is the angular distance between the Moon and the Sun. Illumination, apparent magnitude and elongation are the values at 12:00 in the given time zone.</p>";
             $(outid).append(txt);
             txt = '<p><button onclick="download_csv(csvdata,'+"'Moon.csv')"+'">Download csv file</button></p>';
             $(outid).append(txt);
             $(outid).append('<table>')
-            txt = '<tr><th>Date</th> <th>Rise</th> <th>Transit</th> <th>Set</th> <th>Illum.</th> <th>Elong.</th> <th>Phase</th> </tr>';
+            txt = '<tr><th>Date</th> <th>Rise</th> <th>Transit</th> <th>Set</th> <th>Illum.</th> <th>Mag.</th> <th>Elong.</th> <th>Phase</th> </tr>';
             $(outid).append(txt);
-            csvdata = 'Date, Rise, Transit, Set, Illuminated, Elongation, Phase\n';
+            csvdata = 'Date, Rise, Transit, Set, Illuminated, Magnitude, Elongation, Phase\n';
             alt = 0.002327105669325773; // 8' in radians
             for (D=input.D1; D<=input.D2; D += input.deltaD) {
                 dateString = CalDat(D).dateString;
@@ -788,11 +790,14 @@ function calcRiseSetMultipleDates(input) {
                 LST0 = getLST0(d,T+dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td>';
                 csvdata += dateString+', ';
-                var lam12;
+                var lam12, Dmoon;
                 for (i=0; i<25; i++) {
                     var moon = MediumMoon(T+dT + i/24/36525);
                     ra[i] = moon.ra; dec[i] = moon.dec;
-                    if (i==12) {lam12 = moon.lam2000;}
+                    if (i==12) {
+                        lam12 = moon.lam2000;
+                        Dmoon = moon.rGeo;
+                    }
                 }
                 tt = getTransitTime(LST0,lat,ra,dec, true);
                 trs = getRiseSet(alt,LST0,lat,ra,dec);
@@ -822,12 +827,15 @@ function calcRiseSetMultipleDates(input) {
                 var raSun = sun.ra, decSun = sun.dec;
                 var raMoon = ra[12], decMoon = dec[12];
                 var illumPhase = moonIlluminated(sun.ra,sun.dec,ra[12],dec[12], 
-                                                 sun.lam2000,lam12);
+                                                 sun.lam2000,lam12,Dmoon);
                 var illum = illumPhase.illuminated.toFixed(2);
                 var phase = illumPhase.phase;
+                var mag = illumPhase.mag.toFixed(1);
                 
                 txt += '<td>'+illum+'</td>';
                 csvdata += illum + ', ';
+                txt += '<td>'+mag+'</td>';
+                csvdata += mag + ', ';
                 txt += '<td>'+illumPhase.elongTxt+'</td>';
                 csvdata += illumPhase.elongTxt + ', ';
                 txt += '<td>'+phase+'</td> </tr>';
