@@ -589,7 +589,7 @@ equinox of date.
 
 One commonly used equatorial coordinate system is based on the mean equator and 
 equinox of J2000.0. This coordinate system is essentially the same as the GCRS 
-apart from a 23-milliarcseond offset between the GCRS pole and the pole of 
+apart from a 17-milliarcseond offset between the GCRS pole and the pole of 
 the J2000.0 mean equatorial system, and a frame bias matrix is required to 
 transform from the GCRS to the J2000.0 mean equatorial system if high precision
 is required.
@@ -837,7 +837,7 @@ set $h=0$ in the actual calculation.
 While $\ve{v_{\rm spin}}$ is conveniently expressed in the coordinate system based 
 on the true equator and equinox of date, $\ve{v_E}$ is computed in 
 the ICRS coordinate system whose axes are oriented to the J2000.0 mean equator 
-and equinox (apart from the small 23-milliarcsecond offset). Thus, 
+and equinox (apart from the small 17-milliarcsecond offset). Thus, 
 components of $\ve{v_E}$ has to be 
 transformed to the coordinate system of the true equator and equinox of date 
 by the precession and nutation matrix $\ve{N P v_{\rm orb}}$ before adding 
@@ -1279,7 +1279,7 @@ curve representing the great circle on the canvas.
 
 The coordinate system is the GCRS equatorial coordinate system, which is essentially 
 the same as the J2000.0 mean equatorial coordinate system except for the 
-23-milliarcsecond offset between their poles. I treat these two systems 
+17-milliarcsecond offset between their poles. I treat these two systems 
 as identical because of the small offset. In this coordinate system, the 
 coordinates of the north pole of the ecliptic of date are $\alpha_p = \gamma-\pi/2$ 
 and $\delta_p = \pi/2 - \varphi$. The angles $\gamma$ and $\varphi$ are 
@@ -2073,7 +2073,7 @@ by rotating the ecliptic coordinates by the angle $\epsilon_0=23^\circ 26' 21.40
 (obliquity of the ecliptic at J2000.0) about the $x$-axis. 
 The J2000.0 equatorial coordinates are basically the GCRS coordinates, 
 apart from the tiny difference 
-between these two systems caused by the 23-milliarcsecond offset, which I ignored. 
+between these two systems caused by the 17-milliarcsecond offset, which I ignored. 
 Light-time correction is implemented by first computing the geocentric 
 distance $r(t)$ using equation~(\ref{eq:Dmoon}). Then the retarded geocentric 
 position is calculated by $\ve{X}(t_r) = \ve{X}(t-r(t)/c)$. Light-time correction 
