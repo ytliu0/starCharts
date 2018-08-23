@@ -2159,15 +2159,16 @@ In the popup box, $\phi$ is computed according to equation~(\ref{eq:ElongMoon})
 without using the approximation. 
 
 The apparent magnitude of the Moon is calculated using the following 
-approximate formula. 
+approximate formula:
 \beq
-  m = -12.784 + 1.874 \phi - 0.5449 \phi^2 + 0.2698 \phi^3 
+  m = -12.72 + 0.026 \phi + 4\times 10^{-9} \phi^4 
 + 5\log_{10}\left( \frac{r}{384400~{\rm km}}\cdot \frac{r_M}{1~{\rm AU}}\right) ,
 \eeq
-where $\phi$ is the phase angle in radians. 
+where $\phi$ is the phase angle in degrees. 
 This formula is obtained by fitting the apparent magnitude data from 
 \href{https://ssd.jpl.nasa.gov/horizons.cgi}{JPL's Horizons website}. 
-The formula fits the data to within 0.1 magnitude.
+The formula fits the data to the accuracy displayed on their website. 
+It is therefore very likely that this is the formula used by their website.
 
 \section{Rise, Set, Upper Transit and Twilight}
 

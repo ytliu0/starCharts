@@ -818,8 +818,8 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam,
     var illum = 0.5*(1+cosi);
     
     // apparent magnitude
-    var i = Math.acos(cosi);
-    var mag = -12.784 + 1.874*i - 0.5449*i*i + 0.2698*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon*dMS*Dsun/384400.0);
+    var i = Math.acos(cosi)*180.0/Math.PI;
+    var mag = -12.72 + 0.026*i + 4.e-9*i*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon*dMS*Dsun/384400.0);
     
     // phase 
     // waxing or waning?
