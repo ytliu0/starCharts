@@ -2175,21 +2175,20 @@ without using the approximation.
 The apparent magnitude of the Moon is calculated using the following 
 approximate formula:
 \beq
-  m = -12.72 + 0.026 \phi + 4\times 10^{-9} \phi^4 
+  m = -12.73 + 0.026 \phi + 4\times 10^{-9} \phi^4 
 + 5\log_{10}\left( \frac{r}{384400~{\rm km}}\cdot \frac{r_M}{1~{\rm AU}}\right) ,
 \eeq
-where $\phi$ is the phase angle in degrees. 
-This formula is obtained by fitting the apparent magnitude data from 
-\href{https://ssd.jpl.nasa.gov/horizons.cgi}{JPL's Horizons website}. 
-The formula fits the data to the accuracy displayed on their website. 
-It is therefore very likely that this is the formula used by their website. 
-This formula might come from {\it Astrophysical Quantities} by Allen (1976). 
-The reference appeared on 
-\href{https://astronomy.stackexchange.com/questions/10246/is-there-a-simple-analytical-formula-for-the-lunar-phase-brightness-curve}
-{Astronomy.stackexchange.com} but I haven't verified it. 
+where $\phi$ is the phase angle in degrees. This formula appears in 
+\href{http://dust.ess.uci.edu/ppr/ppr_Sch93.pdf}{\it Astronomy and the 
+Limits of Vision} by B.E.~Schaefer, Vistas in Astronomy, 36, 311 (1993). 
+It appears that this formula is used by 
+\href{https://ssd.jpl.nasa.gov/horizons.cgi}{JPL's Horizons website} 
+since their data closely match the formula.
 The JPL website states that when the phase angle $< 7^\circ$ (within $\sim$ one 
 day of full Moon), computed magnitude tends to be about 0.12 too small. That is, 
-the formula does not account for opposition surge. It also does not account for 
+the formula does not account for 
+\href{https://en.wikipedia.org/wiki/Opposition_surge}{opposition surge}. 
+It also does not account for 
 the decrease in brightness when lunar eclipses occur.
 
 \section{Rise, Set, Upper Transit and Twilight}
