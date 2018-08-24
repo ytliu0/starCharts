@@ -1602,6 +1602,8 @@ function displayPopupMoon(tip,para) {
     var cosLat = Math.cos(para.lat);
     var sinLat = Math.sin(para.lat);
     // Geocentric ra and dec 
+    // Note that both light-time and annual aberration of light 
+    // are included
     var geoRa2000 = convertDM(moon.ra2000*rad_to_hr, "hm");
     var geoDec2000 = convertDM(moon.dec2000*rad_to_deg, "dm");
     // Geocentric -> Topocentric
@@ -1619,12 +1621,23 @@ function displayPopupMoon(tip,para) {
                                 moon.ra,moon.dec, 
                                 para.LST,sinLat,cosLat);
     }
-    // Correct for aberration of light
+    // Correct for diurnal aberration of light
     var aber = {ra:topo.raTopo, dec:topo.decTopo};
     if ("nu" in para) {
-        var aberpara = {T:TD, m:para.nu, LAST:para.LAST, 
-                        cosLat:cosLat, sinLat:sinLat};
-        aber = aberration(topo.raTopo, topo.decTopo, aberpara);
+        var omega = 7.292115855264215e-5; // Earth's spin ang. velocity
+        // Earth's equatorial spin speed / c
+        var a = omega*6378.1366/299792.458; 
+        // (1-f)^2, where f = 1/298.25642 
+        var f1_f2 = 0.9933056020041341;
+        var aC_cosLat = cosLat * a/Math.sqrt(cosLat*cosLat + f1_f2*sinLat*sinLat);
+        var betax = -aC_cosLat*Math.sin(para.LAST);
+        var betay = aC_cosLat*Math.cos(para.LAST);
+        var x = Math.cos(aber.ra)*Math.cos(aber.dec) + betax;
+        var y = Math.sin(aber.ra)*Math.cos(aber.dec) + betay;
+        var z = Math.sin(aber.dec);
+        var norm = Math.sqrt(x*x + y*y + z*z);
+        aber.ra = Math.atan2(y,x); 
+        aber.dec = Math.asin(z/norm)
     }
     var topoRa = convertDM(aber.ra*rad_to_hr, "hm");
     var topoDec = convertDM(aber.dec*rad_to_deg, "dm");

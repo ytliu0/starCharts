@@ -43,7 +43,7 @@ of location~1: {\tt tz1.tz} is the time zone offset in minutes, i.e.\ the differ
 between the local time and UT (positive if the local time is behind UT and 
 negative if the local time is ahead of UT); {\tt tz1.tzString} stores the 
 string ``GMT$\pm$hhmm'', where $\pm$hhmm provides the time zone information. 
-Currently, {\tt tz1} set according to the information obtained from the computer clock. 
+Currently, {\tt tz1} is set according to the information obtained from the computer clock. 
 The variables {\tt place2}, {\tt long2}, {\tt lat2}, and {\tt tz2} 
 store the corresponding information for location~2. 
 
@@ -2074,10 +2074,18 @@ by rotating the ecliptic coordinates by the angle $\epsilon_0=23^\circ 26' 21.40
 The J2000.0 equatorial coordinates are basically the GCRS coordinates, 
 apart from the tiny difference 
 between these two systems caused by the 17-milliarcsecond offset, which I ignored. 
-Light-time correction is implemented by first computing the geocentric 
-distance $r(t)$ using equation~(\ref{eq:Dmoon}). Then the retarded geocentric 
-position is calculated by $\ve{X}(t_r) = \ve{X}(t-r(t)/c)$. Light-time correction 
-shifts the Moon's position by about $1''$. Hence the light-time 
+Light-time correction and aberration of light is implemented by first computing 
+the geocentric distance $r(t)$ using equation~(\ref{eq:Dmoon}). Then the retarded 
+geocentric position is calculated by $\ve{X}(t_r) = \ve{X}(t-r(t)/c)$. Note that 
+the retarded geocentric position includes both the light-time correction and 
+aberration of light since $\ve{X}(t_r) = \ve{r_M}(t_r)-\ve{r_E}(t_r)$, 
+where $\ve{r_M}$ and $\ve{r_E}$ are the barycentric position of the Moon and 
+Earth, respectively. Light-time corrected geocentric position is 
+$\ve{r_M}(t_r)-\ve{r_E}(t)$, and $\ve{r_M}(t_r)-\ve{r_E}(t_r)$ includes 
+both light-time correction and annual aberration to first order in $v/c$ 
+(see Section~7.2.3.5 of \expl). The combined effect is called 
+{\em planetary aberration}. Planetary aberration shifts the Moon's position 
+by about $1''$. Hence the 
 correction is ignored when using the low-precision ELP/MPP02L series. 
 
 \subsection{Plotting the Moon} 
@@ -2108,15 +2116,21 @@ given by equation~(\ref{eq:stereographicHor}).
 \subsection{Popup Box}
 
 In the popup box, the Moon's position is calculated using the higher precision 
-ELP/MPP02C and with light-time correction. Geocentric position, topocentric 
+ELP/MPP02C and with planetary aberration corrected. Geocentric position, topocentric 
 position, altitude and azimuth are computed in the same way as described above when 
 the time is outside the interval 3000~BC--3000~AD. For times within the interval 
 3000~BC--3000~AD, the J2000.0 positions
-include only the light-time correction and geocentric parallax (for topocentric
+include only the planetary aberration and geocentric parallax (for topocentric
 position). The apparent ``of date'' position, as well as altitude and azimuth,
-includes light-time correction,
-precession, nutation and aberration of light. The calculations are the same
-as those described in Section~\ref{sec:starsPopup}.
+includes planetary aberration, precession, nutation and diurnal aberration of light. 
+The calculations of precession and nutation are the same
+as those described in Section~\ref{sec:starsPopup}. For diurnal aberration, 
+the vector $\ve{n'}$ is calculated by
+equation~(\ref{eq:aberration}) with $\ve{n}=\ve{X'}/|\ve{X'}|$, 
+$\ve{X'}=\ve{X}(t_r)-\ve{X_L}$, and $\ve{\beta}=\ve{v_{\rm spin}}/c$. 
+The geocentric position vector $\ve{X}_L$ of the location is calculated by
+equations~(\ref{eq:XL}) and (\ref{eq:topoCS}). The spin velocity 
+$\ve{v_{\rm spin}}/c$ is calculated by equation~(\ref{eq:vspin}).
 
 \begin{figure}[h]
 \begin{center}
@@ -2169,6 +2183,10 @@ This formula is obtained by fitting the apparent magnitude data from
 \href{https://ssd.jpl.nasa.gov/horizons.cgi}{JPL's Horizons website}. 
 The formula fits the data to the accuracy displayed on their website. 
 It is therefore very likely that this is the formula used by their website. 
+This formula might come from {\it Astrophysical Quantities} by Allen (1976). 
+The reference appeared on 
+\href{https://astronomy.stackexchange.com/questions/10246/is-there-a-simple-analytical-formula-for-the-lunar-phase-brightness-curve}
+{Astronomy.stackexchange.com} but I haven't verified it. 
 The JPL website states that when the phase angle $< 7^\circ$ (within $\sim$ one 
 day of full Moon), computed magnitude tends to be about 0.12 too small. That is, 
 the formula does not account for opposition surge. It also does not account for 
