@@ -5,6 +5,7 @@ var date1, date2; // dates and times of the two locations
 var place1,place2; // names of the locations
 var long1,long2;  // longitudes of the locations (in deg)
 var lat1,lat2; // latitudes of the locations (in deg)
+var rotate1 = 0, rotate2 = 0; // rotationion angles (in rad) of charts 1 and 2
 // timezone variables associated with the locations
 // tz1.tz: timezone offset in minutes from GMT (west is positive)
 // tz1.tz1String: the timezone offset string
@@ -137,6 +138,8 @@ function init_cont() {
     highPrecCalInTips = true;
     $("#loc1").on("click", function(event) {displayPopup(event, 1);});
     $("#loc2").on("click", function(event) {displayPopup(event, 2);});
+    $("#rotate1").val(rotate1*180/Math.PI);
+    $("#rotate2").val(rotate1*180/Math.PI);
     
     starChart();
 }
@@ -389,6 +392,32 @@ function showHide(loc,name) {
     starChartLoc(loc);
 }
 
+// *** Rotate the chart **
+function rotInput(loc) {
+    var locStr = loc.toString();
+    var inputId = '#rotate'+locStr;
+    var errid = "#errRotate"+locStr;
+    $(errid).empty();
+    var x = parseInt($(inputId).val());
+    var message = "Invalid input! Please enter an integer.";
+    $(inputId).css("background-color", "transparent");
+    if (isNaN(x)) {
+        $(inputId).css("background-color", "#e2a8a8");
+        var text = '<p style="color:red;">'+message+'</p>';
+        $(errid).append(text);
+    }
+    if ($(errid).text()=="") {
+        x = x - 360*Math.floor(x/360)
+        $(inputId).val(x);
+        if (loc==1) { 
+            rotate1 = x*Math.PI/180.0;
+        } else {
+            rotate2 = x*Math.PI/180.0;
+        }
+        starChartLoc(loc);
+    }
+}
+
 // Calculate the mean Greenwich sidereal time in hours 
 function getGMST(d) {
     // Get Julian date at midnight GMST
@@ -507,6 +536,10 @@ function starChartLoc(loc) {
     // Set up paramaters for drawing stars and planets
     var pDraw = setupDrawingParameters();
     pDraw.loc = loc;
+    pDraw.rotate = rotate1;
+    if (loc==2) { pDraw.rotate = rotate2;}
+    pDraw.cosRotAng = Math.cos(pDraw.rotate);
+    pDraw.sinRotAng = Math.sin(pDraw.rotate);
     var objects = {milky:{}};
     pDraw.showPlanets = $("#showPlanets"+locStr).hasClass("active");
     pDraw.showEquator = $("#showEquator"+locStr).hasClass("active");
@@ -618,17 +651,12 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
    Ctx.fill();
    Ctx.strokeStyle = "black";
    Ctx.stroke();
-   // Indicate the 4 cardinal directions
-   Ctx.font="20px Arial";
-   Ctx.fillStyle = "black";
-   Ctx.fillText("N", xc-5, 15);
-   Ctx.fillText("S", xc-5, Canvas.height);
-   Ctx.fillText("E", 0, yc+5);
-   Ctx.fillText("W", Canvas.width-18, yc+5);
     
    // Canvas parameters
    var gpara = {halfPI:halfPI, xc:xc, yc:yc, r:r, r2:r*r, 
-                altSun:altSun};
+                altSun:altSun, rotate:pDraw.rotate, 
+               cosRotAng:pDraw.cosRotAng, 
+               sinRotAng:pDraw.sinRotAng};
     
    drawAzimuthLabels(Ctx,gpara);
     
@@ -761,41 +789,52 @@ function drawAzimuthLabels(Ctx,gpara) {
     var dA = 10; // increament of azimuth in degrees
     var n = 360/dA; 
     var dArad = dA*Math.PI/180;
+    var rotateDeg = gpara.rotate*180.0/Math.PI;
     Ctx.font="15px Arial";
     Ctx.txtAlign = "center";
-    for (var i=1; i<n; i++) {
-        var Adeg = i*dA;
-        if (i*dA != 90 && i*dA != 90 && i*dA != 180 && i*dA != 270) {
-            var A = i*dArad;
-            var cosA = Math.cos(A), sinA = Math.sin(A);
-            var x1 = gpara.xc - gpara.r*sinA;
-            var y1 = gpara.yc - gpara.r*cosA;
-            var x2 = gpara.xc - 1.02*gpara.r*sinA;
-            var y2 = gpara.yc - 1.02*gpara.r*cosA;
-            var x3,y3;
-            if (Adeg < 90 || Adeg >270) {
-                x3 = gpara.xc - 1.03*gpara.r*sinA;
-                y3 = gpara.yc - 1.03*gpara.r*cosA;
-            } else {
-                x3 = gpara.xc - 1.06*gpara.r*sinA;
-                y3 = gpara.yc - 1.06*gpara.r*cosA;
-            }
-            Ctx.beginPath();
-            Ctx.moveTo(x1,y1);
-            Ctx.lineTo(x2,y2);
-            Ctx.stroke();
-            var txt = Adeg.toString()+String.fromCharCode(176);
-            Ctx.save();
-            Ctx.translate(x3,y3);
-            if (Adeg < 90 || Adeg >270) {
-                Ctx.rotate(-A);
-            } else {
-                Ctx.rotate(Math.PI-A);
-            }
-            var w = Ctx.measureText(txt).width;
-            Ctx.fillText(txt,-w*0.5,0);
-            Ctx.restore();
+    Ctx.fillStyle = "black";
+    for (var i=0; i<n; i++) {
+        var Adeg = i*dA - rotateDeg;
+        Adeg -= 360*Math.floor(Adeg/360);
+        var A = i*dArad - gpara.rotate;
+        var cosA = Math.cos(A), sinA = Math.sin(A);
+        var x1 = gpara.xc - gpara.r*sinA;
+        var y1 = gpara.yc - gpara.r*cosA;
+        var x2 = gpara.xc - 1.02*gpara.r*sinA;
+        var y2 = gpara.yc - 1.02*gpara.r*cosA;
+        var x3,y3;
+        if (Adeg < 90 || Adeg >270) {
+            x3 = gpara.xc - 1.03*gpara.r*sinA;
+            y3 = gpara.yc - 1.03*gpara.r*cosA;
+        } else {
+            x3 = gpara.xc - 1.06*gpara.r*sinA;
+            y3 = gpara.yc - 1.06*gpara.r*cosA;
         }
+        Ctx.beginPath();
+        Ctx.moveTo(x1,y1);
+        Ctx.lineTo(x2,y2);
+        Ctx.stroke();
+        var Achar = i*dA;
+        var txt = Achar+String.fromCharCode(176);
+        if (Achar==0) {
+            txt = "N";
+        } else if (Achar==90) {
+            txt = "E";
+        } else if (Achar==180) {
+            txt = "S";
+        } else if (Achar==270) {
+            txt = "W";
+        }
+        Ctx.save();
+        Ctx.translate(x3,y3);
+        if (Adeg < 90 || Adeg >270) {
+            Ctx.rotate(-A);
+        } else {
+            Ctx.rotate(Math.PI-A);
+        }
+        var w = Ctx.measureText(txt).width;
+        Ctx.fillText(txt,-w*0.5,0);
+        Ctx.restore();
     }
     // Restore default
     Ctx.txtAlign = "start";
@@ -846,8 +885,11 @@ function ra_dec_to_xy_above(raDec, LST, cosLat,sinLat, gpara) {
     var alt = sinDec*sinLat + cosLat*cosDec*cosHA;
     alt = Math.asin(alt);
     var cosAlt = Math.cos(alt);
-    var sA = cosDec*sinHA/cosAlt;
-    var cA = (cosDec*cosHA*sinLat - sinDec*cosLat)/cosAlt;
+    var sinA = cosDec*sinHA/cosAlt;
+    var cosA = (cosDec*cosHA*sinLat - sinDec*cosLat)/cosAlt;
+    // Rotate the chart by angle pDraw.rotate
+    var sA = sinA*gpara.cosRotAng - cosA*gpara.sinRotAng;
+    var cA = cosA*gpara.cosRotAng + sinA*gpara.sinRotAng;
     if (Math.abs(cosAlt) < 1e-10) {
         // the object is at the zenith or nadir
         sA = 0; cA = 1;
@@ -879,8 +921,11 @@ function ra_dec_to_xy(raDec, LST, cosLat,sinLat, gpara) {
     var alt = sinDec*sinLat + cosLat*cosDec*cosHA;
     alt = Math.asin(alt);
     var cosAlt = Math.cos(alt);
-    var sA = cosDec*sinHA/cosAlt;
-    var cA = (cosDec*cosHA*sinLat - sinDec*cosLat)/cosAlt;
+    var sinA = cosDec*sinHA/cosAlt;
+    var cosA = (cosDec*cosHA*sinLat - sinDec*cosLat)/cosAlt;
+    // Rotate the chart by angle pDraw.rotate
+    var sA = sinA*gpara.cosRotAng - cosA*gpara.sinRotAng;
+    var cA = cosA*gpara.cosRotAng + sinA*gpara.sinRotAng;
     if (Math.abs(cosAlt) < 1e-10) {
         // the object is at the zenith or nadir
         sA = 0; cA = 1;
@@ -995,7 +1040,10 @@ function drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara) {
         Ctx.setLineDash(pole.linestyle);
         // Point V
         sinA = Vy; cosA = Vx;
-        var x = gpara.xc + gpara.r*sinA, y = gpara.yc + gpara.r*cosA;
+        // Rotate the chart by gpara.rotate
+        var sA = sinA*gpara.cosRotAng - cosA*gpara.sinRotAng;
+        var cA = cosA*gpara.cosRotAng + sinA*gpara.sinRotAng;
+        var x = gpara.xc + gpara.r*sA, y = gpara.yc + gpara.r*cA;
         Ctx.moveTo(x,y); 
         for (var i=1; i<n; i++) {
             var theta = i*dtheta;
@@ -1009,16 +1057,22 @@ function drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara) {
                 Ctx.lineTo(gpara.xc,gpara.yc);
             } else {
                 cosA = Cx/pom; sinA = Cy/pom; 
+                // Rotate the chart by gpara.rotate
+                sA = sinA*gpara.cosRotAng - cosA*gpara.sinRotAng;
+                cA = cosA*gpara.cosRotAng + sinA*gpara.sinRotAng;
                 var alt = Math.asin(Cz);
                 var rc = gpara.r*Math.tan(0.5*(gpara.halfPI-alt));
-                var x = gpara.xc + rc*sinA;
-                var y = gpara.yc + rc*cosA;
+                var x = gpara.xc + rc*sA;
+                var y = gpara.yc + rc*cA;
                 Ctx.lineTo(x,y);
             }
         }
         // Point -V
         sinA = -Vy; cosA = -Vx;
-        x = gpara.xc + gpara.r*sinA; y = gpara.yc + gpara.r*cosA;
+        // Rotate the chart by gpara.rotate
+        sA = sinA*gpara.cosRotAng - cosA*gpara.sinRotAng;
+        cA = cosA*gpara.cosRotAng + sinA*gpara.sinRotAng;
+        x = gpara.xc + gpara.r*sA; y = gpara.yc + gpara.r*cA;
         Ctx.lineTo(x,y);
         Ctx.strokeStyle = pole.color;
         Ctx.stroke();
