@@ -181,8 +181,8 @@ $E_e$ is given by equation~(3.5) in \expl. I only consider the dominant term:
   E_e = \Delta \psi \cos \epsilon_A ,
 \label{eq:Ee}
 \eeq
-where $\Delta \psi$ is the nutation in longitude and $\epsilon_A$ is the obliquity 
-of the mean ecliptic. The expressions for $\Delta \psi$ and $\epsilon_A$ are given 
+where $\Delta \psi$ is the nutation in longitude and $\epsilon_A$ is the mean obliquity 
+of the ecliptic. The expressions for $\Delta \psi$ and $\epsilon_A$ are given 
 by equations~(\ref{eq:Dpsi}) and (\ref{eq:epsA}) in Section~\ref{sec:nutation}. 
 The error in $E_e$ in omitting other terms in equation (3.5) of the book is 
 less than $0.003''$.
@@ -670,8 +670,8 @@ of \expl):
   N_{33} &=& \cos \Delta \psi \sin \epsilon \sin \epsilon_A + \cos \epsilon \cos \epsilon_A ,
 \nonumber
 \eeqn
-where $\epsilon_A$ is the obliquity of the mean ecliptic of date and $\epsilon$ is the 
-obliquity of the true ecliptic of date. They are given by the equations 
+where $\epsilon_A$ is the mean obliquity of the ecliptic of date and $\epsilon$ is the 
+true obliquity of the ecliptic of date. They are given by the equations 
 \beqn
   \epsilon_A &=& 84381.''406 - 46.''836769 T - 0.''0001831 T^2 + 0.''00200340 T^3 \cr
 && - 0.''000000576 T^4 - 0.''0000000434 T^5 \label{eq:epsA} \\
@@ -727,7 +727,7 @@ So only precession is included in the calculation.
 
 The Ra and Dec of the ecliptic north pole associated with the ``of date'' mean 
 equatorial coordinates are $\alpha = -\pi/2$ and $\delta = \pi/2 - \epsilon_A$, 
-where $\epsilon_A$ is the obliquity of the mean ecliptic of date. The value 
+where $\epsilon_A$ is the mean obliquity of the ecliptic of date. The value 
 of $\epsilon_A$ is calculated by equation~(10) and Table~3 in 
 \href{https://ui.adsabs.harvard.edu/abs/2011A%26A...534A..22V/abstract}{Vond\'rak,
 Capitaine and Wallace}. The formula applies over a much longer time span than the expression 
@@ -1226,7 +1226,7 @@ north pole.
 
 The ``of date'' declination of the celestial north pole is $\delta=\pi/2$. 
 The ``of date'' Ra and Dec of the ecliptic north pole are $\alpha_p=-\pi/2$ and 
-$\delta_p = \pi/2-\epsilon_A$, where the obliquity of the ecliptic of date 
+$\delta_p = \pi/2-\epsilon_A$, where the mean obliquity of the ecliptic of date 
 is computed by equation~(10) and Table~3 in
 \href{https://ui.adsabs.harvard.edu/abs/2011A%26A...534A..22V/abstract}{Vond\'rak,
 Capitaine and Wallace}. 
@@ -2078,12 +2078,12 @@ the error of the apparent position caused by our ignoring the effect of
 polar motion.
 
 Once $U$, $V$ and $r$ are computed, rectangular components of the geocentric 
-position of the Moon with respect to the mean ecliptic and equinox of J2000.0 
+position of the Moon with respect to the ecliptic and mean equinox of J2000.0 
 are obtained by taking into account precession and transformation from spherical 
 to Cartesian coordinates. The procedure is described in the pdf document on the ftp site. 
 Equatorial coordinates of J2000.0 mean equator and equinox are then computed 
 by rotating the ecliptic coordinates by the angle $\epsilon_0=23^\circ 26' 21.406''$ 
-(obliquity of the ecliptic at J2000.0) about the $x$-axis. 
+(mean obliquity of the ecliptic at J2000.0) about the $x$-axis. 
 The J2000.0 equatorial coordinates are basically the GCRS coordinates, 
 apart from the tiny difference 
 between these two systems caused by the 17-milliarcsecond offset, which I ignored. 
