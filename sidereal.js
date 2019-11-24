@@ -431,11 +431,11 @@ function getGMST(d) {
     GMST += 6.697374558336001 + 1.00273781191135448*H;
     GMST -= 24*Math.floor(GMST/24);
     var T = d.T + d.dT;
-//    GMST += -2.686296296296296e-07 +T*(0.08541030618518518 
+//    GMST += 2.686296296296296e-07 +T*(0.08541030618518518 
 //                                       + T*(2.577003148148148e-05 
 //                                           + T*(-8.148148148148149e-12 - 
 //                                               T*5.547407407407407e-10)));
-    GMST += -2.686296296296296e-07 +T*(0.08541030618518518 
+    GMST += 2.686296296296296e-07 +T*(0.08541030618518518 
                                        + T*2.577003148148148e-05);
     GMST -= 24*Math.floor(GMST/24);
     return GMST;
@@ -1481,7 +1481,7 @@ function displayPopup(e, loc) {
         var TD = d.T+d.dT;
         if (TD > -50 && TD < 10) {
             para.nu = nutation(TD);
-            para.LAST = para.LST + para.nu.Ee;
+            para.LAST = para.LST - para.nu.Ee;
         }
         
         if (tip.object=="star") {
