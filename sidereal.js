@@ -1481,7 +1481,7 @@ function displayPopup(e, loc) {
         var TD = d.T+d.dT;
         if (TD > -50 && TD < 10) {
             para.nu = nutation(TD);
-            para.LAST = para.LST - para.nu.Ee;
+            para.LAST = para.LST + para.nu.Ee;
         }
         
         if (tip.object=="star") {
