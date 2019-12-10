@@ -1696,7 +1696,7 @@ precession, nutation and aberration of light are used to compute $a$ and $A$.
 Specifically, the hour angle is computed using $H=t_s-\alpha$, where $t_s$ 
 is the local apparent sidereal time calculated from 
 $t_s={\rm GAST}+\lambda$. The Greenwich apparent sidereal time is calculated 
-using ${\rm GAST = GMST} - E_e$, with GMST computed from equation~(\ref{eq:GMST}) 
+using ${\rm GAST = GMST} + E_e$, with GMST computed from equation~(\ref{eq:GMST}) 
 and $E_e$ computed from equations~(\ref{eq:Ee}), (\ref{eq:Dpsi}) and (\ref{eq:epsA}). 
 Next $a$ and $A$ are computed using
 equations~(\ref{eq:aAFromHdel1})--(\ref{eq:aAFromHdel3}). Then the altitude
@@ -2459,7 +2459,7 @@ $y_+>0$; it is setting if $y_->0$ and $y_+<0$.
 $x_2>x_1$. Then rising and setting both occur in this time interval and the extremum 
 $x_m=(x_1+x_2)/2$ is also inside this interval. If $y(x_m) > 0$, the object rises 
 at $h'=h'_0+x_1$, reaches a maximum altitude at $h'=h'_0+x_m$ and sets at 
-$h'=h'_0+x_2$. If $y(x_m)<0$. The objects sets at $h'=h'_0+x_1$, reaches 
+$h'=h'_0+x_2$. If $y(x_m)<0$, the object sets at $h'=h'_0+x_1$, reaches 
 a minimum altitude at $h'=h'_0+x_m$ and rises at $h'=h'_0+x_2$. 
 
 By going through all the 12 intervals, the rise and set times can be found. 
