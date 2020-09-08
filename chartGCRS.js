@@ -155,7 +155,7 @@ function starCharts() {
     var deg_to_rad = Math.PI/180;
     var raCentralNorth = $("#rotateNorth").val()*deg_to_rad;
     var raCentral = $("#raCentral").val()*hr_to_rad;
-    var raCentralSouth = -$("#rotateSouth").val()*deg_to_rad;
+    var raCentralSouth = $("#rotateSouth").val()*deg_to_rad;
     // Set up paramaters for drawing stars and planets
     var pDraw = setupDrawingParameters();
     addLegend(pDraw);
