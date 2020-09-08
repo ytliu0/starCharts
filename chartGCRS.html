@@ -41,21 +41,21 @@
 
 <h1>Star Charts in Geocentric Equatoral Coordinate System</h1>
     
-<p>Time: <span id="timeNorth"></span>, northern hemisphere. Rotate the chart counterclockwisely by 
-<select id="rotateNorth">
-    <option value="0" selected onclick="starCharts()">0&deg;</option>
-    <option value="30" onclick="starCharts()">30&deg;</option>
-    <option value="60" onclick="starCharts()">60&deg;</option>
-    <option value="90" onclick="starCharts()">90&deg;</option>
-    <option value="120" onclick="starCharts()">120&deg;</option>
-    <option value="150" onclick="starCharts()">150&deg;</option>
-    <option value="180" onclick="starCharts()">180&deg;</option>
-    <option value="210" onclick="starCharts()">210&deg;</option>
-    <option value="240" onclick="starCharts()">240&deg;</option>
-    <option value="270" onclick="starCharts()">270&deg;</option>
-    <option value="300" onclick="starCharts()">300&deg;</option>
-    <option value="330" onclick="starCharts()">330&deg;</option>
-</select>.
+<p>Time: <span id="timeNorth"></span>, northern hemisphere. RA at the top: 
+<select id="rotateNorth" onclick="starCharts()">
+    <option value="270">0h</option>
+    <option value="300">2h</option>
+    <option value="330">4h</option>
+    <option value="0" selected>6h</option>
+    <option value="30">8h</option>
+    <option value="60">10h</option>
+    <option value="90">12h</option>
+    <option value="120">14h</option>
+    <option value="150">16h</option>
+    <option value="180">18h</option>
+    <option value="210">20h</option>
+    <option value="240">22h</option>
+</select>
     </p>
     
 <div class="warning"></div>
@@ -81,19 +81,19 @@
     
     <br />
 <p>Time: <span id="timeCentral"></span>, whole sky. The Ra at the center is 
-   <select id="raCentral">
-    <option value="0" selected onclick="starCharts()">0<sup>h</sup></option>
-    <option value="2" onclick="starCharts()">2<sup>h</sup></option>
-    <option value="4" onclick="starCharts()">4<sup>h</sup></option>
-    <option value="6" onclick="starCharts()">6<sup>h</sup></option>
-    <option value="8" onclick="starCharts()">8<sup>h</sup></option>
-    <option value="10" onclick="starCharts()">10<sup>h</sup></option>
-    <option value="12" onclick="starCharts()">12<sup>h</sup></option>
-    <option value="14" onclick="starCharts()">14<sup>h</sup></option>
-    <option value="16" onclick="starCharts()">16<sup>h</sup></option>
-    <option value="18" onclick="starCharts()">18<sup>h</sup></option>
-    <option value="20" onclick="starCharts()">20<sup>h</sup></option>
-    <option value="22" onclick="starCharts()">22<sup>h</sup></option>
+   <select id="raCentral" onclick="starCharts()">
+    <option value="0" selected>0<sup>h</sup></option>
+    <option value="2">2<sup>h</sup></option>
+    <option value="4">4<sup>h</sup></option>
+    <option value="6">6<sup>h</sup></option>
+    <option value="8">8<sup>h</sup></option>
+    <option value="10">10<sup>h</sup></option>
+    <option value="12">12<sup>h</sup></option>
+    <option value="14">14<sup>h</sup></option>
+    <option value="16">16<sup>h</sup></option>
+    <option value="18">18<sup>h</sup></option>
+    <option value="20">20<sup>h</sup></option>
+    <option value="22">22<sup>h</sup></option>
 </select> (GCRS).</p>
     
 <div class="warning"></div>
@@ -118,21 +118,21 @@
 <div id="animateDisplayCentral" class="input"></div>
 
     <br />
-<p>Time: <span id="timeSouth"></span>, southern hemisphere. Rotate the chart counterclockwisely by 
-<select id="rotateSouth">
-    <option value="0" selected onclick="starCharts()">0&deg;</option>
-    <option value="30" onclick="starCharts()">30&deg;</option>
-    <option value="60" onclick="starCharts()">60&deg;</option>
-    <option value="90" onclick="starCharts()">90&deg;</option>
-    <option value="120" onclick="starCharts()">120&deg;</option>
-    <option value="150" onclick="starCharts()">150&deg;</option>
-    <option value="180" onclick="starCharts()">180&deg;</option>
-    <option value="210" onclick="starCharts()">210&deg;</option>
-    <option value="240" onclick="starCharts()">240&deg;</option>
-    <option value="270" onclick="starCharts()">270&deg;</option>
-    <option value="300" onclick="starCharts()">300&deg;</option>
-    <option value="330" onclick="starCharts()">330&deg;</option>
-</select>.</p>
+<p>Time: <span id="timeSouth"></span>, southern hemisphere. RA at the top: 
+<select id="rotateSouth" onclick="starCharts()">
+    <option value="270">0h</option>
+    <option value="300">2h</option>
+    <option value="330">4h</option>
+    <option value="0" selected>6h</option>
+    <option value="30">8h</option>
+    <option value="60">10h</option>
+    <option value="90">12h</option>
+    <option value="120">14h</option>
+    <option value="150">16h</option>
+    <option value="180">18h</option>
+    <option value="210">20h</option>
+    <option value="240">22h</option>
+</select></p>
     
 <div class="warning"></div>
     
@@ -184,7 +184,7 @@
     
 <p>Unlike the local star charts, the animation buttons apply to all 3 charts. When an animation plays, all 3 charts will be updated.</p>
     
-<p>Stars in the charts can be clicked and a popup box will appear. The popup box shows further information about the star. When the time is between 3000 BC and 3000 AD, positions of the stars with respect to J2000.0 mean equator and equinox are corrected for proper motion and annual parallax. The apparent position with respect to the true equator and equinox of date are corrected for precession, nutation, and <a href="https://en.wikipedia.org/wiki/Aberration_of_light" target="_blank">aberration of light</a> in addition to proper motion and parallax. Outside the time interval 3000 BC - 3000 AD, only proper motion is included in the J2000.0 position and only precession and proper motion are included in the "of date" position. The constellation a star is in refers to the epoch J2000.0. In the distant past and distant future, some nearby stars are seen to move far away from their present constellations, but the constellation information is not updated.</p>
+<p>Stars in the charts can be clicked and a popup box will appear. The popup box shows further information about the star. When the time is between 3000 BC and 3000 AD, positions of the stars with respect to J2000.0 mean equator and equinox are corrected for proper motion and annual parallax. The apparent position with respect to the true equator and equinox of date are corrected for precession, nutation, and <a href="https://en.wikipedia.org/wiki/Aberration_of_light" target="_blank">aberration of light</a> in addition to proper motion and parallax. Outside the time interval 3000 BC - 3000 AD, only proper motion is included in the J2000.0 position and only precession and proper motion are included in the "of date" position. In the distant past and distant future, some nearby stars are seen to move far away from their present constellations. In that case, two constellations are given. The first one has "(2000)" added to it, indicating the present constellation. The second constellation has "(year number)" added to it, indicating the constellation in that particular year. The constellation is determined by the constellation boundaries established by the Belgian astronomer Eug&egrave;ne Delporte in 1930 on behalf of the International Astronomical Union (IAU).</p>
     
 <p>Sun, Moon and planets are displayed on the charts by symbols indicated above. They can also be clicked and a popup box will appear. In the popup box, the term "elongation" is the angular separation of the planet and the Sun as seen from Earth; "heliocentric" refers to quantities measured from the Sun's center; "geocentric" refers to quantities measured from Earth's center.</p>
     

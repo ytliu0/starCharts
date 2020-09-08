@@ -949,6 +949,8 @@ function displayPopupSun(tip,para) {
     }
     // ra and dec wrt GCRS
     var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(sun.ra2000, sun.dec2000)];
     var ra2000 = convertDM(sun.ra2000*rad_to_hr, "hm");
     var dec2000 = convertDM(sun.dec2000*rad_to_deg, "dm");
     // ra and dec of date
@@ -977,6 +979,7 @@ function displayPopupSun(tip,para) {
     } else {
         txt += '<tr><td>Ra, Dec (of date)</td> <td>'+ra+', '+dec+'</td></tr>';
     }
+    txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
 
     $(para.tipId+"Text").append(txt);
 }
@@ -1003,6 +1006,8 @@ function displayPopupMoon(tip,para) {
     }
     var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
     // Geocentric ra and dec wrt J2000
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(moon.ra2000, moon.dec2000)];
     var ra2000 = convertDM(moon.ra2000*rad_to_hr, "hm");
     var dec2000 = convertDM(moon.dec2000*rad_to_deg, "dm");
     // Geocentric ra and dec of date
@@ -1040,6 +1045,7 @@ function displayPopupMoon(tip,para) {
     } else {
         txt += '<tr><td>Geocentric Ra, Dec (of date)</td> <td>'+ra+', '+dec+'</td></tr>';
     }
+    txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
 
     $(para.tipId+"Text").append(txt);
 }
@@ -1065,6 +1071,8 @@ function displayPopupPlanet(tip,para) {
     var rHelio = planet.rHelio, rGeo = planet.rGeo;
     // ra and dec wrt J2000
     var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(planet.ra2000, planet.dec2000)];
     var ra2000 = convertDM(planet.ra2000*rad_to_hr, "hm");
     var dec2000 = convertDM(planet.dec2000*rad_to_deg, "dm");
     // ra and dec of date
@@ -1112,6 +1120,7 @@ function displayPopupPlanet(tip,para) {
     } else {
         txt += '<tr><td>Ra, Dec (of date)</td> <td>'+ra+', '+dec+'</td></tr>';
     }
+    txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     
     $(para.tipId+"Text").append(txt);
 }
@@ -1144,8 +1153,15 @@ function displayPopupStar(tip, para) {
     }
     // ra and dec wrt J2000.0 (after correcting for proper motion)
     var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
-    var ra2000 = convertDM(Math.atan2(y,x)*rad_to_hr, "hm");
-    var dec2000 = convertDM(Math.asin(z/distpc)*rad_to_deg, "dm");
+    var ra2000r = Math.atan2(y,x), dec2000r = Math.asin(z/distpc);
+    var ra2000 = convertDM(ra2000r*rad_to_hr, "hm");
+    var dec2000 = convertDM(dec2000r*rad_to_deg, "dm");
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(ra2000r, dec2000r)];
+    var conste2000 = conNames[s.con];
+    if (conste != conste2000) {
+        conste = conste2000 + ' (2000), '+conste+' ('+date.yyyy+')';
+    }
     // precession
     var p = precession_matrix(T0,dcen);
     var x1 = p.p11*x + p.p12*y + p.p13*z;
@@ -1206,8 +1222,7 @@ function displayPopupStar(tip, para) {
         }
         txt += '</td></tr>';
     }
-    var conNames = constellationAbbrNames();
-    txt += '<tr><td>Constellation</td> <td>'+conNames[s.con]+'</td></tr>';
+    txt += '<tr><td>Constellation</td> <td>'+conste+'</td></tr>';
     
     txt += "<tr><td>Ra, Dec (J2000)</td> <td>"+ra2000+", "+dec2000+"</td></tr>";
     if ("nu" in para) {

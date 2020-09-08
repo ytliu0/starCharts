@@ -1562,6 +1562,8 @@ function displayPopupSun(tip,para) {
     } else {
         raDec = precessed_ra_dec(topo.raTopo,topo.decTopo,p);
     }
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(raDec.ra, raDec.dec)];
     var ra2000Topo = convertDM(raDec.ra*rad_to_hr, "hm");
     var dec2000Topo = convertDM(raDec.dec*rad_to_deg, "dm");
     // Angular diameter at 1 AU (arcmin)
@@ -1621,6 +1623,7 @@ function displayPopupSun(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
+    txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
     txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
@@ -1711,6 +1714,8 @@ function displayPopupMoon(tip,para) {
     } else {
         raDec = precessed_ra_dec(topo.raTopo,topo.decTopo,p);
     }
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(raDec.ra, raDec.dec)];
     var topoRa2000 = convertDM(raDec.ra*rad_to_hr,"hm");
     var topoDec2000 = convertDM(raDec.dec*rad_to_deg,"dm"); 
     // Alt and Azimuth
@@ -1767,6 +1772,7 @@ function displayPopupMoon(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+topoRa+', '+topoDec+'</td></tr>';
     }
+    txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azimuth)</td> <td>'+Rise+'</td></tr>';
     txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
@@ -1839,6 +1845,8 @@ function displayPopupPlanet(tip,para) {
     } else {
         raDec = precessed_ra_dec(topo.raTopo,topo.decTopo,p);
     }
+    var conNames = constellationAbbrNames();
+    var conste = conNames[get_constellation(raDec.ra, raDec.dec)];
     var ra2000Topo = convertDM(raDec.ra*rad_to_hr, "hm");
     var dec2000Topo = convertDM(raDec.dec*rad_to_deg, "dm");
     // Elongation and fraction of planet illuminated
@@ -1901,6 +1909,7 @@ function displayPopupPlanet(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
+    txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
     txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
@@ -1938,8 +1947,17 @@ function displayPopupStar(tip, para) {
 
     // ra and dec wrt J2000.0 (after correcting for proper motion)
     var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
-    var ra2000 = convertDM(Math.atan2(y,x)*rad_to_hr, "hm");
-    var dec2000 = convertDM(Math.asin(z/distpc)*rad_to_deg, "dm");
+    var ra2000r = Math.atan2(y,x), dec2000r = Math.asin(z/distpc);
+    var ra2000 = convertDM(ra2000r*rad_to_hr, "hm");
+    var dec2000 = convertDM(dec2000r*rad_to_deg, "dm");
+    var conNames = constellationAbbrNames();
+    //var conste = conNames[s.con];
+    var conste = conNames[get_constellation(ra2000r,dec2000r)];
+    var conste2000 = conNames[s.con];
+    if (conste != conste2000) {
+        conste = conste2000+' (2000), '+conste+' (';
+        conste += (para.loc==1 ? date1.yyyy:date2.yyyy)+')';
+    }
     // precession and nutation
     var p = precession_matrix(T0,dcen);
     var LST = para.LST;
@@ -2017,8 +2035,7 @@ function displayPopupStar(tip, para) {
         }
         txt += '</td></tr>';
     }
-    var conNames = constellationAbbrNames();
-    txt += '<tr><td>Constellation</td> <td>'+conNames[s.con]+'</td></tr>';
+    txt += '<tr><td>Constellation</td> <td>'+conste+'</td></tr>';
     txt += "<tr><td>Ra, Dec (J2000)</td> <td>"+ra2000+", "+dec2000+"</td></tr>";
     if ("nu" in para) {
         txt += '<tr><td>App. Ra, Dec (of date)</td> <td>'+raStr+', '+decStr+'</td></tr>';

@@ -379,8 +379,9 @@ function RSMultipleDays(form) {
     }
 }
 
-function riseSetShowHideRADec(show,Class) {
+function riseSetShowHideRADec(Class) {
     var classj = "."+Class;
+    var show = $("#objects").val()=='Star';
     if (show) {
        $(classj).show();
     } else {
@@ -942,6 +943,7 @@ function calcRiseSetMultipleDates(input) {
             for (D=input.D1; D<=input.D2; D += input.deltaD) {
                 dateString = CalDat(D).dateString;
                 T = T1 + count*deltaT;
+                dT = DeltaT(T);
                 var d = D - input.tz/24;
                 LST0 = getLST0(d,T+dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td> ';
