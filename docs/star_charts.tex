@@ -680,7 +680,7 @@ true obliquity of the ecliptic of date. They are given by the equations
 where $T$ is the TT Julian centuries from J2000.0. The nutation in longitude $\Delta \psi$ 
 and nutation in obliquity $\Delta \epsilon$ are each expressed by a sum over 1000 terms. 
 The full formulae 
-are given by equations~(5.15)--(5.19) of \kaplan with amplitudes and coefficients listed on 
+are given by equations~(5.15)--(5.19) of \kaplan{} with amplitudes and coefficients listed on 
 pages 88--103. Since high precision is not required, I only keep terms with 
 amplitudes greater than $0.05''$ for $|T| < 50$. Specifically, I use the following formulae 
 for $\Delta \psi$ and $\Delta \epsilon$. 
@@ -713,6 +713,16 @@ The expressions are taken from \href{https://ui.adsabs.harvard.edu/abs/1994A%26A
 {Simon et al.\ (1994)}, which recommends the optimal use in the time span between 
 4000~BC and 8000~AD. On the two webpages, nutation is implemented in the time span 
 between 3000~BC and 3000~AD ($-50 < T < 10$).
+
+By comparing the truncated expression in~(\ref{eq:Dpsi}) with the full
+expression (containing 1000+ terms) for $10^5$ times randomly selected from -3000 and 3000, 
+I find that the maximum error in~(\ref{eq:Dpsi})
+is $0.17''$ and the rms error is $0.044''$.  Similarly, by comparing the truncated
+expression in~(\ref{eq:Deps}) with the full expression
+for $10^5$ times randomly selected from -3000 and 3000, 
+I find the maximum error in~(\ref{eq:Deps}) is about $0.11''$ and
+the rms error is $0.032''$. This level of accuracy is more than sufficient 
+for our purpose.
 
 \subsection{Ecliptic North Pole}
 
@@ -2451,7 +2461,7 @@ based on the three values of $y$ at $x=-1$, 0 and 1:
 \eeq
 Values of $c_0$, $c_1$, and $c_2$ are easily solved to give 
 \beq
-  c_2 = (y_+ + y_0)/2 - y_0 \ \ , \ \ c_1 = (y_+ - y_-)/2  \ \ , \ \  c_0=y_0 .
+  c_2 = (y_+ + y_-)/2 - y_0 \ \ , \ \ c_1 = (y_+ - y_-)/2  \ \ , \ \  c_0=y_0 .
 \eeq
 The quadratic equation $y(x)=0$ has roots if $c_1^2-4c_0c_2 \geq 0$ and the 
 roots are given by $x_{\pm}=(-c_1\pm \sqrt{c_1^2-4c_0c_2})/(2c_2)$.
