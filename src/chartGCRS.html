@@ -5,24 +5,24 @@
 
 <head>
 <title>Equatorial Star Charts</title>
-<link rel="stylesheet" href="sidereal.css">
-<script src="jquery-3.3.1.min.js"></script>
-<script src="brightStars_min.js"></script>
-<script src="milkyWay_min.js"></script>
-<script src="precession_min.js"></script>
-<script src="SunMoonPlanets_min.js"></script>
-<script src="dateAndTime_min.js"></script>
-<script src="chartGCRS_min.js"></script>
-<script src="MoonElpMpp02DE_min.js"></script> 
-<script src="Mercury_min.js"></script> 
-<script src="Venus_min.js"></script> 
-<script src="Earth_min.js"></script> 
-<script src="Mars_min.js"></script> 
-<script src="Jupiter_min.js"></script> 
-<script src="Saturn_min.js"></script> 
-<script src="Uranus_min.js"></script> 
-<script src="Neptune_min.js"></script> 
-<script src="planetPosVSOP87_min.js"></script> 
+<link rel="stylesheet" href="../sidereal.css">
+<script src="../jquery-3.3.1.min.js"></script>
+<script src="brightStars.js"></script>
+<script src="milkyWay.js"></script>
+<script src="precession.js"></script>
+<script src="SunMoonPlanets.js"></script>
+<script src="dateAndTime.js"></script>
+<script src="chartGCRS.js"></script>
+<script src="MoonElpMpp02DE.js"></script> 
+<script src="Mercury.js"></script> 
+<script src="Venus.js"></script> 
+<script src="Earth.js"></script> 
+<script src="Mars.js"></script> 
+<script src="Jupiter.js"></script> 
+<script src="Saturn.js"></script> 
+<script src="Uranus.js"></script> 
+<script src="Neptune.js"></script> 
+<script src="planetPosVSOP87.js"></script> 
 </head>
 
 <body onload="init()">
@@ -30,7 +30,7 @@
 
 <br /> 
 <div id="starCharts">
-<p><button class="menu" onclick="location.href='index.html'">Local Star Chart</button>
+<p><button class="menu" onclick="location.href='sidereal.html'">Local Star Chart</button>
     <button class="menu" onclick="displayChangeTime()">Date and Time</button>
 </p>
 <br />
@@ -81,7 +81,7 @@
     
     <br />
 <p>Time: <span id="timeCentral"></span>, whole sky. The Ra at the center is 
-    <select id="raCentral" onclick="starCharts()">
+   <select id="raCentral" onclick="starCharts()">
     <option value="0" selected>0<sup>h</sup></option>
     <option value="2">2<sup>h</sup></option>
     <option value="4">4<sup>h</sup></option>

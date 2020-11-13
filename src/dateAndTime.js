@@ -102,20 +102,17 @@ function CalDatNegativeJD(jd) {
 
 // Compute Delta T: difference between Terrestrial time and UT.
 // Use the fitting formulas given on 
-// https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html
+// http://eclipsewise.com/help/deltatpoly2014.html
 // returned Delta T is in century
 function DeltaT(T) {
     var y = T*100 + 2000;
     var u,u2,u3,u4,u5,u6,u7, DT;
-    if (y > 2150) {
-        u = 0.01*(y-1820);
-        DT = -20 + 32*u*u;
-    } else if (y > 2050) {
-        u = 0.01*(y-1820);
-        DT = -20 + 32*u*u - 0.5628*(2150 - y);
+    if (y > 2015) {
+        u = y-2015;
+        DT = 67.62 + 0.3645*u + 0.0039755*u*u;
     } else if (y > 2005) {
-        u = y-2000;
-        DT = 62.92 + 0.32217*u + 0.005589*u*u;
+        u = y-2005;
+        DT = 64.69 + 0.2930*u;
     } else if (y > 1986) {
         u = y-2000; u2 = u*u; u3 = u2*u;
         u4 = u2*u2; u5 = u2*u3;

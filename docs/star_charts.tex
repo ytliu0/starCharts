@@ -372,27 +372,29 @@ present epoch. Hereafter, TT and TDB will be used interchangeably.
 \section{Delta T}
 \label{sec:DeltaT}
 
-$\Delta T$ is defined to be the difference between TT and UT:
+$\Delta T$ is defined to be the difference between TT and UT1:
 \beq
-  \Delta T = {\rm TT - UT} ,
+  \Delta T = {\rm TT - UT1} ,
 \label{def:DeltaT}
 \eeq
-where UT can be UT1 (before 1962) or UTC (in and after 1962). Since 
-${\rm UTC = TAI} - \Delta ({\rm AT})$ and ${\rm TT = TAI + 32.184~s}$, 
+Since ${\rm UTC = TAI} - \Delta ({\rm AT})$ and ${\rm TT = TAI + 32.184~s}$, 
 \beq
   {\rm TT - UTC = 32.184~s} + \Delta ({\rm AT}) ,
 \eeq
 where $\Delta ({\rm AT})=10{\rm s}+$ total number of leap seconds added to UTC since 1972. 
+Computer's clocks are mostly based on UTC plus an offset.
+The difference between UTC and UT1 is ignored here. 
+It should be noted that almost all computations involving
+the Sun, Moon, planets and stars are based on TT. The only exception is
+computing the sidereal time, in which there is a term linear in UT1 by
+definition.
 
-\href{https://eclipse.gsfc.nasa.gov/LEcat5/deltat.html}{Past values of $\Delta T$} 
+\href{http://eclipsewise.com/help/deltat.html}{Past values of $\Delta T$} 
 can be deduced from historical records. Analytic expressions for $\Delta T$ 
 have been derived to fit the data. On our webpages, the value of 
-$\Delta T$ is computed using the analytic expressions by 
-\href{https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html}{Espenak and Meeus} 
-to convert UT to TT. It should be noted that almost all computations involving 
-the Sun, Moon, planets and stars are based on TT. The only exception is 
-computing the sidereal time, in which there is a term linear in UT1 by 
-definition.
+$\Delta T$ is computed using the polynomial expressions from Espenak's 
+\href{http://eclipsewise.com/help/deltatpoly2014.html}{EclipseWise.com} 
+to convert UT1 to TT. 
 
 \section{Calendars}
 
@@ -405,6 +407,8 @@ However, it should be noted that only Italy, Spain and Portugal adopted
 the new calendar on this date. Over the next three centuries, the Protestant 
 and Eastern Orthodox countries also adopted the new calendar, with Greece 
 being the last European country to adopt the calendar in 1923. 
+\href{https://en.wikipedia.org/wiki/Proleptic_Julian_calendar}{Proleptic Julian calendar} 
+is used for years before AD 8.
 
 Conversion between Julian date and calendar date is implemented by the algorithm 
 in Section~2.2 of the book \href{https://www.springer.com/us/book/9783540672210#}
