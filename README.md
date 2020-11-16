@@ -10,8 +10,8 @@ All calculations are done using JavaScript. The physics and mathematics involved
 
 ## Files:
 
-- src/sidereal.html: HTML page for the local star charts. This should be used for code development. 
-- src/chartGCRS.html: HTML page for the equatorial star charts. This should be used for code development. Use chartGCRS_min.html to optimize performance.
+- index.html: HTML page for the local star charts. 
+- chartGCRS.html: HTML page for the equatorial star charts.
 - Constellations.html: HTML page showing a table of the names and abbreviations of the 88 constellations.
 - sidereal.css: style file for both sidereal.html and chartGCRS.html
 - src/sidereal.js: javascript functions for sidereal.html.
@@ -28,7 +28,9 @@ All calculations are done using JavaScript. The physics and mathematics involved
 - src/planetPosVSOP87.js: contains a function that computes the geocentric position of the Sun and planets with light-time correction. The calculation is based on the heliocentric positions of VSOP87A
 - src/MoonElpMpp02DE.js: javascript functions that calculate the position of the Moon based on ELP/MPP02 series. This is a truncated version containing only 3750 terms.
 - MoonElpMpp02DEUnabridged.js: javascript functions that calculate the position of the Moon based on ELP/MPP02 series. This is the unabridged version (not used).
-- *_min.js: minified version of the .js files.
+- core_min.js: combine dateAndTime.js, brightStars.js, milkyWay.js, precession.js and SunMoonPlanets.js
+sseph_min.js: combine MoonElpMpp02DE.js, Mercury.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js and planetPosVSOP87.js
+sidereal_min.js: combine sidereal.js, animation.js and riseSetTimes.js
 - index.html: same as src/sidereal.html but calls the minified js files.
 - chartGCRS.html: same as src/chartGCRS.html but calls the minified js files.
 - docs/star_charts.pdf: pdf document describes the physics and mathematics involved in the calculations on the two webpages.
