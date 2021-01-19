@@ -1,6 +1,6 @@
 # Star Charts
 
-This package contains two HTML pages [local star charts](https://ytliu0.github.io/starCharts/) and [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS_min.html). 
+This package contains two HTML pages [local star charts](https://ytliu0.github.io/starCharts/) and [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS.html). 
 
 The [local star charts](https://ytliu0.github.io/starCharts/) webpage uses the computer's clock to obtain the current local time and then uses it to calculate the local sidereal times and plot star charts on two locations. 
 
@@ -13,26 +13,11 @@ All calculations are done using JavaScript. The physics and mathematics involved
 - index.html: HTML page for the local star charts. 
 - chartGCRS.html: HTML page for the equatorial star charts.
 - Constellations.html: HTML page showing a table of the names and abbreviations of the 88 constellations.
+- src: folder that contains the javascript functions used by the webpages. See the README file in that folder for more detailed information.
 - sidereal.css: style file for both sidereal.html and chartGCRS.html
-- src/sidereal.js: javascript functions for sidereal.html.
-- src/animation.js: javascript functions for handling animations in sidereal.html.
-- src/riseSetTimes.js: javascript functions for calculating the rise, set and upper transit times (used by sidereal.html).
-- src/chartGCRS.js: javascript functions for chartGCRS.html
-- src/brightStars.js: contains data (in JSON) for stars, constellation lines and labels.
-- src/milkyWay.js: contains data (in JSON) for the Milky Way boundary.
-- src/dateAndTime.js: javascript functions used by both sidereal.html and chartGCRS.html. Mostly functions involving Delta T, converting bewteen calendar and Julian date, and other utilities. 
-- src/precession.js: javascript functions for precession and nutation.
-- src/SunMoonPlanets.js: javascript functions for computing the positions of the Sun, Moon, and planets using JPL's formulae and truncated ELP/MPP02 series. It also contains functions that calculate the planet's elongation, phase angle, fraction illuminated, and apparent magnitude. There is a function that calculates the aberration of light. 
-- src/Mercuey.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js: javascript functions that calculate the heliocentric positions of Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune by VSOP87A.
-- src/Sun.js: javascript functions that calculate the barycentric position of the Sun by VSOP87E (not used).
-- src/planetPosVSOP87.js: contains a function that computes the geocentric position of the Sun and planets with light-time correction. The calculation is based on the heliocentric positions of VSOP87A
-- src/MoonElpMpp02DE.js: javascript functions that calculate the position of the Moon based on ELP/MPP02 series. This is a truncated version containing only 3750 terms.
-- MoonElpMpp02DEUnabridged.js: javascript functions that calculate the position of the Moon based on ELP/MPP02 series. This is the unabridged version (not used).
-- core_min.js: combine dateAndTime.js, brightStars.js, milkyWay.js, precession.js and SunMoonPlanets.js
-sseph_min.js: combine MoonElpMpp02DE.js, Mercury.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js and planetPosVSOP87.js
-sidereal_min.js: combine sidereal.js, animation.js and riseSetTimes.js
-- index.html: same as src/sidereal.html but calls the minified js files.
-- chartGCRS.html: same as src/chartGCRS.html but calls the minified js files.
+- core_min.js: combine dateAndTime.js, brightStars.js, milkyWay.js, precession.js and SunMoonPlanets.js in the src folder
+- sseph_min.js: combine MoonElpMpp02DE.js, Mercury.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js and planetPosVSOP87.js in the src folder
+- sidereal_min.js: combine sidereal.js, animation.js and riseSetTimes.js in the src folder
 - docs/star_charts.pdf: pdf document describes the physics and mathematics involved in the calculations on the two webpages.
 - docs/star_charts.tex: LaTeX file for docs/star_charts.pdf.
 - docs/*.jpg: jpg files of the figures in docs/star_charts.pdf.

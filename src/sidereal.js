@@ -88,11 +88,6 @@ function init_cont() {
     lat2 = -30;
     if (lat1 < 0) {lat2 = 30;}
     tz2 = {tz:tz1.tz, tzString:tz1.tzString};
-    // *** Hong Kong ***
-//    place2 = "Hong Kong";
-//    long2 = 114.109497;
-//    lat2 = 22.396428;
-//    tz2 = {tz:-480, tzString:"+0800"};
     
     // Set up the object date1 
     var yyyy = d.getFullYear();
