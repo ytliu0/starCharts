@@ -408,7 +408,8 @@ the new calendar on this date. Over the next three centuries, the Protestant
 and Eastern Orthodox countries also adopted the new calendar, with Greece 
 being the last European country to adopt the calendar in 1923. 
 \href{https://en.wikipedia.org/wiki/Proleptic_Julian_calendar}{Proleptic Julian calendar} 
-is used for years before AD 8.
+is used for years before 8 CE (CE = \href{https://en.wikipedia.org/wiki/Common_Era}{common 
+era}).
 
 Conversion between Julian date and calendar date is implemented by the algorithm 
 in Section~2.2 of the book \href{https://www.springer.com/us/book/9783540672210#}
@@ -715,16 +716,16 @@ five angles are given by equation~(5.19) of \kaplan:
 \eeqn
 The expressions are taken from \href{https://ui.adsabs.harvard.edu/abs/1994A%26A...282..663S/abstract}
 {Simon et al.\ (1994)}, which recommends the optimal use in the time span between 
-4000~BC and 8000~AD. On the two webpages, nutation is implemented in the time span 
-between 3000~BC and 3000~AD ($-50 < T < 10$).
+4000~BCE and 8000~CE. On the two webpages, nutation is implemented in the time span 
+between 3000~BCE and 3000~CE ($-50 < T < 10$).
 
 By comparing the truncated expression in~(\ref{eq:Dpsi}) with the full
 expression (containing 1000+ terms) for $10^5$ times randomly selected 
-between 3000~BC and 3000~AD, 
+between 3000~BCE and 3000~CE, 
 I find that the maximum error in~(\ref{eq:Dpsi})
 is $0.17''$ and the rms error is $0.044''$.  Similarly, by comparing the truncated
 expression in~(\ref{eq:Deps}) with the full expression
-for $10^5$ times randomly selected between 3000~BC and 3000~AD, 
+for $10^5$ times randomly selected between 3000~BCE and 3000~CE, 
 I find the maximum error in~(\ref{eq:Deps}) is about $0.11''$ and
 the rms error is $0.032''$. This level of accuracy is more than sufficient 
 for our purpose.
@@ -1669,12 +1670,12 @@ two constellations are given. The first one has ``(2000)'' added to it,
 indicating the present constellation the star is in. The second constellation has 
 ``(year number)'' added to it, indicating the constellation in that particular year.
 
-When the time is between 3000~BC and 3000~AD, the position of a star 
+When the time is between 3000~BCE and 3000~CE, the position of a star 
 with respect to the J2000.0 mean equator and equinox are corrected for 
 proper motion and annual parallax. The apparent position with respect 
 to the true equator and equinox of date are corrected for precession, 
 nutation, and aberration of light in addition to proper motion and 
-parallax. Outside the time interval 3000~BC -- 3000~AD, only proper 
+parallax. Outside the time interval 3000~BCE -- 3000~CE, only proper 
 motion is included in the J2000.0 position and only precession and 
 proper motion are included in the ``of date'' position. 
 
@@ -1711,14 +1712,14 @@ annual and diurnal aberration of light.
 The computation of stellar parallax requires $\ve{r_E}$ and the computation 
 of stellar aberration requires $\ve{v_E}$. Both vectors are calculated based on 
 JPL's approximate formula, which is accurate only in the time interval between 
-3000~BC and 3000~AD. The formulae for the nutation matrix $\ve{N}$ also 
+3000~BCE and 3000~CE. The formulae for the nutation matrix $\ve{N}$ also 
 become inaccurate far away from this interval. That is why nutation, stellar parallax 
 and aberration are not computed outside this time interval even in the popup box.
 
 In the local star charts, altitude $a$ and azimuth $A$ in the popup box are 
 calculated in the exact same way as in the previous subsection if the time 
-is outside the interval 3000~BC and 3000~AD. When the time is between 3000~BC 
-and 3000~AD, a star's apparent Ra and Dec corrected for space motion, parallax, 
+is outside the interval 3000~BCE and 3000~CE. When the time is between 3000~BCE 
+and 3000~CE, a star's apparent Ra and Dec corrected for space motion, parallax, 
 precession, nutation and aberration of light are used to compute $a$ and $A$. 
 Specifically, the hour angle is computed using $H=t_s-\alpha$, where $t_s$ 
 is the local apparent sidereal time calculated from 
@@ -1779,8 +1780,8 @@ The accuracy of the JPL formulae is stated on
 of \expl). This accuracy is more than enough for plotting the Sun and planets 
 on the star charts 
 on our webpages. However, it should be noted that 
-the JPL formulae are only accurate in the time interval between 3000~BC and 
-3000~AD. Beyond these times, positions of the Sun and planets will be off, and 
+the JPL formulae are only accurate in the time interval between 3000~BCE and 
+3000~CE. Beyond these times, positions of the Sun and planets will be off, and 
 the Sun can be seen to go off the ecliptic for times well beyond the interval.
 
 \subsection{Plotting the Sun and Planets}
@@ -1859,7 +1860,7 @@ position of the Sun is simply calculated by $\ve{X_{\odot}}(t)=-\ve{r}_E(t)$. Li
 correction is ignored since the motion of the Sun with respect to the solar system 
 barycenter is very small.
 
-For times outside the interval 3000~BC--3000~AD, 
+For times outside the interval 3000~BCE--3000~CE, 
 GCRS Ra and Dec are computed from $\ve{X}(t)$. The ``of date'' geocentric Ra and Dec are 
 computed by applying the precession matrix on $\ve{X}(t)$. 
 The topocentric coordinates of a planet are computed using 
@@ -1868,8 +1869,8 @@ is included in the topocentric Ra and Dec. The ``of date'' topocentric
 Ra and Dec are obtained by precessing the J2000.0 topocentric Ra and Dec.
 Nutation, polar motion, aberration of light 
 and gravitational deflection of light are not included in the computation of 
-positions of the Sun and planets outside the interval 3000~BC--3000~AD. 
-For times within the interval 3000~BC--3000~AD, the J2000.0 positions 
+positions of the Sun and planets outside the interval 3000~BCE--3000~CE. 
+For times within the interval 3000~BCE--3000~CE, the J2000.0 positions 
 include only the light-time correction and geocentric parallax (for topocentric 
 position). The apparent ``of date'' position, as well as altitude and azimuth, 
 includes light-time correction, 
@@ -2042,7 +2043,7 @@ parameters in the model that are fitted to either the lunar
 laser ranging (LLR) data or fitted to JPL's DE405/DE406 ephemerides. 
 Parameters fitted to DE405/DE406 are used on our webpages. The deviation between 
 the positions in ELP/MPP02 and DE405/406 is less than $3.5''$ in ecliptic longitude 
-and $0.8''$ in ecliptic latitude over the time span from 3000~BC to 3000~AD. 
+and $0.8''$ in ecliptic latitude over the time span from 3000~BCE to 3000~CE. 
 
 The full ELP/MPP02 series can be written in the form 
 \beqn
@@ -2158,8 +2159,8 @@ given by equation~(\ref{eq:stereographicHor}).
 In the popup box, the Moon's position is calculated using the higher precision 
 ELP/MPP02C and with planetary aberration corrected. Geocentric position, topocentric 
 position, altitude and azimuth are computed in the same way as described above when 
-the time is outside the interval 3000~BC--3000~AD. For times within the interval 
-3000~BC--3000~AD, the J2000.0 positions
+the time is outside the interval 3000~BCE--3000~CE. For times within the interval 
+3000~BCE--3000~CE, the J2000.0 positions
 include only the planetary aberration and geocentric parallax (for topocentric
 position). The apparent ``of date'' position, as well as altitude and azimuth,
 includes planetary aberration, precession, nutation and diurnal aberration of light. 
@@ -2258,7 +2259,7 @@ object. The atmospheric refraction term $\Delta a$ varies depending on the
 local conditions. For the Sun and Moon, $p$ and $s$ also vary slightly. Since 
 the rise and set times are usually calculated to an accuracy of a couple of minutes, 
 average values of $\Delta a$, $p$ and $s$ are used. The term $\Delta a$ is usually set 
-to $34'$. For the Sun, $p \approx 8.8''$, $s\approx 16'$ and so $a_{rs}=50'$ for 
+to $34'$. For the Sun, $p \approx 8.8''$, $s\approx 16'$ and so $a_{rs}=-50'$ for 
 sunrise and sunset. For the Moon, $p\approx 57'$, $s\approx 15'$ and so $a_{rs}=8'$. 
 For planets and stars, $p \ll \Delta a$ and $s \ll \Delta a$, and so I simply 
 set $a_{rs}=-34'$. 
