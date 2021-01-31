@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<meta name="keywords" content="constellations" />
+<meta charset="UTF-8" />
+<head>
+<link rel="stylesheet" href="sidereal.css">
+<script src="cities.js"></script> 
+<style>
+input.accordion {
+    display: none;
+}
+
+label.accordion {
+    display: block;    
+    margin: 0 0 1em 0;
+    cursor: pointer;
+    background: #F5F5F5;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+    
+label.accordion:before {
+     content: '\2795';
+     font-size: 20px;
+     color: #777;
+     font-weight: bold;
+     margin-left: 0.5em;
+     float: right;
+}
+
+label.accordion:hover {
+    background: #E0E0E0;
+}
+
+.content {
+    background: white;
+    padding: 10px 25px;
+    border: 1px solid #E0E0E0;
+    margin: 0 0 1px 0;
+}
+
+input.accordion + label.accordion + .content {
+    display: none;
+}
+
+input.accordion:checked + label.accordion + .content {
+    display: block;
+}
+    
+input.accordion:checked + label.accordion:before {
+    content: '\2796';
+}
+    
+input.accordion:checked + label.accordion {
+    background: #E0E0E0;
+}
+</style>
+<title>Major Cities</title></head>
+<body>
+<div id="wrapper">
+<br />
+
+<h1>Major Cities Around the World</h1>
+    
+<p>The city data are taken from <a href="https://www.geonames.org/" target="_blank">geonames.org</a> (data downloaded in December, 2020). Only cities with population greater than 200000 are included here. There are <span id="ncity"></span> cities in this database.</p>
+    <br />
+    
+<div id="cities"></div>
+
+</div>
+    
+<script>
+"use strict";
+document.getElementById('wrapper').style.display = 'block';
+    
+function print_cities_in_region(regCode, regName, parent) {
+    let txt = '<h2>'+regName+'</h2>';
+    txt += '<input type="checkbox" class="accordion" id="'+regCode+'" />';
+    txt += '<label for="'+regCode+'" class="accordion">Click here to show/hide cities in this region</label>';
+    txt += '<div class="content">';
+    let city = eval(regCode + '_cities()');
+    let nrow = 15, n = city.length, j;
+    for (j=0; j < n; j++) {
+        if (j % nrow==0) {
+            txt += '<table style="width:80%;">';
+            txt += '<tr><th>Index</th> <th>City</th> <th>Longitude</th> <th>Latitude</th> <th>Time Zone</th></tr>';
+        }
+        txt += '<tr><td>'+j+'</td><td>'+city[j][0]+', '+city[j][1]+'</td><td>'+city[j][3]+'&deg;'+'</td><td>'+city[j][2]+'&deg;'+'</td><td>';
+        let tz = city[j][5];
+        tz = 'GMT'+(tz >= 0 ? '+'+tz:tz);
+        txt += tz+'</td></tr>';
+        if ((j+1) % nrow==0) { txt += '</table><br />';}
+    }
+    if (j % nrow != 0) { txt += '</table>';}
+    txt += '</div><br />';
+    let div = document.createElement('div');
+    div.innerHTML = txt;
+    parent.appendChild(div);
+    return j;
+}
+    
+let main = document.getElementById('cities');
+let regionCode = ['NAm', 'LA', 'EA', 'SEA', 'SA', 'WCA', 'EE', 'NE', 'WE', 'SE', 'AF', 'OC'];
+let regionName = ['North America', 'Latin America and the Caribbean', 'East Asia', 'South-East Asia', 'South Asia', 'West and Central Asia', 'Eastern Europe', 'Northern Europe', 'Western Europe', 'Southern Europe', 'Africa', 'Oceania'];
+let n = regionCode.length;
+let ncity = 0;
+for (let i=0; i<n; i++) {
+    ncity += print_cities_in_region(regionCode[i], regionName[i], main);
+}
+document.getElementById('ncity').textContent = ncity;
+</script>
+</body>
+</html>

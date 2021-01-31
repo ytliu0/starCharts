@@ -25,6 +25,7 @@ var animate_id; // variable for animation
 
 // Initial setup
 function init() {
+    $('#wrapper').show();
     var d = new Date(); // current time from computer's clock
     
     // Set up the object date

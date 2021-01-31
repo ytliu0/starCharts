@@ -1,28 +1,28 @@
 "use strict";
 
 // Set up global variables
-var date1, date2; // dates and times of the two locations
-var place1,place2; // names of the locations
-var long1,long2;  // longitudes of the locations (in deg)
-var lat1,lat2; // latitudes of the locations (in deg)
-var rotate1 = 0, rotate2 = 0; // rotationion angles (in rad) of charts 1 and 2
+let date1, date2; // dates and times of the two locations
+let place1,place2; // names of the locations
+let long1,long2;  // longitudes of the locations (in deg)
+let lat1,lat2; // latitudes of the locations (in deg)
+let rotate1 = 0, rotate2 = 0; // rotationion angles (in rad) of charts 1 and 2
 // timezone variables associated with the locations
 // tz1.tz: timezone offset in minutes from GMT (west is positive)
 // tz1.tz1String: the timezone offset string
-var tz1,tz2; 
+let tz1=0,tz2=0; 
 // Tooltips (popup box, to be more accurate) setup
-var tipsEnabled, tips, highPrecCalInTips; 
+let tipsEnabled, tips, highPrecCalInTips; 
 // Save stars' positions for the dates in the two locations 
 // initialize the arrays
-var starsLoc = [], brightestStarsLoc = [], conLabelLoc = [];
+let starsLoc = [], brightestStarsLoc = [], conLabelLoc = [];
 starsLoc[0] = brightStars(); starsLoc[1] = brightStars();
 brightestStarsLoc[0] = brightestStars(); brightestStarsLoc[1] = brightestStars();
 conLabelLoc[0] = constellationLabel(); conLabelLoc[1] = constellationLabel();
-var magLimit = 5.3; // limiting magnitude
-var magLimitTip = 5.3; // limit. mag. for stars to show a popup box
+let magLimit = 5.3; // limiting magnitude
+let magLimitTip = 5.3; // limit. mag. for stars to show a popup box
 // Save Milky Way boundaries' positions for the dates in the two locations 
 // initialize the arrays
-var milkyLoc = [];
+let milkyLoc = [];
 milkyLoc[0] = {northernEdge:northernEdge(), 
                southernEdge:southernEdge(), 
                betaCas:betaCas(), thetaOph:thetaOph(), 
@@ -35,7 +35,8 @@ milkyLoc[1] = {northernEdge:northernEdge(),
 
 // Initial setup
 function init() {
-    var iplookup = false;
+    $('#wrapper').show();
+    let iplookup = false;
     if (iplookup) {
         $.ajax({url:'http://ip-api.com/json',
           success:function(res) {
@@ -55,11 +56,11 @@ function init() {
 }
 
 function init_cont() {
-    var d = new Date(); // current time from computer's clock
+    let d = new Date(); // current time from computer's clock
     
     // Set location 1
-    var tmp1 = $("#long1").text();
-    var tmp2 = $("#lat1").text();
+    let tmp1 = $("#long1").text();
+    let tmp2 = $("#lat1").text();
     if (tmp1 != "" && tmp2 != "") {
         place1 = $("#place1").text();
         long1 = parseFloat(tmp1);
@@ -69,16 +70,17 @@ function init_cont() {
         long1 = -88.2434; 
         lat1 = 40.1164;
     }
-    //place1 = "Champaign, IL";
-    //long1 = -88.2434; 
-    //lat1 = 40.1164;
-    var tz1String = "GMT";
+    let tz1String;
     // Use computer's clock for the time zone
-    var tz1offset = d.getTimezoneOffset();
-    var tString = d.toTimeString();
-    var i = tString.indexOf("GMT");
+    let tz1offset = d.getTimezoneOffset();
+    let tString = d.toTimeString();
+    let i = tString.indexOf("GMT");
     if (i != -1) {
         tz1String = tString.slice(i+3);
+    } else {
+        let tz = -tz1offset/60;
+        if (tz.toString().length > 6) { tz = tz.toFixed(2);}
+        tz1String = (tz >= 0 ? '+'+tz:tz);
     }
     tz1 = {tz:tz1offset, tzString:tz1String};
     
@@ -90,37 +92,40 @@ function init_cont() {
     tz2 = {tz:tz1.tz, tzString:tz1.tzString};
     
     // Set up the object date1 
-    var yyyy = d.getFullYear();
-    var mm = d.getMonth()+1;
-    var dd = d.getDate();
-    var h = d.getHours();
-    var m = d.getMinutes();
-    var s = d.getSeconds()+1e-3*d.getMilliseconds();
-    var dateString = generateDateString(yyyy,mm,dd);
-    var timeString = generateTimeString(h,m,s);
-    var D = getDm(yyyy,mm,dd,tz1.tz) + (h+m/60+s/3600)/24;
-    var T = D/36525;
-    var dT = DeltaT(T);
-    date1 = {yyyy:yyyy, mm:mm, dd:dd, h:h, m:m, s:s, tz:tz1.tz, 
-             tzString:tz1.tzString, dateString:dateString, 
-             timeString:timeString, D:D, T:T, dT:dT};
-    var GMST = getGMST(date1);
-    var LST = getSidereal(GMST,long1);
+    let yyyy = d.getFullYear();
+    let mm = d.getMonth()+1;
+    let dd = d.getDate();
+    let h = d.getHours();
+    let m = d.getMinutes();
+    let s = d.getSeconds()+1e-3*d.getMilliseconds();
+    let D = getDm(yyyy,mm,dd,tz1.tz) + (h+m/60+s/3600)/24;
+    // New: determine initial settings from url query string
+    const p = new URLSearchParams(window.location.search);
+    D = initial_settings_from_url(p, D, 1);
+    let T = D/36525;
+    let dT = DeltaT(T);
+    let date = CalDat(D - tz1.tz/1440);
+    
+    date1 = {yyyy:date.yy, mm:date.mm, dd:date.dd, 
+             h:date.h, m:date.m, s:date.s, tz:tz1.tz, 
+             tzString:tz1.tzString, dateString:date.dateString, 
+             timeString:date.timeString, D:D, T:T, dT:dT};
+    let GMST = getGMST(date1);
+    let LST = getSidereal(GMST,long1);
     date1.LST = LST.hour;
     date1.LST_rad = LST.rad;
     date1.LSTstring = LST.string;
     
     // Set up the object date2 
-    h += (tz1.tz - tz2.tz)/60; // hour in location 2
-    var hour = h + m/60 + s/3600;
-    hour -= 24*Math.floor(h/24);
-    var date = CalDat(D+tz2.tz/1440);
-    h = Math.floor(hour); m = Math.floor((hour-h)*60); 
-    s = 3600*(hour-h-m/60);
-    timeString = generateTimeString(h,m,s);
-    date2 = {yyyy:date.yy, mm:date.mm, dd:date.dd, h:h, m:m, s:s,
+    // New: determine initial settings from url query string
+    D = initial_settings_from_url(p, D, 2);
+    T = D/36525;
+    dT = DeltaT(T);
+    date = CalDat(D - tz2.tz/1440);
+    date2 = {yyyy:date.yy, mm:date.mm, dd:date.dd, 
+             h:date.h, m:date.m, s:date.s,
              tz:tz2.tz, tzString:tz2.tzString,
-             dateString:date.dateString, timeString:timeString, 
+             dateString:date.dateString, timeString:date.timeString, 
              D:D, T:T, dT:dT};
     GMST = getGMST(date2);
     LST = getSidereal(GMST,long2);
@@ -133,10 +138,117 @@ function init_cont() {
     highPrecCalInTips = true;
     $("#loc1").on("click", function(event) {displayPopup(event, 1);});
     $("#loc2").on("click", function(event) {displayPopup(event, 2);});
-    $("#rotate1").val(rotate1*180/Math.PI);
-    $("#rotate2").val(rotate1*180/Math.PI);
+    $("#rotate1").val(Math.floor(rotate1*180/Math.PI + 0.5));
+    $("#rotate2").val(Math.floor(rotate2*180/Math.PI + 0.5));
+    $("#changeLoc1Manual").prop("checked", true);
+    $("#changeLoc2Manual").prop("checked", true);
+    let para = {divId:'changeLoc1Form1', loc:1};
+    setupChangeLocCityMenu(para);
+    para = {divId:'changeLoc2Form1', loc:2};
+    setupChangeLocCityMenu(para);
     
     starChart();
+}
+
+// Determine initial settings from url query string
+function initial_settings_from_url(p, D, loc) {
+    // set location
+    set_location_from_url1(p, loc);
+    set_location_from_url2(p, loc);
+    
+    // azimuth at top
+    let rotKey = 'rotate'+loc;
+    if (p.has(rotKey)) {
+        let rotate = parseInt(p.get(rotKey), 10);
+        if (!isNaN(rotate)) {
+            rotate -= 360*Math.floor(rotate/360);
+            rotate *= Math.PI/180;
+            eval('rotate'+loc+' = rotate');
+        }
+    }
+    // show/hide buttons
+    let butts = ['showPlanets', 'showEquator', 'showEcliptic', 
+                'showMilkyWay', 'showConLines', 'showConLab', 
+                'showDayNight'];
+    // change the status of the show/hide buttons if the keys 
+    // are present in the query string
+    butts.forEach(function(x) {
+        if (p.has(x+loc)) {
+            let active_new = (p.get(x+loc) != '0');
+            let active_current = $('#'+x+loc).hasClass('active');
+            if (active_new != active_current) {
+                $('#'+x+loc).toggleClass('active');
+            }
+        }
+    });
+    
+    // Set initial time
+    let Dnew = D;
+    if (p.has('jd'+loc)) {
+        let jd = parseFloat(p.get('jd'+loc));
+        if (!isNaN(jd) && jd >= -71328942.5 && jd <= 74769559.5) {
+            Dnew = jd - 2451545;
+        }
+    }
+    
+    return Dnew;
+}
+
+// Set location from the url query string.
+// Version 1: get the location information from 
+//            long, lat and tz keys
+function set_location_from_url1(p, loc) {
+    if (p.has('long'+loc) && p.has('lat'+loc)) {
+        // set location longitude and latitude
+        let lng = parseFloat(p.get('long'+loc));
+        let lat = parseFloat(p.get('lat'+loc));
+        if (!isNaN(lng) && !isNaN(lat) && 
+           lng >= -180 && lng <= 180 && lat >=-90 && lat <=90) {
+            eval('long'+loc+' = lng'); 
+            eval('lat'+loc+' = lat'); 
+            eval('place'+loc+' = ""');
+        }
+    }
+    if (p.has('tz'+loc)) {
+        let tz = parseFloat(p.get('tz'+loc));
+        if (tz.toString().length > 6) { tz = tz.toFixed(2);}
+        if (!isNaN(tz) && tz >= -12 && tz <= 12) {
+            eval('tz'+loc+' = {tz:-tz*60, tzString:(tz >= 0 ? "+"+tz:tz.toString())}');
+        }
+    }
+}
+
+// Set location from the url query string.
+// Version 2: Get the location information from region and index keys
+function set_location_from_url2(p, loc) {
+    let regKey = 'region'+loc, iKey = 'ind'+loc;
+    let reg, ind, valid = false;
+    if (p.has(regKey) && p.has(iKey)) {
+        reg = p.get(regKey);
+        ind = parseInt(p.get(iKey), 10);
+        let regionCode = ['NAm', 'LA', 'EA', 'SEA', 'SA', 'WCA', 'EE', 'NE', 'WE', 'SE', 'AF', 'OC'];
+        // Check if reg is equal to one of the strings in regionCode
+        valid = regionCode.map(x => x==reg).reduce((a, b) => a || b);
+        if (isNaN(ind) || ind < 0) { valid = false;}
+    }
+    if (valid) {
+        let cities = eval(reg + '_cities()');
+        if (ind >= cities.length) { return;}
+        let city = cities[ind];
+        eval('place'+loc+' = city[0]+", "+city[1]');
+        eval('lat'+loc+' = city[2]');
+        eval('long'+loc+' = city[3]');
+        let setTz = 'setTz'+loc;
+        if (p.has(setTz)) {
+            let tz = parseFloat(p.get(setTz));
+            if (!isNaN(tz) && tz >= -12 && tz <= 12) {
+                if (tz.toString().length > 6) { tz = tz.toFixed(2);}
+                let tzString = (tz >= 0 ? '+'+tz:tz.toString());
+                tz *= -60;
+                eval('tz'+loc+' = {tz:tz, tzString:tzString}');
+            }
+        }
+    }
 }
 
 // *** Change Locations and Times ***
@@ -234,150 +346,273 @@ function changeSyncTime(i,idHead) {
     }
 }
 
-function changeLocationsAndTimes(form) {
-    place1 = form.place1in.value;
-    long1 = parseFloat(form.long1in.value);
-    lat1 = parseFloat(form.lat1in.value);
-    var tzoffset1 = parseFloat(form.tz1in.value);
-    tz1.tz = -tzoffset1*60;
-    var tzof = Math.abs(tzoffset1) + 0.5/60; // used for rounding
-    if (tzoffset1 >= 0) {
-        tz1.tzString = "+";
-    }  else {
-        tz1.tzString = "-";
+function switchChangeLocForm(loc, form) {
+    $('#changeLoc'+loc+'Form'+form).show();
+    $('#changeLoc'+loc+'Form'+(1-form)).hide();
+}
+
+function setupChangeLocCityMenu(para) {
+    let divId = para.divId;
+    let txt = '<p style="color:blue;">1. Select a region:</p>';
+    let radioName = 'region'+divId;
+    let region = [{code:'NAm',name:'North America'}, 
+                  {code:'LA', name:'Latin America'}, 
+                  {code:'EA', name:'East Asia'}, 
+                  {code:'SEA', name:'South-East Asia'}, 
+                  {code:'SA', name:'South Asia'}, 
+                  {code:'WCA', name:'West and Central Asia'}, 
+                  {code:'EE', name:'Eastern Europe'}, 
+                  {code:'NE',name:'Northern Europe'}, 
+                  {code:'WE', name:'Western Europe'}, 
+                  {code:'SE', name:'Southern Europe'}, 
+                  {code:'AF', name:'Africa'}, 
+                  {code:'OC', name:'Oceania'}];
+    txt += '<table class="selectRegion">';
+    region.forEach(function(x, i) {
+        if (i % 4 ==0) { txt +='<tr>';}
+        txt += '<td><input type="radio" id="'+radioName+x.code+'" name="'+radioName+'" value="'+x.code+'" onclick="addCity('+"'"+divId+"','"+x.code+"'"+')" ';
+        if (i==0) { txt += 'checked ';}
+        txt += '/>';
+        txt += '<label for="'+radioName+x.code+'">'+x.name+'</label></td>';
+        if (i % 4 == 3) { txt += '</tr>';}
+    });
+    if (region.length % 4 != 0) { 
+        txt += '<td colspan="'+(4-region.length)+'"></td></tr>';
     }
-    var hs = Math.floor(tzof).toString();
-    if (hs.length < 2) {hs = "0"+hs;}
-    var ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
-    if (ms.length < 2) {ms = "0"+ms;}
-    tz1.tzString += hs+ms;
-    var yy1 = parseInt(form.year1in.value);
-    var mm1 = parseInt(form.month1in.value);
-    var dd1 = parseInt(form.day1in.value);
-    var h1 = parseInt(form.hour1in.value);
-    var m1 = parseInt(form.minute1in.value);
-    var s1 = parseFloat(form.second1in.value);
-    
-    place2 = form.place2in.value;
-    long2 = parseFloat(form.long2in.value);
-    lat2 = parseFloat(form.lat2in.value);
-    var tzoffset2 = parseFloat(form.tz2in.value);
-    tz2.tz = -tzoffset2*60;
-    tzof = Math.abs(tzoffset2) + 0.5/60; // used for rounding
-    if (tzoffset2 >= 0) {
-        tz2.tzString = "+";
-    }  else {
-        tz2.tzString = "-";
+    txt += '</table><br />';
+    txt += '<p style="color:blue;">2. Select a city from the dropdown menu: <span id="'+divId+'selectCitySpan"></span></p>';
+    txt += '<p><span style="color:blue;">3. Choose a time zone:</span><br />';
+    txt += '<input type="radio" id="'+divId+'tzComputer" name="'+divId+'timezone" />';
+    let tz = -(new Date()).getTimezoneOffset()/60;
+    if (tz.toString().length > 6) { tz = tz.toFixed(2);}
+    let tzString = ' ('+(tz >= 0 ? 'GMT+':'GMT')+tz+')';
+    txt += '<label for="'+divId+'tzComputer">Set by computer'+"'s clock"+tzString+'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+    txt += '<input type="radio" id="'+divId+'tzCustom" name="'+divId+'timezone" checked />';
+    txt += '<label for="'+divId+'tzCustom">Custom: GMT+</label>';
+    txt += '<input id="'+divId+'tzCustomInput" type="number" step="0.01" min="-12" max="12" /></p>';
+    $('#'+divId).html(txt);
+    addCity(divId, region[0].code);
+}
+
+function addCity(divId, regionCode) {
+    let city = eval(regionCode+'_cities()');
+    // city is a 2D array of the form 
+    // [[city0, country0, latitude0, longitude0, elevation0, UTCoffset0], 
+    //  [city1, country1, latitude1, longitude1, elevation1, UTCoffset1],
+    //  ... ]
+    let n = city.length;
+    let txt = '<select name="'+divId+'selectCity" id="'+divId+'selectCity" onchange="setDefaultCustomTimeZone('+"'"+divId+"','"+regionCode+"'"+')">';
+    txt += '<option disabled selected value="-1"> -- select a city -- </option>'
+    let country = '';
+    for (let i=0; i<n; i++) {
+        if (city[i][1] != country) {
+            txt += '<option disabled value="-1" style="color:brown;">'+city[i][1].toUpperCase()+'</option>';
+            country = city[i][1];
+        }
+        let city1 = city[i][0]+', '+city[i][1];
+        txt += '<option value="'+i+'">'+city1+'</option>';
     }
-    hs = Math.floor(tzof).toString();
-    if (hs.length < 2) {hs = "0"+hs;}
-    ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
-    if (ms.length < 2) {ms = "0"+ms;}
-    tz2.tzString += hs+ms;
-    var sync = document.getElementById("synTimeYes").checked;
-    var yy2,mm2,dd2,h2,m2,s2;
-    if (sync) {
-        yy2 = yy1; mm2 = mm1; dd2 = dd1; h2=h1; m2=m1; s2=s1;
-    } else {
-        yy2 = parseInt(form.year2in.value);
-        mm2 = parseInt(form.month2in.value);
-        dd2 = parseInt(form.day2in.value);
-        h2 = parseInt(form.hour2in.value);
-        m2 = parseInt(form.minute2in.value);
-        s2 = parseFloat(form.second2in.value);
+    txt += '</select>';
+    $('#'+divId+'selectCitySpan').html(txt);
+}
+
+function setDefaultCustomTimeZone(divId, regionCode) {
+    let ind = parseInt($('#'+divId+'selectCity').val(), 10);
+    if (ind != -1) {
+        let tz = parseFloat(eval(regionCode+'_cities()['+ind+'][5]'));
+        $('#'+divId+'tzCustomInput').val(tz);
     }
-    
-    // sanity check
-    var errid = "#errorlocs";
+}
+
+function changeLocationsAndTimes() {
+    let errid = '#errorlocs';
     $(errid).empty();
-    var min = -180, max = 180;
-    var message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
-    sanityCheck(long1,"#long1in",min,max,message,errid);
-    sanityCheck(long2,"#long2in",min,max,message,errid);
+    function validate_manual_input(loc) {
+        let place = $('#place'+loc+'in').val();
+        let id = '#long'+loc+'in';
+        let lng = parseFloat($(id).val());
+        let min = -180, max = 180;
+        let message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
+        sanityCheck(lng,id,min,max,message,errid);
+        id = '#lat'+loc+'in';
+        let lat = parseFloat($(id).val());
+        min = -90; max = 90;
+        message = "Invalid latitude! Latitude must be a number between -90 and 90, positive in the northern hemisphere and negative in the southern hemisphere.";
+        sanityCheck(lat,id,min,max,message,errid);
+        id = '#tz'+loc+'in';
+        let tz = parseFloat($(id).val());
+        min = -12; max = 12;
+        message = "Invalid time zone! Time zone must be a number between -12 and 12.";
+        sanityCheck(tz,id,min,max,message,errid);
+        
+        if ($(errid).text()=='') {
+            if (tz.toString().length > 6) {
+                tz = tz.toFixed(2);
+            }
+            let tzString = (tz >= 0 ? '+'+tz:tz.toString());
+            tz *= -60;
+            if (loc==1) {
+                place1 = place; long1 = lng; lat1 = lat;
+                tz1.tz = tz; tz1.tzString = tzString;
+            } else {
+                place2 = place; long2 = lng; lat2 = lat;
+                tz2.tz = tz; tz2.tzString = tzString;
+            }
+        }
+    }
     
-    min = -90; max = 90;
-    message = "Invalid latitude! Latitude must be a number between -90 and 90, positive in the northern hemisphere and negative in the southern hemisphere.";
-    sanityCheck(lat1,"#lat1in",min,max,message,errid);
-    sanityCheck(lat2,"#lat2in",min,max,message,errid);
+    function validate_menu_input(loc) {
+        let divId = 'changeLoc'+loc+'Form1';
+        let ind = parseInt($('#'+divId+'selectCity').val(), 10);
+        if (isNaN(ind) || ind == -1) {
+            $(errid).append('<p style="color:red;">Please select a city from the dropdown menu for location '+loc+'.</p>');
+        } else {
+            let prefix = 'region'+divId;
+            let regionCode = ['NAm', 'LA', 'EA', 'SEA', 'SA', 'WCA', 'EE', 'NE', 'WE', 'SE', 'AF', 'OC'];
+            let reg, n = regionCode.length;
+            for (let i=0; i<n; i++) {
+                if ($('#'+prefix+regionCode[i]).prop('checked')) {
+                    reg = regionCode[i];
+                    break;
+                }
+            }
+            let city = eval(reg+'_cities()['+ind+']');
+            eval('place'+loc+' = city[0]+", "+city[1]');
+            eval('lat'+loc+' = city[2]');
+            eval('long'+loc+' = city[3]');
+            if ($('#'+divId+'tzCustom').prop('checked')) {
+                let id = '#'+divId+'tzCustomInput';
+                let tz = parseFloat($(id).val());
+                let min = -12, max=12;
+                let message = 'Invalid time zone for location '+loc+'! Please enter a number between -12 and 12.';
+                sanityCheck(tz,id,min,max,message,errid);
+                if ($(errid).text()=='') {
+                    if (tz.toString().length > 6) {
+                        tz = tz.toFixed(2);
+                    }
+                    let tzString = (tz >= 0 ? '+'+tz:tz.toString());
+                    tz *= -60;
+                    if (loc==1) {
+                        tz1.tz = tz; tz1.tzString = tzString;
+                    } else {
+                        tz2.tz = tz; tz2.tzString = tzString;
+                    }
+                }
+            } else {
+                let d = new Date();
+                let tString = d.toTimeString();
+                let i = tString.indexOf("GMT");
+                if (i != -1) {
+                    tString = tString.slice(i+3);
+                }
+                if (loc==1) {
+                    tz1.tz = d.getTimezoneOffset();
+                    tz1.tzString = tString;
+                } else {
+                    tz2.tz = d.getTimezoneOffset();
+                    tz2.tzString = tString;
+                }
+            }
+        }
+    }
     
-    min=-200000; max=200000;
-    message = "Invalid year! Please enter an integer between "+min+" and "+max+". Note that 0 means 1 BCE, -1 means 2 BCE and so on. Warning: positions of the Sun, Moon and planets are not accurate outside the years between -3000 and 3000.";
-    sanityCheck(yy1,"#year1in",min,max,message,errid);
-    if (!sync) {sanityCheck(yy2,"#year2in",min,max,message,errid); }
+    function validate_time_input(loc) {
+        let id = '#year'+loc+'in';
+        let year = parseInt($(id).val(), 10);
+        let min = parseInt($(id).attr('min'), 10);
+        let max = parseInt($(id).attr('max'), 10);
+        let message = 'Invalid year! Please enter an integer between '+min+' and '+max+'.';
+        sanityCheck(year,id,min,max,message,errid);
+        id = '#month'+loc+'in';
+        let month = parseInt($(id).val(), 10);
+        min=1; max=12;
+        message = 'Invalid month! Please enter an integer between '+min+' and '+max+'.';
+        sanityCheck(month,id,min,max,message,errid);
+        id = '#day'+loc+'in'
+        let day = parseInt($(id).val(), 10);
+        min=1; max=31;
+        message = 'Invalid day! Please enter an integer between '+min+' and '+max+'.';
+        sanityCheck(day,id,min,max,message,errid);
+        id = '#hour'+loc+'in';
+        let hh = parseInt($(id).val(), 10);
+        min=0; max=23;
+        message = 'Invalid hour! Please enter an integer between '+min+' and '+max+'.';
+        sanityCheck(hh,id,min,max,message,errid);
+        id = '#minute'+loc+'in';
+        let mm = parseInt($(id).val(), 10);
+        min=0; max=59;
+        message = 'Invalid minute! Please enter an integer between '+min+' and '+max+'.';
+        sanityCheck(mm,id,min,max,message,errid);
+        id = '#second'+loc+'in';
+        let s = parseFloat($(id).val());
+        min=0; max=60;
+        message = 'Invalid second! Please enter a number between '+min+' and '+max+'.';
+        sanityCheck(s,id,min,max,message,errid);
+        
+        if ($(errid).text()=='') {
+            let D = getDm(year,month,day,0);
+            let date = CalDat(D);
+            let dateString = date.dateString;
+            let timeString = generateTimeString(hh,mm,s);
+            let tz, tzString;
+            if (loc==1) {
+                tz = tz1.tz; tzString = tz1.tzString;
+            } else {
+                tz = tz2.tz; tzString = tz2.tzString;
+            }
+            D = getDm(date.yy,date.mm,date.dd,tz) + (hh+mm/60+s/3600)/24;
+            let T = D/36525;
+            let dT = DeltaT(T);
+            eval('date'+loc+'= {yyyy:date.yy, mm:date.mm, dd:date.dd, h:hh, m:mm, s:s, tz:tz, tzString:tzString, dateString:dateString, timeString:timeString, D:D, T:T, dT:dT}');
+            let GMST = eval('getGMST(date'+loc+')');
+            let LST = eval('getSidereal(GMST,long'+loc+')');
+            eval('date'+loc+'.LST = LST.hour');
+            eval('date'+loc+'.LST_rad = LST.rad');
+            eval('date'+loc+'.LSTstring = LST.string');
+        }
+    }
     
-    min=1; max=12;
-    message = "Invalid month! Month must be an integer between 1 and 12.";
-    sanityCheck(mm1,"#month1in",min,max,message,errid);
-    if (!sync) {sanityCheck(mm2,"#month2in",min,max,message,errid); }
+    if ($('#changeLoc1Manual').prop('checked')) {
+        validate_manual_input(1);
+    } else {
+        validate_menu_input(1);
+    }
+    validate_time_input(1);
     
-    min=1; max=31;
-    message = "Invalid day! Day must be an integer between 1 and 31.";
-    sanityCheck(dd1,"#day1in",min,max,message,errid);
-    if (!sync) {sanityCheck(dd2,"#day2in",min,max,message,errid); }
+    if ($('#changeLoc2Manual').prop('checked')) {
+        validate_manual_input(2);
+    } else {
+        validate_menu_input(2);
+    }
+    if ($(errid).text()=='') {
+        if ($('#synTimeYes').prop('checked')) {
+            let date = CalDat(date1.D - tz2.tz/1440);
+            date2 = {yyyy:date.yy, mm:date.mm, dd:date.dd, 
+                    h:date.h, m:date.m, s:date.s, tz:tz2.tz, 
+                    tzString:tz2.tzString, dateString:date.dateString, 
+                    timeString:date.timeString, D:date1.D, 
+                    T:date1.T, dT:date1.dT};
+            let GMST = getGMST(date2);
+            let LST = getSidereal(GMST, long2);
+            date2.LST = LST.hour;
+            date2.LST_rad = LST.rad;
+            date2.LSTstring = LST.string;
+        } else {
+            validate_time_input(2);
+        }
+    }
     
-    min=0; max=23;
-    message = "Invalid hour! Hour must be an integer between 0 and 23.";
-    sanityCheck(h1,"#hour1in",min,max,message,errid);
-    if(!sync) {sanityCheck(h2,"#hour2in",min,max,message,errid); }
-    
-    min=0; max=59;
-    message = "Invalid minute! Minute must be an integer between 0 and 59.";
-    sanityCheck(m1,"#minute1in",min,max,message,errid);
-    if (!sync) {sanityCheck(m2,"#minute2in",min,max,message,errid); }
-    
-    min=0; max=60;
-    message = "Invalid second! Second must be a number between 0 and 60.";
-    sanityCheck(s1,"#second1in",min,max,message,errid);
-    if (!sync) {sanityCheck(s2,"#second2in",min,max,message,errid); }
-    
-    min=-12; max=14;
-    message = "Invalid time zone! Time zone must be a number between -12 and 14.";
-    sanityCheck(tzoffset1,"#tz1in",min,max,message,errid);
-    sanityCheck(tzoffset2,"#tz2in",min,max,message,errid);
-    
-    if ($(errid).text()=="") {
+    if ($(errid).text()=='') { 
         $("#inputlocs").slideUp();
         $('button.menu').attr("disabled", false);
-        // Make sure the date is in the proper form
-        // i.e. no stuff like 02-31 or 04-31
-        // so convert date to Julian day and then back to date
-        var D = getDm(yy1,mm1,dd1,0);
-        var date = CalDat(D);
-        yy1 = date.yy; mm1=date.mm; dd1 = date.dd;
-        var dateString = date.dateString;
-        var timeString = generateTimeString(h1,m1,s1);
-        D = getDm(yy1,mm1,dd1,tz1.tz) + (h1+m1/60+s1/3600)/24;
-        var T = D/36525;
-        var dT = DeltaT(T);
-        date1 = {yyyy:yy1, mm:mm1, dd:dd1, h:h1, m:m1, s:s1, 
-                 tz:tz1.tz, tzString:tz1.tzString, 
-                 dateString:dateString, timeString:timeString, 
-                 D:D, T:T, dT:dT};
-        var GMST = getGMST(date1);
-        var LST = getSidereal(GMST,long1);
-        date1.LST = LST.hour;
-        date1.LST_rad = LST.rad;
-        date1.LSTstring = LST.string;
-        D = getDm(yy2,mm2,dd2,0);
-        date = CalDat(D);
-        yy2 = date.yy; mm2=date.mm; dd2 = date.dd;
-        dateString = date.dateString;
-        timeString = generateTimeString(h2,m2,s2);
-        D = getDm(yy2,mm2,dd2,tz2.tz) + (h2+m2/60+s2/3600)/24;
-        T = D/36525;
-        dT = DeltaT(T);
-        date2 = {yyyy:yy2, mm:mm2, dd:dd2, h:h2, m:m2, s:s2, 
-                 tz:tz2.tz, tzString:tz1.tzString, 
-                 dateString:dateString, timeString:timeString, 
-                 D:D, T:T, dT:dT};
-        GMST = getGMST(date2);
-        LST = getSidereal(GMST,long2);
-        date2.LST = LST.hour;
-        date2.LST_rad = LST.rad;
-        date2.LSTstring = LST.string;
-        
         starChart();
     }
+}
+
+function slideUpLoadUrl(slideUpId, url) {
+    $("#"+slideUpId).slideUp();
+    $('button.menu').attr("disabled", false);
+    location.href = url;
 }
 
 // *** star charts ***

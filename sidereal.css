@@ -8,9 +8,10 @@ body{
 }
 
 div#wrapper {
-margin-left:auto;
-margin-right:auto;
-max-width:1000px;
+    margin-left:auto;
+    margin-right:auto;
+    max-width:1000px;
+    display:none;
 }
 
 .canvaswrapper {
@@ -206,4 +207,21 @@ button.setupAnimate, button.controlAnimate {
 button.menu:disabled, button.setupAnimate:disabled, button.controlAnimate:disabled {
     opacity:0.1;
     cursor: not-allowed;
+}
+
+/* for select region */
+table.selectRegion {
+    border:none;
+}
+
+.selectRegion th, .selectRegion td {
+    padding:5px;
+    text-align:left;
+    border:none;
+}
+
+.link {
+    text-decoration: underline;
+    color:blue;
+    cursor: pointer;
 }

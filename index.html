@@ -7,12 +7,12 @@
 <title>Sidereal Time and Star Charts</title>
 <link rel="stylesheet" href="sidereal.css">
 <script src="jquery-3.3.1.min.js"></script>
+<script src="cities.js"></script> 
 <script src="core_min.js"></script>
 <script src="sseph_min.js"></script>
 <script src="sidereal_min.js"></script>
 </head>
 
-<!-- body onload=init() -->
 <body onload="init()">
 <div id="wrapper">
         
@@ -225,15 +225,32 @@ Time zone: <span id="riseSetTtimeZone2"></span></p>
 <div id="inputlocs">
 <h2>Change Locations and Times</h2>
 <p><b>Location 1</b></p>
+<p><input type="radio" id="changeLoc1Manual" name="changeLoc1Button" onclick="switchChangeLocForm(1, 0)" />
+<label for="changeLoc1Manual">Manually enter the location information</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" id="changeLoc1Select" name="changeLoc1Button" onclick="switchChangeLocForm(1, 1)" />
+<label for="changeLoc1Select">Choose from a database (<span style="color:red;">new</span>)</label>
+</p>
+    
+<div id="changeLoc1Form0">
 <p id="geoloc"><button onclick="geoloc()">Determine Location 1 by GPS/IP address</button> <span id="geolocmessage"></span></p>
 <p id="geolocerr" style="color:red;"></p>
-<form name="locations" action="" method="get">
 <table>
 <tr><td>Name: <input type="text" id="place1in"></td>
 <td>Longitude: 
 <input type="number" id="long1in" step="any" min=-180 max=180 /></td>
 <td>Latitude: 
 <input type="number" id="lat1in" step="any" min=-90 max=90 /></td></tr>
+<tr><td>Time zone: GMT+
+<input type="number" id="tz1in" step="any" min=-12 max=14 /></td> 
+<td></td><td></td> </tr>
+</table><br />
+</div>
+
+<div id="changeLoc1Form1" style="display:none;">
+</div>
+
+<p>Set time:</p>
+<table>
 <tr><td>Year: 
 <input type="number" id="year1in" step="1" min=-200000 max=200000 /></td>
 <td>Month: 
@@ -246,21 +263,36 @@ Time zone: <span id="riseSetTtimeZone2"></span></p>
 <input type="number" id="minute1in" step="1" min=0 max=59 /></td>
 <td>Second: 
 <input type="number" id="second1in" step="any" min=0 max=60 /></td></tr>
-<tr><td>Time zone: GMT+
-<input type="number" id="tz1in" step="any" min=-12 max=14 /></td> 
-<td></td><td></td> </tr>
 </table>
 <br />  
+    
 <p><b>Location 2</b></p>
+<p><input type="radio" id="changeLoc2Manual" name="changeLoc2Button" onclick="switchChangeLocForm(2, 0)" />
+<label for="changeLoc2Manual">Manually enter the location information</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" id="changeLoc2Select" name="changeLoc2Button" onclick="switchChangeLocForm(2, 1)" />
+<label for="changeLoc2Select">Choose from a database (<span style="color:red;">new</span>)</label>
+</p>
+<div id="changeLoc2Form0">
 <table>
 <tr><td>Name: <input type="text" id="place2in"></td>
 <td>Longitude: 
 <input type="number" id="long2in" step="any" min=-180 max=180 /></td>
 <td>Latitude: 
 <input type="number" id="lat2in" step="any" min=-90 max=90 /></td></tr>
-<tr><td colspan="3">Set time the same as in location 1 (same GMT but time zone may differ)? 
-<input onchange="changeSyncTime(1,'synTime')" type="radio" id="synTimeYes" value="1" />Yes 
-&nbsp;&nbsp;&nbsp; <input onchange="changeSyncTime(0,'synTime')" type="radio" id="synTimeNo" value="0" />No</td></tr>
+<tr><td>Time zone: GMT+
+<input type="number" id="tz2in" step="any" min=-12 max=14 /></td> 
+<td></td><td></td> </tr>
+</table><br />
+</div>
+    
+<div id="changeLoc2Form1" style="display:none;">
+</div>
+
+<p>Set time:</p>
+<table>
+<tr><td colspan="3">Set the same time as in location 1 (same GMT but time zone may differ)? 
+<input onchange="changeSyncTime(1,'synTime')" type="radio" id="synTimeYes" value="1" /><label for="synTimeYes">Yes</label>
+&nbsp;&nbsp;&nbsp; <input onchange="changeSyncTime(0,'synTime')" type="radio" id="synTimeNo" value="0" /><label for="synTimeNo">No</label></td></tr>
 <tr class="timeInputLoc2"><td>Year: 
 <input type="number" id="year2in" step="1" min=-200000 max=200000 /></td>
 <td>Month: 
@@ -273,15 +305,13 @@ Time zone: <span id="riseSetTtimeZone2"></span></p>
 <input type="number" id="minute2in" step="1" min=0 max=59 /></td>
 <td>Second: 
 <input type="number" id="second2in" step="any" min=0 max=60 /></td></tr>
-<tr><td>Time zone: GMT+
-<input type="number" id="tz2in" step="any" min=-12 max=14 /></td> 
-<td></td><td></td> </tr>
 </table>
-<br />
-<p><input type="button" value="Submit" onclick="changeLocationsAndTimes(this.form)" /></p>
-</form>
     
+<br />
+<p><input type="button" value="Submit" onclick="changeLocationsAndTimes()" /></p>
 <div id="errorlocs"></div>
+   <br /> 
+<p><span style="color:red;">New</span>: The default settings can now be changed by filling in a <span class="link" onclick="slideUpLoadUrl('inputlocs', 'set_defaults.html')">form</span>.</p>
 </div>
 
 <h1>Local Star Charts</h1>
@@ -380,11 +410,15 @@ Sidereal Time: <span id="siderealTime2"></span></p>
     
 <p>This webpage uses the computer's clock to obtain the current local time and then uses it to calculate the local sidereal times and plot star charts on two locations. The two default locations are at longitude 88.2434&deg;W, latitude 40.1164&deg;N (Champaign, IL, USA) and at longitude 88.2434&deg;W, latitude 30&deg;S. Sidereal times and star charts at other locations and times can be obtained by clicking the <span style="background-color:#1a8cff; color:white">&nbsp;Locations and Times&nbsp;</span> button at the top of the page and filling in the form.</p>
     
+<p><span style="color:red;">New</span>: The default settings can now be changed by filling in a <a href="set_defaults.html">form</a></p>
+    
 <p>Constellation labels, when active, are shown in the abbreviated form. The full names of the constellations are listed on <a href="Constellations.html">this webpage</a>.</p> 
     
 <p>When the Day/Night button is active, the background color of the star chart is determined by the Sun's position in the chart: light purple when the Sun is above the horizon, gradually changes to black when the Sun is below the horizon and black when the Sun is 18&deg; below the horizon.</p>
     
-<p>The star charts are created using the <a href="https://en.wikipedia.org/wiki/Stereographic_projection" target="_blank">stereographic projection</a> with the <a href="https://en.wikipedia.org/wiki/Nadir" target="_blank">nadir</a> as the projection point. Stereographic projection is commonly used in sky maps. The mapping is conformal and shapes are  preserved over a small area. However, the mapping does not preserve area. For example, a constellation is about twice as big when it is near the horizon than when it is near the zenith. This effect is quite noticeable in animations showing the diurnal motion of the sky. This feature might not be as bad, since constellations do <i>appear</i> bigger when they are close to the horizon because of the <a href="https://www.skyandtelescope.com/observing/moon-illusion-confusion11252015/" target="_blank">Moon illusion</a>. However, it should be noted that stereographic projection is not designed to model the Moon illusion.</p>
+<p>The azimuth-at-the-top parameter is used to rotate the star chart, which is convenient for laptop and desktop users since the device's screens can't be rotated easily. 0&deg; means north is at the top, south at the bottom (useful for looking at stars near the southern horizon); 90&deg; means east is at the top, west at the bottom (useful for looking at stars near the western horizon); 180&deg; means south is at the top, north at the bottom; 270&deg; means west is at the top, east at the bottom.</p>
+    
+<p>The star charts are created using the <a href="https://en.wikipedia.org/wiki/Stereographic_projection" target="_blank">stereographic projection</a> with the <a href="https://en.wikipedia.org/wiki/Nadir" target="_blank">nadir</a> as the projection point. Stereographic projection is commonly used in sky maps. The mapping is conformal and shapes are  preserved over a small area. However, the mapping does not preserve area. For example, a constellation is about twice as big when it is near the horizon than when it is near the zenith. This effect is quite noticeable in animations showing the diurnal motion of the sky. This feature might not be as bad, since constellations do <i>appear</i> bigger when they are close to the horizon because of the <a href="https://www.skyandtelescope.com/observing/moon-illusion-confusion11252015/" target="_blank">Moon illusion</a>. However, it should be noted that stereographic projection is not designed to model the Moon illusion and so the distortion should not be regarded as a faithful representation of human perception.</p>
     
 <p>Stars in the charts can be clicked and a popup box will appear. The popup box shows further information about the star. When the time is between 3000 BCE and 3000 CE (CE = <a href="https://en.wikipedia.org/wiki/Common_Era" target="_blank">common era</a>), positions of the stars with respect to J2000.0 mean equator and equinox are corrected for proper motion and annual parallax. The apparent position with respect to the true equator and equinox of date are corrected for precession, nutation, and <a href="https://en.wikipedia.org/wiki/Aberration_of_light" target="_blank">aberration of light</a> in addition to proper motion and parallax. Outside the time interval 3000 BCE - 3000 CE, only proper motion is included in the J2000.0 position and only precession and proper motion are included in the "of date" position. In the distant past and distant future, some nearby stars are seen to move far away from their present constellations. In that case, two constellations are given. The first one has "(2000)" added to it, indicating the present constellation. The second constellation has "(year number)" added to it, indicating the constellation in that particular year. The constellation is determined by the constellation boundaries established by the Belgian astronomer Eug&egrave;ne Delporte in 1930 on behalf of the International Astronomical Union (IAU).</p>
     
@@ -400,6 +434,12 @@ Sidereal Time: <span id="siderealTime2"></span></p>
 </div> <!-- end of starCharts -->
 <br />
 </div> <!-- end of wrapper -->
-
+    
+<noscript>
+<h2>Oops!</h2>
+<p>You must enable JavaScript to use this page.</p>
+<p>Please enable JavaScript and reload. </p>
+</noscript>
+    
 </body>
 </html>
