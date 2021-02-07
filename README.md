@@ -2,7 +2,7 @@
 
 This package contains two HTML pages [local star charts](https://ytliu0.github.io/starCharts/) and [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS.html). 
 
-The [local star charts](https://ytliu0.github.io/starCharts/) webpage uses the computer's clock to obtain the current local time and then uses it to calculate the local sidereal times and plot star charts on two locations. 
+The [local star charts](https://ytliu0.github.io/starCharts/) webpage uses the computer's clock to obtain the current local time and then uses it to calculate the local sidereal times and plot star charts at two locations. 
 
 The [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS.html) webpage uses the computer's clock to obtain the current time and plot star charts showing the positions of the Sun, Moon, planets and stars on three star charts based on the equatorial coordinate system associated with J2000.0 mean equator and equinox. 
 
@@ -18,6 +18,9 @@ All calculations are done using JavaScript. The physics and mathematics involved
 - core_min.js: combine dateAndTime.js, brightStars.js, milkyWay.js, precession.js and SunMoonPlanets.js in the src folder
 - sseph_min.js: combine MoonElpMpp02DE.js, Mercury.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js and planetPosVSOP87.js in the src folder
 - sidereal_min.js: combine sidereal.js, animation.js and riseSetTimes.js in the src folder
+- cities.js: contain data of major cities in the world
+- city.html: List all cities in cities.js
+- set_defaults.html, set_defaults.js: A tool that generates URL query strings for customizing the initial settings in index.html
 - docs/star_charts.pdf: pdf document describes the physics and mathematics involved in the calculations on the two webpages.
 - docs/star_charts.tex: LaTeX file for docs/star_charts.pdf.
 - docs/*.jpg: jpg files of the figures in docs/star_charts.pdf.

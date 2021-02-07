@@ -193,8 +193,8 @@ local mean sidereal time LMST computed using equations~(\ref{eq:LST}), (\ref{def
 (\ref{eq:GST}), (\ref{eq:Eprec}) and (\ref{def:DeltaT}) with UT1 replaced by UTC 
 obtained from the computer clock or obtained from user input. 
 TT is calculated by ${\rm TT = UT1}+\Delta T$ 
-with $\Delta T$ computed by the fitting formulae of 
-\href{https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html}{Espenak and Meeus}.
+with $\Delta T$ computed by the polynomial expressions on 
+\href{http://eclipsewise.com/help/deltatpoly2014.html}{EclipseWise.com}.
 
 In the actual code, GMST (in hours) is computed by the expression 
 \beqn
@@ -1577,7 +1577,7 @@ improve the accuracy of a star's position.
 Geocentric apparent positions of stars at a given time are required to plot 
 the stars in the GCRS star charts. Topocentric apparent positions of stars 
 are required to plot the stars in the local star charts. 
-Chapter~7 of \expl provides a detailed procedure in computing the apparent 
+Chapter~7 of \expl{} provides a detailed procedure in computing the apparent 
 positions of stars. For geocentric apparent positions, the stars' 
 space motion, \href{https://en.wikipedia.org/wiki/Parallax}{annual parallax}, 
 \href{http://www.einstein-online.info/spotlights/light_deflection.html}{gravitational 
@@ -1976,7 +1976,7 @@ where $m_0$ is a constant and $\Delta m(\phi)$ is the variation of apparent
 magnitude as a function of $\phi$. The variation arises from the fraction of 
 the planet illuminated and the property of diffuse reflection from the planet's 
 surface/atmosphere. The function $\Delta m(\phi)$ is determined empirically and is 
-listed in Table~10.6 of \expl and 
+listed in Table~10.6 of \expl{} and 
 \href{http://www.uscibooks.com/urban_errata.pdf}{errata}. 
 The table is reproduced below with errors corrected. The phase angle $\phi$ is 
 in degrees.
@@ -2379,8 +2379,8 @@ is the TT Julian century from J2000.0 at $D_{Um}$. In other words,
 \eeq
 where $\Delta T$ is the difference between TT and UT1 described in Section~\ref{sec:DeltaT}. 
 The Greenwich sidereal time GMST is calculated using equation~(\ref{eq:GMST}) and 
-$\Delta T$ is calculated using the fitting formula by 
-\href{https://eclipse.gsfc.nasa.gov/SEcat5/deltatpoly.html}{Espenak and Meeus}. 
+$\Delta T$ is calculated using the polynomial expressions on 
+\href{http://eclipsewise.com/help/deltatpoly2014.html}{EclipseWise.com}. 
 The sidereal time $t_s$ at any later time of the date is given by 
 $t_s=t_{s0}+1.00273781191135448 h'$, where $h'=24(D_U-D_{Um})$ is the number of hours 
 past the local midnight. The local times at which the setting and rising of the star 
