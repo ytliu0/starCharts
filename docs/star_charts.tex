@@ -14,7 +14,7 @@
 \begin{document}
 \title{Calculations in Star Charts}
 \author{\href{https://publish.illinois.edu/ytliu/}{Yuk Tung Liu}}
-\date{2018-07-10}
+\date{First draft: 2018-07-10, last update: 2021-03-07}
 \maketitle
 
 This document lists the equations used in the calculations 
@@ -193,8 +193,10 @@ local mean sidereal time LMST computed using equations~(\ref{eq:LST}), (\ref{def
 (\ref{eq:GST}), (\ref{eq:Eprec}) and (\ref{def:DeltaT}) with UT1 replaced by UTC 
 obtained from the computer clock or obtained from user input. 
 TT is calculated by ${\rm TT = UT1}+\Delta T$ 
-with $\Delta T$ computed by the polynomial expressions on 
-\href{http://eclipsewise.com/help/deltatpoly2014.html}{EclipseWise.com}.
+with $\Delta T$ computed by the fitting and extrapolation formulae by 
+\href{https://royalsocietypublishing.org/doi/10.1098/rspa.2016.0404}{Stephenson et al (2016)} 
+and \href{https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0776}{Morrison et al 2021} 
+(see Section~\ref{sec:DeltaT} below).
 
 In the actual code, GMST (in hours) is computed by the expression 
 \beqn
@@ -389,12 +391,36 @@ the Sun, Moon, planets and stars are based on TT. The only exception is
 computing the sidereal time, in which there is a term linear in UT1 by
 definition.
 
-\href{http://eclipsewise.com/help/deltat.html}{Past values of $\Delta T$} 
-can be deduced from historical records. Analytic expressions for $\Delta T$ 
-have been derived to fit the data. On our webpages, the value of 
-$\Delta T$ is computed using the polynomial expressions from Espenak's 
-\href{http://eclipsewise.com/help/deltatpoly2014.html}{EclipseWise.com} 
-to convert UT1 to TT. 
+Because of the irregularity of Earth's rotation, UT1 and $\Delta T$ must be 
+determined by observations. Future values of $\Delta T$ may be extrapolated 
+from the current data, but the uncertainty grows with time. We also don't have 
+accurate observational data for $\Delta T$  before 1600. $\Delta T$ on our 
+webpages are calculated using the fitting and extrapolation formulae by 
+\href{https://royalsocietypublishing.org/doi/10.1098/rspa.2016.0404}{Stephenson et al (2016)} 
+and \href{https://royalsocietypublishing.org/doi/10.1098/rspa.2020.0776}{Morrison et al (2021)} 
+(see also the \href{http://astro.ukho.gov.uk/nao/lvm/}{HMNAO Earth rotation webpage} 
+for a summary). 
+Specifically, values of $\Delta T$ from -720 to 2019 are computed using their 
+\href{http://astro.ukho.gov.uk/nao/lvm/Table-S15.2020.txt}{spline fit cubic polynomials}. 
+Outside this range $\Delta T$ is extrapolated by integrating their long-term lod function:
+\beqn
+ t &=& (y - 1825)/100 \ \ , \ \  f(y) = 31.4115t^2 + 284.8436 \cos [2\pi(t + 0.75)/14] , \\
+ \Delta T &=& \left\{ \begin{array}{cc} c_1 + f(y) & \mbox{ for } y < -720 \\
+c_2 + f(y) & \mbox{ for } y > 2019 \end{array} \right. ,
+\eeqn
+where $y$ is year, $t$ is the number of centuries from 1825, $c_1=1$ and 
+$c_2=-150.263$. The formula gives $\Delta T$ in seconds. The values of $c_1$ and $c_2$
+are chosen to make $\Delta T$ continuous at $y=-720$ and $y=2019$. For a given Julian 
+date number $JD$, $y$ may be calculated by $y = (JD-2451544.5)/365.2425 + 2000$ for 
+$JD \geq 2299160.5$ and $y = (JD+0.5)/365.25 - 4712$ for $JD < 2299160.5$. The value 
+2299160.5 is the JD at 0h on October 15, 1582, which was the date when the Western 
+calendar was switched from the Julian calendar to Gregorian calendar. 
+
+These fitting and extrapolation formulae are from the most recent study 
+of $\Delta T$ that I am aware of. I have employed these new formulae on my 
+\href{http://ytliu.epizy.com/eclipse/}{eclipse website}. I have also created 
+a \href{https://github.com/ytliu0/DeltaT}{GitHub repository} to provide python 
+functions to calculate $\Delta T$ and to provide error estimates.
 
 \section{Calendars}
 
@@ -2379,8 +2405,8 @@ is the TT Julian century from J2000.0 at $D_{Um}$. In other words,
 \eeq
 where $\Delta T$ is the difference between TT and UT1 described in Section~\ref{sec:DeltaT}. 
 The Greenwich sidereal time GMST is calculated using equation~(\ref{eq:GMST}) and 
-$\Delta T$ is calculated using the polynomial expressions on 
-\href{http://eclipsewise.com/help/deltatpoly2014.html}{EclipseWise.com}. 
+$\Delta T$ is calculated using the fitting and extrapolation formulae of 
+\href{http://astro.ukho.gov.uk/nao/lvm/}{Stephenson et al (2016) and Morrison et al (2021)}. 
 The sidereal time $t_s$ at any later time of the date is given by 
 $t_s=t_{s0}+1.00273781191135448 h'$, where $h'=24(D_U-D_{Um})$ is the number of hours 
 past the local midnight. The local times at which the setting and rising of the star 
