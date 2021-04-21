@@ -582,7 +582,7 @@ function drawLineInChart(ctx,array,gpara) {
 
 // Draw Milky Way polygons
 function drawMW_polypons(ctx, mwPoly, gpara) {
-    const max_alpha = 0.7, fillColor = "#fff44f";
+    const max_alpha = 0.7, fillColor = "#7FFFD4";
     ctx.save();
     if (gpara.projection=='stereographic') {
         // clip

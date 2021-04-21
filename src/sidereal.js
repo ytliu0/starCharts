@@ -1380,7 +1380,7 @@ function drawMilkyWay(Ctx,LST,milky,cosLat,sinLat,gpara,pDraw) {
     
     // Draw polygons
     Ctx.save();
-    let fillColor = (pDraw.showDayNight && gpara.altSun < -6 ? "#668cff":"#fff44f");
+    let fillColor = (pDraw.showDayNight && gpara.altSun < -6 ? "#668cff":"#7FFFD4");
     // add clipping
     Ctx.beginPath();
     Ctx.arc(gpara.xc, gpara.yc, gpara.r, 0, 2*Math.PI);
