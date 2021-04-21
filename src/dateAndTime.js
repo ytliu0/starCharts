@@ -260,7 +260,7 @@ function generateTimeString(h,m,s) {
     return hh+":"+mm+":"+ss;
 }
 
-function showHide(name) {
+function showHide2(name) {
     $("#show"+name).toggleClass("active");
     starCharts();
 }

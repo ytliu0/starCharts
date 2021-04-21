@@ -22,16 +22,20 @@ let magLimit = 5.3; // limiting magnitude
 let magLimitTip = 5.3; // limit. mag. for stars to show a popup box
 // Save Milky Way boundaries' positions for the dates in the two locations 
 // initialize the arrays
-let milkyLoc = [];
-milkyLoc[0] = {northernEdge:northernEdge(), 
-               southernEdge:southernEdge(), 
-               betaCas:betaCas(), thetaOph:thetaOph(), 
-               lambdaSco:lambdaSco(), 
-               coalsack:coalsack()};
-milkyLoc[1] = {northernEdge:northernEdge(), 
-               southernEdge:southernEdge(), 
-               betaCas:betaCas(), thetaOph:thetaOph(), lambdaSco:lambdaSco(), 
-               coalsack:coalsack()};
+//let milkyLoc = [];
+//milkyLoc[0] = {northernEdge:northernEdge(), 
+//               southernEdge:southernEdge(), 
+//               betaCas:betaCas(), thetaOph:thetaOph(), 
+//               lambdaSco:lambdaSco(), 
+//               coalsack:coalsack()};
+//milkyLoc[1] = {northernEdge:northernEdge(), 
+//               southernEdge:southernEdge(), 
+//               betaCas:betaCas(), thetaOph:thetaOph(), lambdaSco:lambdaSco(), 
+//               coalsack:coalsack()};
+
+let milkyPolyLoc = [];
+milkyPolyLoc[0] = {Tepoch:0, poly:mw_poly(), sb:mw_sb()};
+milkyPolyLoc[1] = {Tepoch:0, poly:mw_poly(), sb:mw_sb()};
 
 // Initial setup
 function init() {
@@ -168,8 +172,8 @@ function initial_settings_from_url(p, D, loc) {
     }
     // show/hide buttons
     let butts = ['showPlanets', 'showEquator', 'showEcliptic', 
-                'showMilkyWay', 'showConLines', 'showConLab', 
-                'showDayNight'];
+                'showGalactic','showMilkyWay', 'showConLines', 
+                'showConLab', 'showDayNight'];
     // change the status of the show/hide buttons if the keys 
     // are present in the query string
     butts.forEach(function(x) {
@@ -774,6 +778,7 @@ function starChartLoc(loc) {
     pDraw.showPlanets = $("#showPlanets"+locStr).hasClass("active");
     pDraw.showEquator = $("#showEquator"+locStr).hasClass("active");
     pDraw.showEcliptic = $("#showEcliptic"+locStr).hasClass("active");
+    pDraw.showGalactic = $("#showGalactic"+locStr).hasClass("active");
     pDraw.showMilkyWay = $("#showMilkyWay"+locStr).hasClass("active");
     pDraw.showConLines = $("#showConLines"+locStr).hasClass("active");
     pDraw.showConLab = $("#showConLab"+locStr).hasClass("active");
@@ -786,17 +791,26 @@ function starChartLoc(loc) {
         }
     }
     if (pDraw.showMilkyWay) {
-        objects.milky.north = milkyLoc[loc-1].northernEdge;
-        objects.milky.south = milkyLoc[loc-1].southernEdge;
-        objects.milky.betaCas = milkyLoc[loc-1].betaCas;
-        objects.milky.thetaOph = milkyLoc[loc-1].thetaOph;
-        objects.milky.lambdaSco = milkyLoc[loc-1].lambdaSco;
-        objects.milky.coalsack = milkyLoc[loc-1].coalsack;
-        T0 = objects.milky.north[0].Tepoch;
+//        objects.milky.north = milkyLoc[loc-1].northernEdge;
+//        objects.milky.south = milkyLoc[loc-1].southernEdge;
+//        objects.milky.betaCas = milkyLoc[loc-1].betaCas;
+//        objects.milky.thetaOph = milkyLoc[loc-1].thetaOph;
+//        objects.milky.lambdaSco = milkyLoc[loc-1].lambdaSco;
+//        objects.milky.coalsack = milkyLoc[loc-1].coalsack;
+        objects.milky.polyTepoch = milkyPolyLoc[loc-1].Tepoch;
+        objects.milky.poly = milkyPolyLoc[loc-1].poly;
+        objects.milky.sb = milkyPolyLoc[loc-1].sb;
+        //T0 = objects.milky.north[0].Tepoch;
+        T0 = objects.milky.polyTepoch;
         if (Math.abs(TD-T0) > 0.1) { 
             milkyWayBoundaryPrecession(objects.milky,T0,TD);
+            milkyPolyLoc[loc-1].Tepoch = TD;
+            objects.milky.polyTepoch = TD;
         }
-        var raDec = galacticNorthPole(TD);
+    }
+    
+    if (pDraw.showGalactic) {
+        let raDec = galacticNorthPole(TD);
         pDraw.galPoleRa = raDec.ra;
         pDraw.galPoleDec = raDec.dec;
     }
@@ -847,22 +861,22 @@ function starChartLoc(loc) {
 
 function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
     // set up canvas
-    var Ctx = Canvas.getContext('2d');
+    let Ctx = Canvas.getContext('2d');
     Ctx.clearRect(0, 0, Canvas.width, Canvas.height);
     
-    var cosLat = Math.cos(lat), sinLat = Math.sin(lat);
-    var halfPI = 0.5*Math.PI;
-    var twoPI = 2*Math.PI;
+    let cosLat = Math.cos(lat), sinLat = Math.sin(lat);
+    let halfPI = 0.5*Math.PI;
+    let twoPI = 2*Math.PI;
     
    // Draw circle on canvas
-   var r = 0.47*Math.max(Canvas.width, Canvas.height);
-   var xc = 0.5*Canvas.width;
-   var yc = 0.5*Canvas.height;
+   let r = 0.47*Math.max(Canvas.width, Canvas.height);
+   let xc = 0.5*Canvas.width;
+   let yc = 0.5*Canvas.height;
     
    // Calculate the altitude of the Sun (in degrees)
-   var raDec = {ra:objects.planets[0].ra, dec:objects.planets[0].dec};
-   var hor = ra_dec_to_alt_az(raDec, LST, cosLat,sinLat);
-   var altSun = hor.alt*180/Math.PI;
+   let raDec = {ra:objects.planets[0].ra, dec:objects.planets[0].dec};
+   let hor = ra_dec_to_alt_az(raDec, LST, cosLat,sinLat);
+   let altSun = hor.alt*180/Math.PI;
     
    Ctx.beginPath();
    Ctx.setLineDash([]);
@@ -870,7 +884,7 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
    // Determine the background color depending on the 
    // altitude of the Sun: black if the altSun < -18 deg, 
    // light blue if altSun > 0, gray otherwise
-   var b = 255, b1 = 255;
+   let b = 255, b1 = 255;
    if (pDraw.showDayNight) {
        b = Math.round(255*(1 + altSun/18));
        b = Math.min(b,255);
@@ -883,7 +897,7 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
    Ctx.stroke();
     
    // Canvas parameters
-   var gpara = {halfPI:halfPI, xc:xc, yc:yc, r:r, r2:r*r, 
+   let gpara = {halfPI:halfPI, xc:xc, yc:yc, r:r, r2:r*r, 
                 altSun:altSun, rotate:pDraw.rotate, 
                cosRotAng:pDraw.cosRotAng, 
                sinRotAng:pDraw.sinRotAng};
@@ -891,10 +905,19 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
    drawAzimuthLabels(Ctx,gpara);
     
    // Draw the equator, ecliptic and galactic equator
-   var pole;
+   let pole;
+   if (pDraw.showMilkyWay) {
+        drawMilkyWay(Ctx,LST,objects.milky,cosLat,sinLat,gpara,pDraw);
+   }
+    if (pDraw.showGalactic) {
+        // Draw galactic equator
+        pole = {ra:pDraw.galPoleRa, dec:pDraw.galPoleDec, 
+               linestyle:[14,15], color:"magenta"};
+        drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara);
+    }
    if (pDraw.showEquator) {
        // celestial north pole: dec = pi/2
-       var eqColor = "black";
+       let eqColor = "black";
        if (b < 170) {eqColor = "yellow";}
        pole = {ra:0, dec:halfPI, 
                linestyle:[], color:eqColor};
@@ -902,21 +925,14 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
    }
    if (pDraw.showEcliptic) {
        // Ecliptic north pole: ra=-pi/2, dec = pi/2-epsilon
-       var ecColor = "brown";
+       let ecColor = "brown";
        if (b < 170) {ecColor="yellow";}
        pole = {ra:-0.5*Math.PI, dec:pDraw.eclipticNorthPoleDec, 
                linestyle:[10,15], color:ecColor};
        drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara);
    }
-    if (pDraw.showMilkyWay) {
-     drawMilkyWay(Ctx,LST,objects.milky,cosLat,sinLat,gpara,pDraw);
-        // Draw galactic equator
-        pole = {ra:pDraw.galPoleRa, dec:pDraw.galPoleDec, 
-               linestyle:[14,15], color:"magenta"};
-        drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara);
-    }
     
-    var newStar;
+    let newStar;
     if (pDraw.showConLines || tipsEnabled) {
         if (tipsEnabled) {
             newStar = new Array(objects.stars.length);
@@ -926,11 +942,10 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
         drawConstellationLinesAndSetupTips(Ctx, objects.conLines, objects.stars, LST, cosLat,sinLat, gpara, pDraw, newStar);
     }
     
-   var i,x,y,s;
-   var coord;
+   let i,x,y,s,coord;
     
    // Draw stars above the horizon
-   var n = objects.stars.length; 
+   let n = objects.stars.length; 
    if (b < 170) {
        Ctx.fillStyle = "white";
    } else {
@@ -984,7 +999,7 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
            coord = ra_dec_to_xy_above(raDec, LST, cosLat,sinLat, gpara);
            if (coord.x > -998) {
               x = coord.x; y = coord.y;
-              var pSymbol = String.fromCharCode(pDraw.code[i]);
+              let pSymbol = String.fromCharCode(pDraw.code[i]);
               Ctx.fillStyle = pDraw.color[i];
               Ctx.fillText(pSymbol,
                            x+pDraw.offset[i].x, y+pDraw.offset[i].y);
@@ -1311,13 +1326,24 @@ function drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara) {
 
 // Precessed the ra and dec of the milky way boundary
 function milkyWayBoundaryPrecession(milky,T0,T) {
-    var p = precession_matrix(T0,T-T0);
-    addPrecession(milky.north,p,T);
-    addPrecession(milky.south,p,T);
-    addPrecession(milky.betaCas,p);
-    addPrecession(milky.thetaOph,p,T);
-    addPrecession(milky.lambdaSco,p,T);
-    addPrecession(milky.coalsack,p,T);
+    let p = precession_matrix(T0,T-T0);
+//    addPrecession(milky.north,p,T);
+//    addPrecession(milky.south,p,T);
+//    addPrecession(milky.betaCas,p);
+//    addPrecession(milky.thetaOph,p,T);
+//    addPrecession(milky.lambdaSco,p,T);
+//    addPrecession(milky.coalsack,p,T);
+    // precess the data in polygons
+    let n = milky.poly.length;
+    for (let i=0; i<n; i++) {
+        let np = milky.poly[i].length;
+        for (let j=0; j<np; j++) {
+            let precessed = precessed_ra_dec(milky.poly[i][j][0], 
+                                             milky.poly[i][j][1], p);
+            milky.poly[i][j][0] = precessed.ra;
+            milky.poly[i][j][1] = precessed.dec;
+        }
+    }
 }
 
 // Add precession to the ra and dec in array
@@ -1325,8 +1351,8 @@ function milkyWayBoundaryPrecession(milky,T0,T) {
 function addPrecession(array,p,T) {
     array[0].epoch = "";
     array[0].Tepoch = T;
-    for (var i=1; i<array.length; i++) {
-        var precessed = precessed_ra_dec(array[i].ra,
+    for (let i=1; i<array.length; i++) {
+        let precessed = precessed_ra_dec(array[i].ra,
                                      array[i].dec,p);
         array[i].ra = precessed.ra;
         array[i].dec = precessed.dec;
@@ -1335,26 +1361,68 @@ function addPrecession(array,p,T) {
 
 // Draw Milky Way boundary 
 function drawMilkyWay(Ctx,LST,milky,cosLat,sinLat,gpara,pDraw) {
-    if (pDraw.showDayNight && gpara.altSun < -6) {
-        Ctx.strokeStyle = "yellow";
-    } else {
-        Ctx.strokeStyle = "blue";
+//    if (pDraw.showDayNight && gpara.altSun < -6) {
+//        Ctx.strokeStyle = "yellow";
+//    } else {
+//        Ctx.strokeStyle = "blue";
+//    }
+//    Ctx.setLineDash([]);
+//    
+//    // Northern edge
+//    drawLineAboveHorizon(Ctx,LST,milky.north,cosLat,sinLat,gpara);
+//    // Southhern edge
+//    drawLineAboveHorizon(Ctx,LST,milky.south,cosLat,sinLat,gpara);
+//    // Others
+//    drawLineAboveHorizon(Ctx,LST,milky.betaCas,cosLat,sinLat,gpara);
+//    drawLineAboveHorizon(Ctx,LST,milky.thetaOph,cosLat,sinLat,gpara);
+//    drawLineAboveHorizon(Ctx,LST,milky.lambdaSco,cosLat,sinLat,gpara);
+//    drawLineAboveHorizon(Ctx,LST,milky.coalsack,cosLat,sinLat,gpara);
+    
+    // Draw polygons
+    Ctx.save();
+    let fillColor = (pDraw.showDayNight && gpara.altSun < -6 ? "#668cff":"#fff44f");
+    // add clipping
+    Ctx.beginPath();
+    Ctx.arc(gpara.xc, gpara.yc, gpara.r, 0, 2*Math.PI);
+    Ctx.clip();
+    draw_mw_polygon(Ctx, LST, milky.poly, milky.sb, 
+                    cosLat,sinLat, gpara, fillColor);
+    Ctx.restore();
+}
+
+// Draw Milky Way polygons
+function draw_mw_polygon(Ctx, LST, mwpoly, sb, cosLat,sinLat, gpara, fillColor) {
+    const max_alpha = 0.7;
+    Ctx.lineWidth = 0.2;
+    Ctx.fillStyle = fillColor;
+    Ctx.strokeStyle = fillColor;
+    mwpoly.forEach(draw_one_polygon);
+    
+    function draw_one_polygon(poly, ind) {
+        function dist2(p) {
+            let dx = p.x - gpara.xc, dy = p.y - gpara.yc;
+            return dx*dx + dy*dy;
+        }
+        
+        let coords = poly.map(function(x) {
+            let xy = ra_dec_to_xy({ra:x[0], dec:x[1]}, LST, cosLat,sinLat, gpara);
+            return xy;
+        });
+        let R2 = coords.map(dist2);
+        if (Math.min.apply(null, R2) >= gpara.r2) {
+            // the entire polygon is outside the plot range
+            return;
+        }
+        Ctx.beginPath();
+        Ctx.moveTo(coords[0].x, coords[0].y);
+        let n = coords.length;
+        for (let i=1; i<n; i++) {
+            Ctx.lineTo(coords[i].x, coords[i].y);
+        }
+        Ctx.globalAlpha = max_alpha*sb[ind];
+        Ctx.stroke();
+        Ctx.fill();
     }
-    Ctx.setLineDash([]);
-    //Ctx.lineWidth=2;
-    
-    // Northern edge
-    drawLineAboveHorizon(Ctx,LST,milky.north,cosLat,sinLat,gpara);
-    // Southhern edge
-    drawLineAboveHorizon(Ctx,LST,milky.south,cosLat,sinLat,gpara);
-    // Others
-    drawLineAboveHorizon(Ctx,LST,milky.betaCas,cosLat,sinLat,gpara);
-    drawLineAboveHorizon(Ctx,LST,milky.thetaOph,cosLat,sinLat,gpara);
-    drawLineAboveHorizon(Ctx,LST,milky.lambdaSco,cosLat,sinLat,gpara);
-    drawLineAboveHorizon(Ctx,LST,milky.coalsack,cosLat,sinLat,gpara);
-    
-    // reset line width
-    //Ctx.lineWidth=1;
 }
 
 // Connect the points in 'array' to a line. Only draw the points 

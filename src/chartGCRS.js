@@ -1,22 +1,18 @@
 "use strict";
 
 // Set up global variables
-var date; // date and time
+let date; // date and time
 // Tooltips (popup box, to be more accurate) setup
-var tipsEnabled, tips, highPrecCalInTips; 
-var magLimitTip = 5.3; // limiting mag. for stars to display popup
+let tipsEnabled, tips, highPrecCalInTips; 
+let magLimitTip = 5.3; // limiting mag. for stars to display popup
 // Save stars' positions for the current time
 // initialize the arrays
-var stars = brightStars(), conLab = constellationLabel();
-var conLine = constellationLines();
-var magLimit = 5.3; // limiting magnitude
+let stars = brightStars(), conLab = constellationLabel();
+let conLine = constellationLines();
+let magLimit = 5.3; // limiting magnitude
 // Save Milky Way boundaries' positions for the current time
 // initialize the arrays
-var milky = {northernEdge:northernEdge(), 
-               southernEdge:southernEdge(), 
-               betaCas:betaCas(), thetaOph:thetaOph(), 
-               lambdaSco:lambdaSco(), 
-               coalsack:coalsack()};
+let milkyPoly = {poly:mw_poly(), sb:mw_sb()};
 
 // Set the default animation parameters
 var animateDtStep = 1; // number of days per step
@@ -29,17 +25,17 @@ function init() {
     var d = new Date(); // current time from computer's clock
     
     // Set up the object date
-    var yyyy = d.getUTCFullYear();
-    var mm = d.getUTCMonth()+1;
-    var dd = d.getUTCDate();
-    var h = d.getUTCHours();
-    var m = d.getUTCMinutes();
-    var s = d.getUTCSeconds()+1e-3*d.getUTCMilliseconds();
-    var dateString = generateDateString(yyyy,mm,dd);
-    var timeString = generateTimeString(h,m,s);
-    var D = getDm(yyyy,mm,dd,0) + (h+m/60+s/3600)/24;
-    var T = D/36525;
-    var dT = DeltaT(T);
+    let yyyy = d.getUTCFullYear();
+    let mm = d.getUTCMonth()+1;
+    let dd = d.getUTCDate();
+    let h = d.getUTCHours();
+    let m = d.getUTCMinutes();
+    let s = d.getUTCSeconds()+1e-3*d.getUTCMilliseconds();
+    let dateString = generateDateString(yyyy,mm,dd);
+    let timeString = generateTimeString(h,m,s);
+    let D = getDm(yyyy,mm,dd,0) + (h+m/60+s/3600)/24;
+    let T = D/36525;
+    let dT = DeltaT(T);
     date = {yyyy:yyyy, mm:mm, dd:dd, h:h, m:m, s:s,
              dateString:dateString, 
              timeString:timeString, D:D, T:T, dT:dT};
@@ -141,9 +137,9 @@ function changeTimeAction(form) {
 // Draw star charts on the canvases
 function starCharts() {
     if (Math.abs(date.yyyy) > 3000) {
-        var txt0 = $(".warning").text();
+        let txt0 = $(".warning").text();
         if (txt0=="") {
-            var txt = '<p style="color:red;">Warning: Positions of the Sun, Moon and planets are not accurate at this time.</p>';
+            let txt = '<p style="color:red;">Warning: Positions of the Sun, Moon and planets are not accurate at this time.</p>';
             $(".warning").append(txt);
         }
     } else {
@@ -152,13 +148,13 @@ function starCharts() {
         }
     }
         
-    var hr_to_rad = Math.PI/12;
-    var deg_to_rad = Math.PI/180;
-    var raCentralNorth = $("#rotateNorth").val()*deg_to_rad;
-    var raCentral = $("#raCentral").val()*hr_to_rad;
-    var raCentralSouth = $("#rotateSouth").val()*deg_to_rad;
+    let hr_to_rad = Math.PI/12;
+    let deg_to_rad = Math.PI/180;
+    let raCentralNorth = $("#rotateNorth").val()*deg_to_rad;
+    let raCentral = $("#raCentral").val()*hr_to_rad;
+    let raCentralSouth = $("#rotateSouth").val()*deg_to_rad;
     // Set up paramaters for drawing stars and planets
-    var pDraw = setupDrawingParameters();
+    let pDraw = setupDrawingParameters();
     addLegend(pDraw);
     
     pDraw.showPlanets = $("#showPlanets").hasClass("active");
@@ -166,15 +162,16 @@ function starCharts() {
         pDraw.planets = sunMoonPlanets(date.T + date.dT);
     }
     pDraw.showEcliptic = $("#showEcliptic").hasClass("active");
+    pDraw.showGalactic = $("#showGalactic").hasClass("active");
     pDraw.showMilkyWay = $("#showMilkyWay").hasClass("active");
     pDraw.showConLab = $("#showConLab").hasClass("active");
     
-    var TD = date.T + date.dT;
+    let TD = date.T + date.dT;
     if (Math.abs(TD - stars[0].Tepoch) > 0.5) {
         recomputeStarPos(TD, stars);
     }
     
-    var inputParas = {timeId:"timeNorth",
+    let inputParas = {timeId:"timeNorth",
                   canvasId:"canvasNorth", 
                   projection:"stereographic",
                   centralRa:raCentralNorth, centralDec:0.5*Math.PI, 
@@ -206,29 +203,32 @@ function starCharts() {
 
 // Draw a star chart on one canvas
 function drawStarChart(para) {
-    var txt = date.dateString+" "+date.timeString+" UT";
+    let txt = date.dateString+" "+date.timeString+" UT";
     $('#'+para.timeId).text(txt);
-    var canvas = document.getElementById(para.canvasId);
-    var ctx = canvas.getContext('2d');
-    var width = canvas.width, height = canvas.height;
+    let canvas = document.getElementById(para.canvasId);
+    let ctx = canvas.getContext('2d');
+    let width = canvas.width, height = canvas.height;
     ctx.clearRect(0, 0, width, height);
     
     drawChartBoundaryAndGrid(ctx,canvas,para);
     
     var raDec;
+    if (para.pDraw.showMilkyWay) {
+        drawMilkyWay(ctx, para);
+        ctx.setLineDash([]);
+        ctx.strokeStyle = "#ff4dff";
+    }
+    
+    if (para.pDraw.showGalactic) {
+        drawCircle(ctx,3.366012906575397,0.4734787372451951, para);
+    }
+    
     if (para.pDraw.showEcliptic) {
         //raPole = -0.5*Math.PI; decPole = 1.16170371649804;
         raDec = getEclipticNorthPole(date.T+date.dT);
         ctx.setLineDash([]);
         ctx.strokeStyle = "brown";
         drawCircle(ctx,raDec.ra,raDec.dec,para);
-    }
-    
-    if (para.pDraw.showMilkyWay) {
-        drawMilkyWay(ctx, para);
-        ctx.setLineDash([]);
-        ctx.strokeStyle = "#ff4dff";
-        drawCircle(ctx,3.366012906575397,0.4734787372451951, para);
     }
     
     drawStars(ctx, canvas, para);
@@ -242,24 +242,24 @@ function drawStarChart(para) {
 }
 
 function drawChartBoundaryAndGrid(ctx,canvas,para) {
-    var SQR = function(x) {return x*x;}
-    var r = 0.465*Math.max(canvas.width, canvas.height);
-    var xc = 0.5*canvas.width;
-    var yc = 0.5*canvas.height;
-    var i,n;
+    let SQR = function(x) {return x*x;}
+    let r = 0.465*Math.max(canvas.width, canvas.height);
+    let xc = 0.5*canvas.width;
+    let yc = 0.5*canvas.height;
+    let i,n;
     para.r = r; para.r2 = r*r; para.xc = xc; para.yc = yc;
     
     // Draw ra and dec grid 
-    var showPrecession = $("#showPrecession").hasClass("active");
-    var p,ra1,dec1,ra2,dec2,ra,dec;
+    let showPrecession = $("#showPrecession").hasClass("active");
+    let p,ra1,dec1,ra2,dec2,ra,dec;
     if (showPrecession) {
         var TD = date.T + date.dT;
         p = precession_matrix(TD, -TD);
     }
     n = 180
     // ra grid
-    var ddec = Math.PI/(n-1);
-    var raDec;
+    let ddec = Math.PI/(n-1);
+    let raDec;
     ctx.setLineDash([]);
     for (ra=para.raGrid[0]; ra <= para.raGrid[1]; ra += para.raGrid[2]) {
         ra1 = ra - 2*Math.PI*Math.floor(0.5*ra/Math.PI);
@@ -293,7 +293,7 @@ function drawChartBoundaryAndGrid(ctx,canvas,para) {
         }
     }
     // dec grid
-    var dra = 2*ddec;
+    let dra = 2*ddec;
     for (dec=para.decGrid[0]; dec <= para.decGrid[1]; dec += para.decGrid[2]) {
         dec1 = dec;
         ra1 = 0;
@@ -324,14 +324,14 @@ function drawChartBoundaryAndGrid(ctx,canvas,para) {
             break;
         case "Mollweide":
             n = 100;
-            var dtheta = 2*Math.PI/(n-1);
+            let dtheta = 2*Math.PI/(n-1);
             ctx.beginPath();
             ctx.setLineDash([]);
             ctx.moveTo(xc-r,yc);
             for (i=1; i<n; i++) {
-                var theta = i*dtheta - Math.PI;
-                var x = xc + r*Math.cos(theta);
-                var y = yc - 0.5*r*Math.sin(theta);
+                let theta = i*dtheta - Math.PI;
+                let x = xc + r*Math.cos(theta);
+                let y = yc - 0.5*r*Math.sin(theta);
                 ctx.lineTo(x,y);
             }
             ctx.strokeStyle = "black";
@@ -339,12 +339,12 @@ function drawChartBoundaryAndGrid(ctx,canvas,para) {
     }
     
     // Add Ra labels on the polar charts
-    var deg_to_rad = Math.PI/180;
-    var fontSize = 15;
+    let deg_to_rad = Math.PI/180;
+    let fontSize = 15;
     ctx.txtAlign = "center";
     ctx.fillStyle = "black";
     ctx.font = fontSize.toString()+"px Arial";
-    var x,y,txt,w, ang,ra;
+    let x,y,txt,w, ang;
     if (para.canvasId=="canvasNorth") {
         ang = -parseFloat($("#rotateNorth").val())*deg_to_rad;
         for (ra=0; ra<24; ra += 2) {
@@ -553,17 +553,19 @@ function drawCircle(ctx,raPole,decPole,gpara) {
 
 // Draw Milky Way Boundaries
 function drawMilkyWay(ctx, gpara) {
-    ctx.setLineDash([]);
-    ctx.strokeStyle = "blue";
+    //ctx.setLineDash([]);
+    //ctx.strokeStyle = "blue";
     // Northern edge
-    drawLineInChart(ctx,milky.northernEdge,gpara);
+    //drawLineInChart(ctx,milky.northernEdge,gpara);
     // Southhern edge
-    drawLineInChart(ctx,milky.southernEdge,gpara);
+    //drawLineInChart(ctx,milky.southernEdge,gpara);
     // Others
-    drawLineInChart(ctx,milky.betaCas,gpara);
-    drawLineInChart(ctx,milky.thetaOph,gpara);
-    drawLineInChart(ctx,milky.lambdaSco,gpara);
-    drawLineInChart(ctx,milky.coalsack,gpara);
+    //drawLineInChart(ctx,milky.betaCas,gpara);
+    //drawLineInChart(ctx,milky.thetaOph,gpara);
+    //drawLineInChart(ctx,milky.lambdaSco,gpara);
+    //drawLineInChart(ctx,milky.coalsack,gpara);
+    
+    drawMW_polypons(ctx, milkyPoly, gpara);
 }
 
 // Connect the points in 'array' to a line. Only draw the points 
@@ -572,10 +574,157 @@ function drawMilkyWay(ctx, gpara) {
 // calls the addLine() function to join lines for all points 
 // inside 'array' that are in the chart.
 function drawLineInChart(ctx,array,gpara) {
-   for (var i=2; i < array.length; i++) {
+   for (let i=2; i < array.length; i++) {
         addLine(ctx, array[i-1].ra, array[i-1].dec, 
                 array[i].ra, array[i].dec, gpara);
     } 
+}
+
+// Draw Milky Way polygons
+function drawMW_polypons(ctx, mwPoly, gpara) {
+    const max_alpha = 0.7, fillColor = "#fff44f";
+    ctx.save();
+    if (gpara.projection=='stereographic') {
+        // clip
+        ctx.beginPath();
+        ctx.arc(gpara.xc, gpara.yc, gpara.r, 0, 2*Math.PI);
+        ctx.clip();
+        drawMW_polypons_stereographic(ctx, mwPoly, gpara, max_alpha, fillColor);
+    } else {
+        // clip
+        ctx.beginPath();
+        let n = 100, xc = gpara.xc, yc = gpara.yc, r = gpara.r;
+        let dtheta = 2*Math.PI/(n-1);
+        ctx.beginPath();
+        ctx.moveTo(xc - r, yc);
+        for (let i=1; i<n; i++) {
+            let theta = i*dtheta - Math.PI;
+            let x = xc + r*Math.cos(theta);
+            let y = yc - 0.5*r*Math.sin(theta);
+            ctx.lineTo(x,y);
+        }
+        ctx.clip();
+        drawMW_polypons_mollweide(ctx, mwPoly, gpara, max_alpha, fillColor);
+    }
+    ctx.restore();
+}
+
+function drawMW_polypons_stereographic(ctx, mwPoly, gpara, 
+                                        max_alpha, fillColor) {
+    ctx.fillStyle = fillColor;
+    ctx.strokeStyle = fillColor;
+    ctx.lineWidth = 0.2;
+    mwPoly.poly.forEach(draw_one_polygon);
+    
+    function draw_one_polygon(poly, ind) {
+        let coords = poly.map(x => getXYstereographic(x[0], x[1], gpara));
+        let someInChart = coords.reduce((a,b) => a || b.inChart, false);
+        if (!someInChart) { return;}
+        
+        let n = coords.length;
+        ctx.beginPath();
+        ctx.moveTo(coords[0].x, coords[0].y);
+        for (let i=1; i<n; i++) {
+            ctx.lineTo(coords[i].x, coords[i].y);
+        }
+        ctx.globalAlpha = max_alpha*mwPoly.sb[ind];
+        ctx.stroke();
+        ctx.fill();
+    }
+}
+
+function drawMW_polypons_mollweide(ctx, mwPoly, gpara, max_alpha, fillColor) {
+    ctx.fillStyle = fillColor;
+    ctx.strokeStyle = fillColor;
+    ctx.lineWidth = 0.2;
+    let raBoundary = gpara.centralRa - Math.PI;
+    mwPoly.poly.forEach(draw_one_polygon);
+    
+    function draw_one_polygon(poly, ind) {
+        let coords = poly.map(x => getXYmollweide(x[0], x[1], gpara));
+        let n = coords.length;
+        let branch2 = [];
+        ctx.beginPath();
+        ctx.moveTo(coords[0].x, coords[0].y);
+        let crossing = 0, sign = 0;
+        for (let i=1; i<n; i++) {
+            let bd_cross = check_bd_crossing(coords[i-1], coords[i], 
+                                        poly[i-1][0], poly[i][0]);
+            if (bd_cross.cross) {
+                // crossing the boundary RA line
+                crossing++;
+                sign = bd_cross.sign;
+                let xb1 = bd_cross.bdx1, xb2 = bd_cross.bdx2;
+                if (crossing % 2 ==0) {
+                    xb1 = bd_cross.bdx2; 
+                    xb2 = bd_cross.bdx1;
+                }
+                ctx.lineTo(xb1, bd_cross.bdy);
+                branch2.push([xb2, bd_cross.bdy]);
+            }
+            let x = coords[i].x, y = coords[i].y;
+            if (crossing % 2 ==1) {
+                x += 2*gpara.r*sign*Math.cos(coords[i].theta);
+            }
+            ctx.lineTo(x,y);
+            if (crossing > 0) {
+                let x2 = coords[i].x;
+                if (crossing %2 == 0) {
+                    x2 += 2*gpara.r*sign*Math.cos(coords[i].theta);
+                }
+                branch2.push([x2, y]);
+            }
+        }
+        ctx.globalAlpha = mwPoly.sb[ind]*max_alpha;
+        ctx.fill();
+        // branch 2: if the polygon crosses the RA boundary
+        if (crossing > 0) {
+            n = branch2.length;
+            ctx.beginPath();
+            ctx.moveTo(branch2[0][0], branch2[0][1]);
+            for (let i=1; i<n; i++) {
+                ctx.lineTo(branch2[i][0], branch2[i][1])
+            }
+            ctx.lineTo(branch2[0][0], branch2[0][1]);
+            ctx.fill();
+        }
+        
+        function check_bd_crossing(p1, p2, ra1, ra2) {
+            // Check if the "straight" line connecting 
+            // p1 and p2 crosses the RA boundary. If so, 
+            // calculate the point on the boundary.
+            // p1, p2: x, y coordinates on Canvas
+            // ra1, ra2: RAs of the points
+            let dRa1 = (ra1 - raBoundary)/Math.PI;
+            let dRa2 = (ra2 - raBoundary)/Math.PI;
+            let dRa12 = (ra1-ra2)/Math.PI;
+            dRa1 -= 2*Math.floor(0.5*(dRa1+1));
+            dRa2 -= 2*Math.floor(0.5*(dRa2+1));
+            dRa12 -= 2*Math.floor(0.5*(dRa12+1));
+            let diff = Math.abs(dRa1) + Math.abs(dRa2) - Math.abs(dRa12);
+            let cross = (dRa1*dRa2 < 0 && diff < 1e-5);
+            let bdx1 = 0, bdy = 0, bdx2=0, sign = 0;
+            if (cross) {
+                // Calculate the x, y coordinates of the boundary 
+                // point on the two sides of p1
+                let x1 = (p1.x - gpara.xc)/gpara.r;
+                let x2 = (p2.x - gpara.xc)/gpara.r;
+                let y1 = (p1.y - gpara.yc)/gpara.r;
+                let y2 = (p2.y - gpara.yc)/gpara.r;
+                sign = (x1 > 0 ? 1:-1);
+                x2 += 2*sign*Math.cos(p2.theta);
+                var dx = x2-x1, dy = y2-y1;
+                let t1 = x1*dx + 4*y1*dy;
+                let t2 = 1 - x1*x1 - 4*y1*y1;
+                let s = t2/(t1 + Math.sqrt(t1*t1 + t2*(dx*dx + 4*dy*dy)));
+                let x = x1 + s*dx, y = y1 + s*dy;
+                bdx1 = gpara.xc + gpara.r*x; 
+                bdx2 = gpara.xc - gpara.r*x; 
+                bdy = gpara.yc + gpara.r*y;
+            }
+            return {cross:cross, bdx1:bdx1, bdx2:bdx2, bdy:bdy, sign:sign};
+        }
+    }
 }
 
 // Add constellation labels
@@ -669,15 +818,15 @@ function getXY(ra,dec,gpara) {
 // This function is a special case where the radius of the 
 // coverage, angRadius, is pi/2.
 function getXYstereographic_special(ra,dec,gpara) {
-    var dRa = ra - gpara.centralRa;
-    var dec0 = gpara.centralDec;
-    var sinDra = Math.sin(dRa), cosDra = Math.cos(dRa);
-    var cosDec0 = Math.cos(dec0), sinDec0 = Math.sin(dec0);
-    var cosDec = Math.cos(dec), sinDec = Math.sin(dec);
-    var denom = 1 + sinDec0*sinDec + cosDec0*cosDec*cosDra;
-    var x = gpara.r*(cosDec0*sinDec - sinDec0*cosDec*cosDra)/denom;
-    var y = gpara.r*cosDec*sinDra/denom;
-    var inChart = (x*x + y*y <= gpara.r2);
+    let dRa = ra - gpara.centralRa;
+    let dec0 = gpara.centralDec;
+    let sinDra = Math.sin(dRa), cosDra = Math.cos(dRa);
+    let cosDec0 = Math.cos(dec0), sinDec0 = Math.sin(dec0);
+    let cosDec = Math.cos(dec), sinDec = Math.sin(dec);
+    let denom = 1 + sinDec0*sinDec + cosDec0*cosDec*cosDra;
+    let x = gpara.r*(cosDec0*sinDec - sinDec0*cosDec*cosDra)/denom;
+    let y = gpara.r*cosDec*sinDra/denom;
+    let inChart = (x*x + y*y <= gpara.r2);
     return {x:gpara.xc+x, y:gpara.yc-y, inChart:inChart};
 }
 
@@ -687,20 +836,20 @@ function getXYstereographic(ra,dec,gpara) {
         return getXYstereographic_special(ra,dec,gpara);
     }
     
-    var ra0 = gpara.centralRa;
-    var dec0 = gpara.centralDec;
-    var cosDra = Math.cos(ra-ra0), sinDra = Math.sin(ra-ra0);
-    var cosDec0 = Math.cos(dec0), sinDec0 = Math.sin(dec0);
-    var cosDec = Math.cos(dec), sinDec = Math.sin(dec);
-    var theta = Math.acos(sinDec*sinDec0 + cosDec*cosDec0*cosDra);
-    var x = cosDra*sinDec0*cosDec - sinDec*cosDec0;
-    var y = sinDra*cosDec;
-    var pom = Math.sqrt(x*x + y*y);
-    var cosPhi = 1, sinPhi = 0;
+    let ra0 = gpara.centralRa;
+    let dec0 = gpara.centralDec;
+    let cosDra = Math.cos(ra-ra0), sinDra = Math.sin(ra-ra0);
+    let cosDec0 = Math.cos(dec0), sinDec0 = Math.sin(dec0);
+    let cosDec = Math.cos(dec), sinDec = Math.sin(dec);
+    let theta = Math.acos(sinDec*sinDec0 + cosDec*cosDec0*cosDra);
+    let x = cosDra*sinDec0*cosDec - sinDec*cosDec0;
+    let y = sinDra*cosDec;
+    let pom = Math.sqrt(x*x + y*y);
+    let cosPhi = 1, sinPhi = 0;
     if (pom > 1e-10) {
         cosPhi = x/pom; sinPhi = y/pom;
     }
-    var r = gpara.r*Math.tan(0.5*theta)/Math.tan(0.5*gpara.angRadius);
+    let r = gpara.r*Math.tan(0.5*theta)/Math.tan(0.5*gpara.angRadius);
     x = gpara.xc - r*cosPhi;
     y = gpara.yc - r*sinPhi;
     return {x:x, y:y, inChart: r <= gpara.r};
@@ -709,12 +858,12 @@ function getXYstereographic(ra,dec,gpara) {
 // Get the x, y location on canvas given ra, dec and 
 // the graphic parameters for the Mollweide projection.
 function getXYmollweide(ra,dec,gpara) {
-    var ra0 = gpara.centralRa;
-    var dRa_pi = (ra-ra0)/Math.PI;
+    let ra0 = gpara.centralRa;
+    let dRa_pi = (ra-ra0)/Math.PI;
     dRa_pi -= 2*Math.floor(0.5*(dRa_pi+1));
-    var theta = mollweideThetaSolver(dec);
-    var x = gpara.xc - gpara.r*dRa_pi*Math.cos(theta);
-    var y = gpara.yc - 0.5*gpara.r*Math.sin(theta);
+    let theta = mollweideThetaSolver(dec);
+    let x = gpara.xc - gpara.r*dRa_pi*Math.cos(theta);
+    let y = gpara.yc - 0.5*gpara.r*Math.sin(theta);
     return {x:x, y:y, inChart:true, theta:theta};
 }
 
@@ -723,13 +872,13 @@ function mollweideThetaSolver(dec) {
     if (Math.abs(Math.abs(dec) - 0.5*Math.PI) < 1e-10) {
         return dec;
     }
-    var piSinDec = Math.PI*Math.sin(Math.abs(dec));
+    let piSinDec = Math.PI*Math.sin(Math.abs(dec));
     // Let u = 2 |theta|
-    var ui = 2*Math.abs(dec); // initial guess
-    var iter = 0; 
-    var tol = 1.e-15;
-    var maxIter = 20; // maximum iterations for the Newton solver
-    var u;
+    let ui = 2*Math.abs(dec); // initial guess
+    let iter = 0; 
+    let tol = 1.e-15;
+    let maxIter = 20; // maximum iterations for the Newton solver
+    let u;
     for (iter=0; iter<maxIter; iter++) {
         // Solve by Newton-Raphson method
         u = ui - (ui+Math.sin(ui) - piSinDec)/(1 + Math.cos(ui))
@@ -741,7 +890,7 @@ function mollweideThetaSolver(dec) {
     if (iter==maxIter) {
         // Newton solver fails to converge after maxIter iterations.
         // Use bisection method instead.
-        var u1 = 0, u2 = Math.PI;
+        let u1 = 0, u2 = Math.PI;
         for (var j=0; j<50; j++) {
             u = 0.5*(u1+u2);
             var fu = u + Math.sin(u) - piSinDec;
@@ -763,7 +912,7 @@ function mollweideThetaSolver(dec) {
 
 // Plot a line joining the points (ra1, dec1) to (ra2, dec2)
 function addLine(ctx, ra1,dec1, ra2,dec2, gpara) {
-    var coord1, coord2;
+    let coord1, coord2;
     switch (gpara.projection) {
         case "stereographic":
             coord1 = getXYstereographic(ra1,dec1,gpara);
@@ -773,14 +922,14 @@ function addLine(ctx, ra1,dec1, ra2,dec2, gpara) {
         case "Mollweide":
             coord1 = getXYmollweide(ra1,dec1,gpara);
             coord2 = getXYmollweide(ra2,dec2,gpara);
-            var raBoundary = gpara.centralRa - Math.PI;
-            var dRa1 = (ra1 - raBoundary)/Math.PI;
-            var dRa2 = (ra2 - raBoundary)/Math.PI;
-            var dRa12 = (ra1-ra2)/Math.PI;
+            let raBoundary = gpara.centralRa - Math.PI;
+            let dRa1 = (ra1 - raBoundary)/Math.PI;
+            let dRa2 = (ra2 - raBoundary)/Math.PI;
+            let dRa12 = (ra1-ra2)/Math.PI;
             dRa1 -= 2*Math.floor(0.5*(dRa1+1));
             dRa2 -= 2*Math.floor(0.5*(dRa2+1));
             dRa12 -= 2*Math.floor(0.5*(dRa12+1));
-            var diff = Math.abs(dRa1) + Math.abs(dRa2) 
+            let diff = Math.abs(dRa1) + Math.abs(dRa2) 
                        - Math.abs(dRa12);
             if (dRa1*dRa2 < 0 && diff < 1e-5) {
                 addLinesXYmollweideAcross(ctx, coord1,coord2, gpara);
@@ -841,10 +990,10 @@ function addLineXY(Ctx,x1,y1,x2,y2,gpara) {
 // Join two points across the boundary on the Moddweide map
 function addLinesXYmollweideAcross(ctx, coord1,coord2, gpara) {
     // Calculate the shifted and scaled coordinates
-    var x1 = (coord1.x - gpara.xc)/gpara.r; 
-    var x2 = (coord2.x - gpara.xc)/gpara.r;
-    var y1 = (coord1.y - gpara.yc)/gpara.r;
-    var y2 = (coord2.y - gpara.yc)/gpara.r;
+    let x1 = (coord1.x - gpara.xc)/gpara.r; 
+    let x2 = (coord2.x - gpara.xc)/gpara.r;
+    let y1 = (coord1.y - gpara.yc)/gpara.r;
+    let y2 = (coord2.y - gpara.yc)/gpara.r;
     if (x1 > 0) {x2 += 2*Math.cos(coord2.theta);}
     if (x1 < 0) {x2 -= 2*Math.cos(coord2.theta);}
     
@@ -852,14 +1001,14 @@ function addLinesXYmollweideAcross(ctx, coord1,coord2, gpara) {
     // (x1,y1) and (x2,y2) that lies on the boundary 
     // closest to (x1,y1). The point satisfies the 
     // equation x^2 + 4*y^2 = 1.
-    var dx = x2-x1, dy = y2-y1;
-    var t1 = x1*dx + 4*y1*dy;
-    var t2 = 1 - x1*x1 - 4*y1*y1;
+    let dx = x2-x1, dy = y2-y1;
+    let t1 = x1*dx + 4*y1*dy;
+    let t2 = 1 - x1*x1 - 4*y1*y1;
     var s = t2/(t1 + Math.sqrt(t1*t1 + t2*(dx*dx + 4*dy*dy)));
-    var x = x1 + s*dx, y = y1 + s*dy;
+    let x = x1 + s*dx, y = y1 + s*dy;
     
     // Now add a line joining (x1,y1) and (x,y) on the canvas
-    var xg = x*gpara.r + gpara.xc, yg = y*gpara.r + gpara.yc;
+    let xg = x*gpara.r + gpara.xc, yg = y*gpara.r + gpara.yc;
     ctx.beginPath();
     ctx.moveTo(coord1.x, coord1.y);
     ctx.lineTo(xg,yg);
@@ -1242,28 +1391,28 @@ function setupDrawingParameters() {
     // Set the colors, sizes of dots of the planets on the star chart
     // and also the coordinate offsets of the planet symbols
     // planet order: Sun, Moon, Mercury, Venus, Mars, Jupiter, Uranus, Neptune
-    var pColor = ["red", "orange", "maroon","#FF00FF","red",
+    let pColor = ["red", "orange", "maroon","#FF00FF","red",
                  "brown","brown","#7277e6","#7277e6"];
-    var pName = ["Sun","Moon","Mercury","Venus","Mars",
+    let pName = ["Sun","Moon","Mercury","Venus","Mars",
                 "Jupiter","Saturn","Uranus","Neptune"];
-    var pSize = [1, 2, 1,2,2,2,2,2,2];
-    var pCode = [9788,9789,9791,9792,9794,9795,9796,9954,9798];
-    var offset = [{x:-10, y:7}, {x:-10, y:7}, {x:-5, y:7}, 
+    let pSize = [1, 2, 1,2,2,2,2,2,2];
+    let pCode = [9788,9789,9791,9792,9794,9795,9796,9954,9798];
+    let offset = [{x:-10, y:7}, {x:-10, y:7}, {x:-5, y:7}, 
                 {x:-7, y:0}, {x:-7, y:2}, {x:-10, y:7}, 
                 {x:-5, y:7}, {x:-10, y:3}, {x:-8, y:5}];
     // parameters setting the size of the star
     // size = a*m+b, m = magnitude of the star
     // set a and b so that size = s1 for m=5 and s2 for m=-1.5
-    var s1 = 1, s2 = 5;
-    var a = (s1-s2)/6.5;
-    var b = s1-5*a;
+    let s1 = 1, s2 = 5;
+    let a = (s1-s2)/6.5;
+    let b = s1-5*a;
     
     // Set up colors for the ra grid. 
     // The first color is for ra = 0h, second, ra=6h, third, ra=12h,
     // fourth, ra=18h, fifth, the rest of the ra grid.
-    var raGridColor = ["#ff8080", "#ffcc00", "#4d79ff", "#ac7339", "#cccccc"];
+    let raGridColor = ["#ff8080", "#ffcc00", "#4d79ff", "#ac7339", "#cccccc"];
 
-    var pDraw = {color:pColor, code:pCode, size:pSize, offset:offset, pName:pName,
+    let pDraw = {color:pColor, code:pCode, size:pSize, offset:offset, pName:pName,
                 raGridColor:raGridColor, starMagA:a, starMagB:b};
     return(pDraw);
 }

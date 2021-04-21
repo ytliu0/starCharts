@@ -274,9 +274,9 @@ function generateQueryString() {
     
     function showHideButtonStates(loc, s) {
         let butts = ['showPlanets', 'showEquator', 'showEcliptic', 
-                'showMilkyWay', 'showConLines', 'showConLab', 
-                'showDayNight'];
-        let defaultStates = [true, false, false, false, true, false, true];
+                'showGalactic','showMilkyWay', 'showConLines', 
+                'showConLab', 'showDayNight'];
+        let defaultStates = [true, false, false, false, true, true, false, true];
         butts.forEach(function (x, i) {
             let active_new = $('#'+x+loc).hasClass('active');
             if (active_new != defaultStates[i]) {
