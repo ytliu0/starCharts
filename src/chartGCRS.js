@@ -50,6 +50,11 @@ function init() {
     starCharts();
 }
 
+function showHide2(name) {
+    $("#show"+name).toggleClass("active");
+    starCharts();
+}
+
 // Display change date and time
 function displayChangeTime() {
     var id = "#changeTime";
@@ -676,6 +681,7 @@ function drawMW_polypons_mollweide(ctx, mwPoly, gpara, max_alpha, fillColor) {
             }
         }
         ctx.globalAlpha = mwPoly.sb[ind]*max_alpha;
+        ctx.stroke();
         ctx.fill();
         // branch 2: if the polygon crosses the RA boundary
         if (crossing > 0) {
@@ -686,6 +692,7 @@ function drawMW_polypons_mollweide(ctx, mwPoly, gpara, max_alpha, fillColor) {
                 ctx.lineTo(branch2[i][0], branch2[i][1])
             }
             ctx.lineTo(branch2[0][0], branch2[0][1]);
+            ctx.stroke();
             ctx.fill();
         }
         

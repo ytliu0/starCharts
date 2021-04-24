@@ -260,11 +260,6 @@ function generateTimeString(h,m,s) {
     return hh+":"+mm+":"+ss;
 }
 
-function showHide2(name) {
-    $("#show"+name).toggleClass("active");
-    starCharts();
-}
-
 // sanity check
 // If there are errors, print message in red at the place 
 // indicated by the id errid
