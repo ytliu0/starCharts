@@ -3,6 +3,7 @@
 \usepackage{graphicx}
 %\usepackage{float}
 \usepackage{hyperref}
+\usepackage{amssymb}
 \newcommand \beq {\begin{equation}}
 \newcommand \eeq {\end{equation}}
 \newcommand \beqn {\begin{eqnarray}}
@@ -14,7 +15,7 @@
 \begin{document}
 \title{Calculations in Star Charts}
 \author{\href{https://publish.illinois.edu/ytliu/}{Yuk Tung Liu}}
-\date{First draft: 2018-07-10, last update: 2021-03-07}
+\date{First draft: 2018-07-10, last major update: 2021-04-29}
 \maketitle
 
 This document lists the equations used in the calculations 
@@ -1246,11 +1247,11 @@ can be computed by the equation
 
 Ecliptic is plotted on a local star chart when the Ecliptic button below 
 the chart is active. Ecliptic is plotted on the GCRS charts when the 
-Ecliptic button on the GCRS page is active. Galactic equator, as well as 
-Milky Way boundary, is plotted 
-on a local star chart when the Milky Way button below the chart is active. 
-Galactic equator, as well as Milky Way boundary, is plotted on the GCRS 
-charts when the Milky Way button on the GCRS page is active. 
+Ecliptic button on the GCRS page is active. Galactic equator
+is plotted 
+on a local star chart when the Galactic button below the chart is active. 
+Galactic equator is plotted on the GCRS 
+charts when the Galactic button on the GCRS page is active. 
 
 In this section, I discuss the mathematical detail in plotting the 
 equator, ecliptic and galactic equator, which are all great circles on 
@@ -1756,6 +1757,164 @@ and $E_e$ computed from equations~(\ref{eq:Ee}), (\ref{eq:Dpsi}) and (\ref{eq:ep
 Next $a$ and $A$ are computed using
 equations~(\ref{eq:aAFromHdel1})--(\ref{eq:aAFromHdel3}). Then the altitude
 is adjusted by the atmospheric refraction according to equation~(\ref{eq:atmRefraction}).
+
+\section{Milky Way}
+
+An HTML version of this section is available \href{../MilkyWay.html}{here}.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{gaia24M.jpg}
+\caption{Milky Way image created by combining the light of 24 million stars 
+from the Gaia Early Data Release 3. The plot is shown in galactic coordinates 
+with Mollweide projection. The galactic center is at the center of the map 
+and the galactic longitude is increasing from right to left.}
+\label{fig:gaia24M}
+\end{center}
+\end{figure}
+
+Milky Way is the hazy band of white light across the sky produced by numerous 
+amount of stars each of which is invisible to the eye. Modern astronomical 
+instruments are able to resolve the Milky Way into stars. Thanks to the 
+\href{https://sci.esa.int/web/gaia}{Gaia mission}, we now have accurate 
+positions and photometric data of 1.8 billion stars from the 
+\href{https://www.cosmos.esa.int/web/gaia/early-data-release-3}{Gaia Early Data Release 3} 
+(EDR3). The above image is created by adding the light of 24 million 
+brightest stars with magnitude larger than 6.5 from EDR3. When the 
+full data are used, the \href{https://sci.esa.int/web/gaia/-/the-colour-of-the-sky-from-gaia-s-early-data-release-3-equirectangular-projection}{resulting image} 
+is even more stunning.
+
+The generation of the image is straightforward. Data of 24 million stars were 
+first downloaded from the \href{https://gea.esac.esa.int/archive/}{Gaia archive} 
+using the ADQL query, which is very useful to extract a subset of the 
+data. Only stars with magnitude larger than 6.5 were requested 
+and the data were sorted in ascending order of magnitude. The 24 million data 
+only get down to magnitude 14.445288. As the magnitude gets higher, it becomes 
+inconvenient becuase there are about a dozen stars with the same magnitude within 6 digits! 
+It would be more useful in the future to sort the data in decending order of the 
+photometric flux instead, even though it's given in an unfamiliar unit of e-/s. 
+
+Next the whole sky was divided into regions of equal area. 
+The positions of stars in the Gaia data are given in the ICRS.
+However, galactic coordinates are more suitable for our purpose. 
+Hence the ICRS right ascension $\alpha$ and declination $\delta$ were tranformed 
+to the galactic longitude $l$ and latitude $b$ using the equations 
+\beqn
+  \sin b &=& \sin \delta_{\rm NGP} \sin \delta + \cos \delta_{\rm NGP} \cos \delta 
+\cos (\alpha - \alpha_{\rm NGP}) \cr 
+  \cos b \sin (l_{\rm NCP} - l) &=& \cos \delta \sin (\alpha - \alpha_{\rm NGP}) \\ 
+  \cos b \cos (l_{\rm NCP} - l) &=& \cos \delta_{\rm NGP} \sin \delta 
+- \sin \delta_{\rm NGP} \cos \delta \cos (\alpha - \alpha_{\rm NGP}) , \nonumber 
+\eeqn
+where $\alpha_{\rm NGP}=12^{\rm h} 51.4^{\rm m}$ and $\delta_{\rm NGP}=27.13^{\circ}$ 
+are the right ascension and declination of the galactic north pole, 
+$l_{\rm NCP}=122.93^{\circ}$ is the galactic longitude of the north celestial pole. 
+
+Since the differential solid angle is $d\Omega = \cos b dl db = dl d(\sin b)$, 
+an easy way to divide the whole sky into non-overlapping regions of equal area is to 
+use constant longitude and latitude lines. In particular, the galactic longitude 
+was divided into $n_l$ equally spaced intervals $\Delta l = 2\pi/n_l$ radians and 
+the sine of galactic latitude was divided into $n_b$ equally spaced intervals 
+$\Delta \sin b = 2/n_b$. Then each of the $n_l\times n_b$ region subtends 
+a solar angle 
+\beq
+  \Delta \Omega = \Delta l \Delta (\sin b) = \frac{4\pi}{n_l n_b} \mbox{steradians} 
+= \frac{41252.96}{n_l n_b} \mbox{ square degrees} .
+\eeq
+The surface brightness of the sky in each region was then computed by 
+\beq
+  B({\rm region}) = \frac{1}{\Delta \Omega} \sum_{{\rm star} \in{\rm region}} F_{\rm star} ,
+\eeq
+where $F_{\rm star}$ is the photometric flux of the star in units of e-/s 
+in the Gaia data. Values of $B$ may be converted to more familiar 
+units such as ${\rm cd}/{\rm m}^2$ or ${\rm mag}/{\rm arcsec^2}$ but 
+it's not necessary since it's the relative surface brightness in different 
+regions we are interested in. 
+
+Figure~\ref{fig:gaia24M} is based on the data with $n_l=720$ and $n_b=360$, so 
+each region covers $0.16$ square degrees, which is about 80\% of the solid 
+angle subtended by the full Moon. Note that only 24 million stars of 
+the 1.8 billion stars in the Gaia data were used in the calculation. 
+The main reason was to speed up computation and to avoid downloading 
+huge amount of data.
+Although each dim star contributes less to the overall light, there are more of them so
+collectively dimmer stars contribute about the same as the brighter stars until
+we go dim enough to the point when we reach distances to the scale height
+of our Galaxy's disk and to distances at which interstellar extinction becomes 
+significant. By comparing the results of using 12 million stars and 24 million 
+stars, I find that although the surface brightness $B({\rm region})$ in each 
+region has not converged, the relative surface brightness 
+\beq
+  \bar{B}({\rm region}) = \frac{B({\rm region})}{B_{\rm median}} 
+\eeq
+changes by less than three percents. Here $B_{\rm median}$ is the median of the 
+surface brightness in the $720\times 360$ regions. 
+By comparing Figure~\ref{fig:gaia24M} to the 
+\href{https://sci.esa.int/web/gaia/-/the-colour-of-the-sky-from-gaia-s-early-data-release-3-equirectangular-projection}{image released by ESA/Gaia/DPAC}, 
+we see that most of the promonent features are present in Figure~\ref{fig:gaia24M}. 
+The obvious absence are the Magellanic clouds. With the limiting magnitude 14.445, 
+only the brightest stars at those distances can be seen. There is however 
+some hint of them in Figure~\ref{fig:gaia24M} even with just 1.3\% of the full data.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{gaia24M_approxBD.jpg}
+\caption{Approximate Milky Way boundary (yellow line) plotted on top of
+Figure~\ref{fig:gaia24M}.}
+\label{fig:gaia24M_approxBD}
+\end{center}
+\end{figure}
+
+The features shown in Figure~\ref{fig:gaia24M} also match photos of Milky Way. 
+However, some features are clearly beyond naked-eye visibility. 
+So I created a cartoon version of the picture to depict the Milky Way 
+visible by the eye. It's based on the Milky Way boundary data provided 
+by Jarmo~Moilanen. Figure~\ref{fig:gaia24M_approxBD} plots this boundary (yellow line) 
+on top of the image constructed from the Gaia data.
+
+We can see that the approximate boundary data roughly match the simulated image. 
+The surface brightness of the Milky Way is not uniform. The brightest 
+regions are concentrated in galactic longitudes between about $-80^{\circ}$ 
+and $0^{\circ}$, passing the constellations Carina, Crux, Centaurus, Norma, 
+Ara, Scorpius and Sagittarius. Outside these regions, the surface brightness 
+generally decreases with increasing galactic longitude $|l|$ and reaches minima in 
+$155^{\circ} \lesssim l \lesssim 180^{\circ}$ (in Perseus and Auriga). The cartoon 
+version ignores the patchy bright spots and models the Milky Way surface 
+brightness as a function of galactic longitude. Figure~\ref{fig:milkyWay_cartoon} 
+shows the cartoon version of the Milky Way used in our star charts. The relatively 
+low contrast between the cartoon Milky Way and background is chosen to 
+reflect the reality that the Milky Way is faint and even invisible in 
+light polluted skies.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{milkyWay_cartoon.png}
+\caption{A cartoon picture of the Milky Way}
+\label{fig:milkyWay_cartoon}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=15cm]{MilkyWay_v2.png}
+\caption{Another rendition of the Milky Way. This is generated using 
+the Gaia data to capture the variation of surface brightness in various 
+regions of the Milky Way more accurately.}
+\label{fig:MilkyWay_v2}
+\end{center}
+\end{figure}
+
+This cartoon picture is of course not ideal. Figure~\ref{fig:MilkyWay_v2} 
+shows another rendition of the Milky Way,
+which is generated using the Gaia data to capture the variation of
+surface brightness in various regions of the Milky Way more accurately.
+Regions with low surface brightness are removed to approximately match
+the boundary data. I decide not to use this version for the star chart 
+pages because it requires more computational resource to render. 
+In reality, Milky Way's visual appearance is sensitive to the brightness 
+of the background sky and probably also sensitive to the acurity of one's 
+vision. Given the amorphous appearance of the Mily Way, the cartoon version 
+is adequate for the relatively low-resolution star charts on our website.
 
 \section{Sun and Planets}
 

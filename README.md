@@ -13,9 +13,10 @@ All calculations are done using JavaScript. The physics and mathematics involved
 - index.html: HTML page for the local star charts. 
 - chartGCRS.html: HTML page for the equatorial star charts.
 - Constellations.html: HTML page showing a table of the names and abbreviations of the 88 constellations.
+- MilkyWay.html: HTML page briefly describing the generation of Milky Way for star charts.
 - src: folder that contains the javascript functions used by the webpages. See the README file in that folder for more detailed information.
 - sidereal.css: style file for both sidereal.html and chartGCRS.html
-- core_min.js: combine dateAndTime.js, brightStars.js, milkyWay.js, precession.js and SunMoonPlanets.js in the src folder
+- core_min.js: combine dateAndTime.js, brightStars.js, milkyWay_polygons.js, precession.js and SunMoonPlanets.js in the src folder
 - sseph_min.js: combine MoonElpMpp02DE.js, Mercury.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js and planetPosVSOP87.js in the src folder
 - sidereal_min.js: combine sidereal.js, animation.js and riseSetTimes.js in the src folder
 - cities.js: contain data of major cities in the world

@@ -5,7 +5,8 @@
 - riseSetTimes.js: javascript functions for calculating the rise, set and upper transit times (used by index.html).
 - chartGCRS.js: javascript functions for chartGCRS.html
 - brightStars.js: contains data (in JSON) for stars, constellation lines and labels.
-- milkyWay.js: contains data (in JSON) for the Milky Way boundary.
+- milkyWay.js: contains data (in JSON) for the Milky Way boundary (deprecated). It's now replaced by milkyWay_polygons.js
+- milkyWay_polygons.js: contains data (in JSON) to draw the Milky Way using polygons.
 - dateAndTime.js: javascript functions used by both index.html and chartGCRS.html. Mostly functions involving Delta T, converting bewteen calendar and Julian date, and other utilities.
 - precession.js: javascript functions for precession, nutation, and a function that determines the constellation from Ra and Dec.
 - SunMoonPlanets.js: javascript functions for computing the positions of the Sun, Moon, and planets using JPL's approximate formulae and truncated ELP/MPP02 series. It also contains functions that calculate the planet's elongation, phase angle, fraction illuminated, and apparent magnitude. There is a function that calculates the aberration of light.
