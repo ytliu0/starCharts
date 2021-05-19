@@ -30,7 +30,7 @@
 
 <br /> 
 <div id="starCharts">
-<p><button class="menu" onchange="location.href='index.html'">Local Star Chart</button>
+<p><button class="menu" onclick="location.href='index.html'">Local Star Chart</button>
     <button class="menu" onclick="displayChangeTime()">Date and Time</button>
 </p>
 <br />
@@ -81,7 +81,7 @@
     
     <br />
 <p>Time: <span id="timeCentral"></span>, whole sky. The Ra at the center is 
-    <select id="raCentral" onclick="starCharts()">
+    <select id="raCentral" onchange="starCharts()">
     <option value="0" selected>0<sup>h</sup></option>
     <option value="2">2<sup>h</sup></option>
     <option value="4">4<sup>h</sup></option>

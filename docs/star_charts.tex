@@ -1771,12 +1771,12 @@ An HTML version of this section is available \href{../MilkyWay.html}{here}.
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=15cm]{gaia24M.jpg}
-\caption{Milky Way image created by combining the light of 24 million stars 
+\includegraphics[width=15cm]{gaia300M.jpg}
+\caption{Milky Way image created by combining the light of 300 million stars 
 from the Gaia Early Data Release 3. The plot is shown in galactic coordinates 
 with Mollweide projection. The galactic center is at the center of the map 
 and the galactic longitude is increasing from right to left.}
-\label{fig:gaia24M}
+\label{fig:gaia300M}
 \end{center}
 \end{figure}
 
@@ -1786,20 +1786,17 @@ instruments are able to resolve the Milky Way into stars. Thanks to the
 \href{https://sci.esa.int/web/gaia}{Gaia mission}, we now have accurate 
 positions and photometric data of 1.8 billion stars from the 
 \href{https://www.cosmos.esa.int/web/gaia/early-data-release-3}{Gaia Early Data Release 3} 
-(EDR3). The above image is created by adding the light of 24 million 
+(EDR3). The above image is created by adding the light of 300 million 
 brightest stars with magnitude larger than 6.5 from EDR3. When the 
 full data are used, the \href{https://sci.esa.int/web/gaia/-/the-colour-of-the-sky-from-gaia-s-early-data-release-3-equirectangular-projection}{resulting image} 
 is even more stunning.
 
-The generation of the image is straightforward. Data of 24 million stars were 
+The generation of the image is straightforward. Data of 300 million stars were 
 first downloaded from the \href{https://gea.esac.esa.int/archive/}{Gaia archive} 
-using the ADQL query, which is very useful to extract a subset of the 
+using the ADQL query, which is very useful in extracting a subset of the 
 data. Only stars with magnitude larger than 6.5 were requested 
-and the data were sorted in ascending order of magnitude. The 24 million data 
-only get down to magnitude 14.445288. As the magnitude gets higher, it becomes 
-inconvenient becuase there are about a dozen stars with the same magnitude within 6 digits! 
-It would be more useful in the future to sort the data in decending order of the 
-photometric flux instead, even though it's given in an unfamiliar unit of e-/s. 
+and the data were sorted in descending order of the G-band photometric mean flux. 
+The 300 million data cover stars with magnitude down to 17.976336.
 
 Next the whole sky was divided into regions of equal area. 
 The positions of stars in the Gaia data are given in the ICRS.
@@ -1822,7 +1819,7 @@ an easy way to divide the whole sky into non-overlapping regions of equal area i
 use constant longitude and latitude lines. In particular, the galactic longitude 
 was divided into $n_l$ equally spaced intervals $\Delta l = 2\pi/n_l$ radians and 
 the sine of galactic latitude was divided into $n_b$ equally spaced intervals 
-$\Delta \sin b = 2/n_b$. Then each of the $n_l\times n_b$ region subtends 
+$\Delta \sin b = 2/n_b$. Then each of the $n_l\times n_b$ region covered
 a solid angle 
 \beq
   \Delta \Omega = \Delta l \Delta (\sin b) = \frac{4\pi}{n_l n_b} \mbox{steradians} 
@@ -1832,15 +1829,20 @@ The surface brightness of the sky in each region was then computed by
 \beq
   B({\rm region}) = \frac{1}{\Delta \Omega} \sum_{{\rm star} \in{\rm region}} F_{\rm star} ,
 \eeq
-where $F_{\rm star}$ is the photometric flux of the star in units of e-/s 
+where $F_{\rm star}$ was the photometric mean flux of the star in units of e-/s 
 in the Gaia data. Values of $B$ may be converted to more familiar 
 units such as ${\rm cd}/{\rm m}^2$ or ${\rm mag}/{\rm arcsec^2}$ but 
-it's not necessary since it's the relative surface brightness in different 
-regions we are interested in. 
+it was not necessary since I was mainly interested in the relative surface brightness 
+in different regions. 
 
-Figure~\ref{fig:gaia24M} is based on the data with $n_l=720$ and $n_b=360$, so 
-each region covers $0.16$ square degrees, which is about 80\% of the solid 
-angle subtended by the full Moon. Note that only 24 million stars of 
+Figure~\ref{fig:gaia300M} is based on the data with $n_l=2000$ and $n_b=735$, so 
+each region covers $0.028$ square degrees, which is about 14\% of the solid 
+angle subtended by the full Moon. Since there are 300 million stars in these
+$2000\times 735=1.47$ million regions, each region has on average 204 stars.
+However, stars are not uniformly distributed in the sky. It turns out that
+the number of stars in each region varies from 0 to 20837.
+
+Note that only 300 million stars of 
 the 1.8 billion stars in the Gaia data were used in the calculation. 
 The main reason was to speed up computation and to avoid downloading 
 huge amount of data.
@@ -1848,37 +1850,40 @@ Although each dim star contributes less to the overall light, there are more of 
 collectively dimmer stars contribute about the same as the brighter stars until
 we go dim enough to the point when we reach distances to the scale height
 of our Galaxy's disk and to distances at which interstellar extinction becomes 
-significant. By comparing the results of using 12 million stars and 24 million 
+significant. By comparing the results of using 180 million stars and 300 million 
 stars, I find that although the surface brightness $B({\rm region})$ in each 
 region has not converged, about half of the relative surface brightness
 \beq
   \bar{B}({\rm region}) = \frac{B({\rm region})}{B_{\rm median}} 
 \eeq
-changes by less than 3.3\%. Here $B_{\rm median}$ is the median of the 
-surface brightness in the $720\times 360$ regions. 
-By comparing Figure~\ref{fig:gaia24M} to the 
+changes by less than 1.3\%. Here $B_{\rm median}$ is the median of the 
+surface brightness in the 1.47 million regions.
+By comparing Figure~\ref{fig:gaia300M} to the 
 \href{https://sci.esa.int/web/gaia/-/the-colour-of-the-sky-from-gaia-s-early-data-release-3-equirectangular-projection}{image released by ESA/Gaia/DPAC}, 
-we see that most of the promonent features are present in Figure~\ref{fig:gaia24M}. 
-The obvious absence are the Magellanic clouds. With the limiting magnitude 14.445, 
-only the brightest stars at those distances can be seen. There is however 
-some hint of them in Figure~\ref{fig:gaia24M} even with just 1.3\% of the full data.
+we see that most of the promonent features are present in Figure~\ref{fig:gaia300M}. 
+However, the Magellanic clouds are less promonent in Figure~\ref{fig:gaia300M} compared
+to the release image. This is not surprising since at distances of 50kpc and 60kpc,
+only stars more luminous than about $135L_{\odot}$ and $200L_{\odot}$
+can have apparent magnitudes smaller than 17.98, where $L_{\odot}$ is the solar luminosity.
+Hence the 300 million star data miss a large number of lower luminosity stars in the two
+galaxies.
 
 \subsection{Cartoon Picture of Milky Way}
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=15cm]{gaia24M_approxBD.jpg}
+\includegraphics[width=15cm]{gaia300M_approxBD.jpg}
 \caption{Approximate Milky Way boundary (yellow line) plotted on top of
-Figure~\ref{fig:gaia24M}.}
-\label{fig:gaia24M_approxBD}
+Figure~\ref{fig:gaia300M}.}
+\label{fig:gaia300M_approxBD}
 \end{center}
 \end{figure}
 
-The features shown in Figure~\ref{fig:gaia24M} also match photos of Milky Way. 
+The features shown in Figure~\ref{fig:gaia300M} also match photos of Milky Way. 
 However, some features are clearly beyond naked-eye visibility. 
 So I created a cartoon version of the picture to depict the Milky Way 
 visible by the eye. It's based on the Milky Way boundary data provided 
-by Jarmo~Moilanen. Figure~\ref{fig:gaia24M_approxBD} plots this boundary (yellow line) 
+by Jarmo~Moilanen. Figure~\ref{fig:gaia300M_approxBD} plots this boundary (yellow line) 
 on top of the image constructed from the Gaia data.
 
 We can see that the approximate boundary data roughly match the simulated image. 
