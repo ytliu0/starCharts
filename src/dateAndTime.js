@@ -3,10 +3,10 @@
 // Compute D (number of days from J2000) at midnight 
 // local time from yyyy, mm, dd, tz (year, month, date, timezone offset)
 function getDm(yyyy,mm,dd,tz) {
-    var dfrac = tz/1440;
-    var m1 = mm, yy = yyyy;
+    let dfrac = tz/1440;
+    let m1 = mm, yy = yyyy;
     if (m1 <= 2) {m1 +=12; yy--;}
-    var b;
+    let b;
     if (10000*yy+100*m1+dd <= 15821004) {
         // Julian calendar
         b = -2 + Math.floor((yy+4716)/4) - 1179;
@@ -14,7 +14,7 @@ function getDm(yyyy,mm,dd,tz) {
         // Gregorian calendar
         b = Math.floor(yy/400) - Math.floor(yy/100) + Math.floor(yy/4);
     }
-    var D0 = 365*yy - 679004 + b + Math.floor(30.6001*(m1+1)) + dd - 51544.5;
+    let D0 = 365*yy - 679004 + b + Math.floor(30.6001*(m1+1)) + dd - 51544.5;
     return(D0 + dfrac);
 }
 
@@ -28,7 +28,7 @@ function getDm(yyyy,mm,dd,tz) {
 // Ported from Astronomy on Personal Computer, p. 15-16
 //-------------------------------------------------
 function CalDat(D) {
-    var a,b,c,d,e,f;
+    let a,b,c,d,e,f;
     // Convert Julian day number to calendar date
     a = Math.floor(D + 2451545.5);
     if (a < 0) {
@@ -45,16 +45,16 @@ function CalDat(D) {
     e = 365*d + Math.floor(0.25*d);
     f = Math.floor((c-e)/30.6001);
     if (f < 0) {f++;}
-    var dd = c-e - Math.floor(30.6001*f);
-    var mm = f - 1 - 12*Math.floor(f/14+1e-5);
-    var yy = d - 4715 - Math.floor((7+mm)/10+1e-5);
-    var dateString = generateDateString(yy,mm,dd);
-    var FracOfDay = D + 0.5 - Math.floor(D+0.5);
-    var Hour = 24*FracOfDay;
-    var h = Math.floor(Hour);
-    var m = Math.floor(60*(Hour-h));
-    var s = (Hour - h - m/60)*3600;
-    var timeString = generateTimeString(h,m,s);
+    let dd = c-e - Math.floor(30.6001*f);
+    let mm = f - 1 - 12*Math.floor(f/14+1e-5);
+    let yy = d - 4715 - Math.floor((7+mm)/10+1e-5);
+    let dateString = generateDateString(yy,mm,dd);
+    let FracOfDay = D + 0.5 - Math.floor(D+0.5);
+    let Hour = 24*FracOfDay;
+    let h = Math.floor(Hour);
+    let m = Math.floor(60*(Hour-h));
+    let s = (Hour - h - m/60)*3600;
+    let timeString = generateTimeString(h,m,s);
     return {yy:yy, mm:mm, dd:dd, h:h, m:m, s:s, 
            dateString:dateString, timeString:timeString};
 }
@@ -67,13 +67,13 @@ function CalDat(D) {
 // 
 //-------------------------------------------------
 function CalDatNegativeJD(jd) {
-    var mjd = -Math.floor(jd+0.5);
-    var md = mjd - Math.floor(mjd/1461);
-    var dyear = Math.floor(md/(365+1e-10)) + 1;
-    var yyyy = -4712 - dyear;
-    var mjd0 = dyear*365 + Math.floor(dyear/4) + 1;
-    var dFromY = mjd0 - mjd;
-    var monthTable;
+    let mjd = -Math.floor(jd+0.5);
+    let md = mjd - Math.floor(mjd/1461);
+    let dyear = Math.floor(md/(365+1e-10)) + 1;
+    let yyyy = -4712 - dyear;
+    let mjd0 = dyear*365 + Math.floor(dyear/4) + 1;
+    let dFromY = mjd0 - mjd;
+    let monthTable;
     if (dyear % 4 ==0) {
        monthTable = [0, 31, 60, 91, 121, 152, 182, 213, 244, 
                     274, 305, 335, 366];
@@ -81,7 +81,7 @@ function CalDatNegativeJD(jd) {
        monthTable = [0, 31, 59, 90, 120, 151, 181, 212, 243, 
                     273, 304, 334, 365];
     }
-    var i,mm,dd;
+    let i,mm,dd;
     for (i=1; i<13; i++) {
         if (dFromY <= monthTable[i]) {
             mm = i;
@@ -89,13 +89,13 @@ function CalDatNegativeJD(jd) {
             break;
         }
     }
-    var dateString = generateDateString(yyyy,mm,dd);
-    var FracOfDay = 0.5+ (jd + mjd);
-    var Hour = 24*FracOfDay;
-    var h = Math.floor(Hour);
-    var m = Math.floor(60*(Hour-h));
-    var s = (Hour - h - m/60)*3600;
-    var timeString = generateTimeString(h,m,s);
+    let dateString = generateDateString(yyyy,mm,dd);
+    let FracOfDay = 0.5+ (jd + mjd);
+    let Hour = 24*FracOfDay;
+    let h = Math.floor(Hour);
+    let m = Math.floor(60*(Hour-h));
+    let s = (Hour - h - m/60)*3600;
+    let timeString = generateTimeString(h,m,s);
     return {yy:yyyy, mm:mm, dd:dd, h:h, m:m, s:s, 
            dateString:dateString, timeString:timeString};
 }
@@ -105,8 +105,8 @@ function CalDatNegativeJD(jd) {
 // http://eclipsewise.com/help/deltatpoly2014.html
 // returned Delta T is in century
 function DeltaT_poly2014(T) {
-    var y = T*100 + 2000;
-    var u,u2,u3,u4,u5,u6,u7, DT;
+    let y = T*100 + 2000;
+    let u,u2,u3,u4,u5,u6,u7, DT;
     if (y > 2015) {
         u = y-2015;
         DT = 67.62 + 0.3645*u + 0.0039755*u*u;
@@ -227,7 +227,7 @@ function DeltaT(T) {
 // Generate date string from yyyy, mm and dd:
 // return yyyy-mm-dd
 function generateDateString(yyyy,mm,dd) {
-    var absy = Math.abs(yyyy);
+    let absy = Math.abs(yyyy);
     if (absy < 10) {
         absy = "000"+absy;
     } else if (absy < 100) {
@@ -237,11 +237,11 @@ function generateDateString(yyyy,mm,dd) {
     } else {
         absy = absy.toString();
     }
-    var yStr = absy;
+    let yStr = absy;
     if (yyyy < 0) {yStr = "-"+yStr;}
-    var mmString = mm.toString();
+    let mmString = mm.toString();
     if (mm < 10) {mmString = "0"+mmString;}
-    var ddString = dd.toString();
+    let ddString = dd.toString();
     if (dd < 10) {ddString = "0"+ddString;}
     return yStr+"-"+mmString+"-"+ddString;
 }
@@ -249,10 +249,10 @@ function generateDateString(yyyy,mm,dd) {
 // Generate time string from h,m,s: 
 // return hh:mm:ss 
 function generateTimeString(h,m,s) {
-    var hround = h + m/60 + (s+0.5)/3600;
-    var hh = Math.floor(hround);
-    var mm = Math.floor((hround-hh)*60);
-    var ss= Math.floor(3600*(hround-hh-mm/60));
+    let hround = h + m/60 + (s+0.5)/3600;
+    let hh = Math.floor(hround);
+    let mm = Math.floor((hround-hh)*60);
+    let ss= Math.floor(3600*(hround-hh-mm/60));
     hh = hh.toString(); mm = mm.toString(); ss = ss.toString();
     if (hh.length < 2) {hh = "0"+hh;}
     if (mm.length < 2) {mm = "0"+mm;}
@@ -267,7 +267,7 @@ function sanityCheck(x,inputId,min,max,message,errid) {
     $(inputId).css("background-color", "white");
     if (isNaN(x) || x < min || x > max) {
         $(inputId).css("background-color", "#e2a8a8");
-        var text = '<p style="color:red;">'+message+'</p>';
+        let text = '<p style="color:red;">'+message+'</p>';
         $(errid).append(text);
     }
 }
@@ -276,7 +276,7 @@ function sanityCheck(x,inputId,min,max,message,errid) {
 // If type == "hm", return hour+"<sup>h</sup>"+minute+"<sup>m</sup>"+second+"<sup>s</sup>".
 // If type == "dm", return degree+"&deg;"+minute+"'"+second+'"'.
 function convertDM(x, type) {
-    var xStr,dms,xround,xd,xm,xs;
+    let xStr,dms,xround,xd,xm,xs;
     if (type=="hm") {
        x -= 24*Math.floor(x/24); 
        xround = x + 0.05/3600; 

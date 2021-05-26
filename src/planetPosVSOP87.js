@@ -3,7 +3,7 @@
 // Calculate the geocentric position of a planet 
 // using the VSOP87 algorithm
 function planetGeoVSOP(T, planet, lightTime) {
-    var pos;
+    let pos;
     switch(planet) {
         case "Sun":
            pos = {X:0, Y:0, Z:0};
@@ -29,12 +29,12 @@ function planetGeoVSOP(T, planet, lightTime) {
         case "Neptune":
            pos = NeptunePosVSOP(T);
     }
-    var earth = EarthPosVSOP(T);
-    var rHelio = Math.sqrt(pos.X*pos.X + pos.Y*pos.Y + pos.Z*pos.Z);
-    var Xgeo = pos.X - earth.X;
-    var Ygeo = pos.Y - earth.Y;
-    var Zgeo = pos.Z - earth.Z;
-    var rGeo = Math.sqrt(Xgeo*Xgeo + Ygeo*Ygeo + Zgeo*Zgeo);
+    let earth = EarthPosVSOP(T);
+    let rHelio = Math.sqrt(pos.X*pos.X + pos.Y*pos.Y + pos.Z*pos.Z);
+    let Xgeo = pos.X - earth.X;
+    let Ygeo = pos.Y - earth.Y;
+    let Zgeo = pos.Z - earth.Z;
+    let rGeo = Math.sqrt(Xgeo*Xgeo + Ygeo*Ygeo + Zgeo*Zgeo);
     
     // Parameter for the Sun (useful for calculating 
     // a planet's elongation,  phase angle and apparent magnitude).
@@ -43,9 +43,9 @@ function planetGeoVSOP(T, planet, lightTime) {
     // equinox and ecliptic,
     // betSun2000: ecliptic latitude of the Sun wrt 
     // J2000 equinox and ecliptic.
-    var dSunEarth = Math.sqrt(earth.X*earth.X + earth.Y*earth.Y + earth.Z*earth.Z);
-    var lamSun2000 = Math.atan2(-earth.Y, -earth.X);
-    var betSun2000 = -Math.asin(earth.Z/dSunEarth);
+    let dSunEarth = Math.sqrt(earth.X*earth.X + earth.Y*earth.Y + earth.Z*earth.Z);
+    let lamSun2000 = Math.atan2(-earth.Y, -earth.X);
+    let betSun2000 = -Math.asin(earth.Z/dSunEarth);
     
     // correct for light time
     if (lightTime) {
@@ -56,7 +56,7 @@ function planetGeoVSOP(T, planet, lightTime) {
         // somewhat wasteful of computer resource but is easier.
         // Don't do this if the positions are to be calculated 
         // very frequently.
-        var f1oc = 1.581250740982066e-07; // 1/c in century/AU
+        let f1oc = 1.581250740982066e-07; // 1/c in century/AU
         switch(planet) {
             case "Sun":
                 // do nothing 
@@ -90,26 +90,26 @@ function planetGeoVSOP(T, planet, lightTime) {
     }
     
     // Ecliptic long. and lat. wrt J2000
-    var lam2000 = Math.atan2(Ygeo,Xgeo);
-    var bet2000 = Math.asin(Zgeo/rGeo);
+    let lam2000 = Math.atan2(Ygeo,Xgeo);
+    let bet2000 = Math.asin(Zgeo/rGeo);
     
     // equatorial coordinates
-    var cosEps = 0.917482139208287;
-    var sinEps = 0.397776978008764;
-    var YgeoEq = cosEps*Ygeo - sinEps*Zgeo;
-    var ZgeoEq = sinEps*Ygeo + cosEps*Zgeo;
+    let cosEps = 0.917482139208287;
+    let sinEps = 0.397776978008764;
+    let YgeoEq = cosEps*Ygeo - sinEps*Zgeo;
+    let ZgeoEq = sinEps*Ygeo + cosEps*Zgeo;
     
     // Ra and Dec wrt J2000
-    var ra2000 = Math.atan2(YgeoEq, Xgeo);
-    var dec2000 = Math.asin(ZgeoEq/rGeo);
+    let ra2000 = Math.atan2(YgeoEq, Xgeo);
+    let dec2000 = Math.asin(ZgeoEq/rGeo);
     
     // precessed to the equator and equinox of the date
-    var p = precession_matrix(0,T);
-    var xp = p.p11*Xgeo + p.p12*YgeoEq + p.p13*ZgeoEq;
-    var yp = p.p21*Xgeo + p.p22*YgeoEq + p.p23*ZgeoEq;
-    var zp = p.p31*Xgeo + p.p32*YgeoEq + p.p33*ZgeoEq;
-    var ra = Math.atan2(yp,xp);
-    var dec = Math.asin(zp/rGeo);
+    let p = precession_matrix(0,T);
+    let xp = p.p11*Xgeo + p.p12*YgeoEq + p.p13*ZgeoEq;
+    let yp = p.p21*Xgeo + p.p22*YgeoEq + p.p23*ZgeoEq;
+    let zp = p.p31*Xgeo + p.p32*YgeoEq + p.p33*ZgeoEq;
+    let ra = Math.atan2(yp,xp);
+    let dec = Math.asin(zp/rGeo);
     
     return {X:pos.X, Y:pos.Y, Z:pos.Z, 
             Xgeo:Xgeo, Ygeo:Ygeo, Zgeo:Zgeo, 

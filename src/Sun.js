@@ -36,12 +36,12 @@
 */
 
 function SunPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Sun_X0(t) + Sun_X1(t) + Sun_X2(t) + 
+       let t = 0.1*T;
+       let X = Sun_X0(t) + Sun_X1(t) + Sun_X2(t) + 
            Sun_X3(t) + Sun_X4(t) + Sun_X5(t);
-       var Y = Sun_Y0(t) + Sun_Y1(t) + Sun_Y2(t) + 
+       let Y = Sun_Y0(t) + Sun_Y1(t) + Sun_Y2(t) + 
            Sun_Y3(t) + Sun_Y4(t) + Sun_Y5(t);
-       var Z = Sun_Z0(t) + Sun_Z1(t) + Sun_Z2(t) + 
+       let Z = Sun_Z0(t) + Sun_Z1(t) + Sun_Z2(t) + 
            Sun_Z3(t) + Sun_Z4(t) + Sun_Z5(t);
        
     return {X:X, Y:Y, Z:Z};
@@ -50,7 +50,7 @@ function SunPosVSOP(T) {
 
    function Sun_X0 (t) // 1293 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 0.00495672739*Math.cos(3.74107356792 + 529.6909650946*t);
    X0 += 0.00271802376*Math.cos(4.01601149775 + 213.299095438*t);
    X0 += 0.00155435675*Math.cos(2.17052050061 + 38.1330356378*t);
@@ -1351,7 +1351,7 @@ function SunPosVSOP(T) {
 
    function Sun_X1 (t) // 816 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 -= 0.00001296073;
    X1 += 0.00000897419*Math.cos(1.12892005450 + 426.598190876*t);
    X1 += 0.00000776911*Math.cos(2.70600396412 + 206.1855484372*t);
@@ -2175,7 +2175,7 @@ function SunPosVSOP(T) {
 
    function Sun_X2 (t) // 461 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00000160293*Math.cos(4.40406062613 + 206.1855484372*t);
    X2 += 0.00000155633*Math.cos(0.48183983171 + 220.4126424388*t);
    X2 += 0.00000118222*Math.cos(0.99338493688 + 522.5774180938*t);
@@ -2644,7 +2644,7 @@ function SunPosVSOP(T) {
 
    function Sun_X3 (t) // 206 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00000022035*Math.cos(6.11822426048 + 206.1855484372*t);
    X3 += 0.00000021482*Math.cos(5.03368299703 + 220.4126424388*t);
    X3 += 0.00000016291*Math.cos(2.71940457791 + 522.5774180938*t);
@@ -2858,7 +2858,7 @@ function SunPosVSOP(T) {
 
    function Sun_X4 (t) // 84 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 += 0.00000002272*Math.cos(1.56364838180 + 206.1855484372*t);
    X4 += 0.00000002236*Math.cos(3.28143366276 + 220.4126424388*t);
    X4 += 0.00000001682*Math.cos(4.46996330708 + 522.5774180938*t);
@@ -2950,7 +2950,7 @@ function SunPosVSOP(T) {
 
    function Sun_X5 (t) // 34 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000000168*Math.cos(3.28069809842 + 206.1855484372*t);
    X5 += 0.00000000167*Math.cos(1.52399958265 + 220.4126424388*t);
    X5 += 0.00000000126*Math.cos(0.07122523863 + 522.5774180938*t);
@@ -2992,7 +2992,7 @@ function SunPosVSOP(T) {
 
    function Sun_Y0 (t) // 1291 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 0.00495536218*Math.cos(2.17046712634 + 529.6909650946*t);
    Y0 += 0.00272185821*Math.cos(2.44443364925 + 213.299095438*t);
    Y0 += 0.00155444313*Math.cos(0.59927010840 + 38.1330356378*t);
@@ -4291,7 +4291,7 @@ function SunPosVSOP(T) {
 
    function Sun_Y1 (t) // 814 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 += 0.00000898747*Math.cos(5.84062157690 + 426.598190876*t);
    Y1 += 0.00000781392*Math.cos(1.12962797123 + 206.1855484372*t);
    Y1 += 0.00000754898*Math.cos(0.61969438775 + 220.4126424388*t);
@@ -5113,7 +5113,7 @@ function SunPosVSOP(T) {
 
    function Sun_Y2 (t) // 470 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 += 0.00000160849*Math.cos(2.83104666823 + 206.1855484372*t);
    Y2 += 0.00000155973*Math.cos(5.19309730583 + 220.4126424388*t);
    Y2 += 0.00000118316*Math.cos(5.70681506981 + 522.5774180938*t);
@@ -5591,7 +5591,7 @@ function SunPosVSOP(T) {
 
    function Sun_Y3 (t) // 206 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00000022088*Math.cos(4.54598360855 + 206.1855484372*t);
    Y3 += 0.00000021546*Math.cos(3.46116671016 + 220.4126424388*t);
    Y3 += 0.00000016300*Math.cos(1.14934178921 + 522.5774180938*t);
@@ -5805,7 +5805,7 @@ function SunPosVSOP(T) {
 
    function Sun_Y4 (t) // 87 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00000002278*Math.cos(6.27388903010 + 206.1855484372*t);
    Y4 += 0.00000002245*Math.cos(1.70782913671 + 220.4126424388*t);
    Y4 += 0.00000001682*Math.cos(2.89988955370 + 522.5774180938*t);
@@ -5900,7 +5900,7 @@ function SunPosVSOP(T) {
 
    function Sun_Y5 (t) // 34 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000168*Math.cos(1.70751121627 + 206.1855484372*t);
    Y5 += 0.00000000168*Math.cos(6.23113008656 + 220.4126424388*t);
    Y5 += 0.00000000126*Math.cos(4.78360062168 + 522.5774180938*t);
@@ -5942,7 +5942,7 @@ function SunPosVSOP(T) {
 
    function Sun_Z0 (t) // 376 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.00011810648*Math.cos(0.46078690233 + 213.299095438*t);
    Z0 += 0.00011277700*Math.cos(0.41689943638 + 529.6909650946*t);
    Z0 += 0.00004802048*Math.cos(4.58264723370 + 38.1330356378*t);
@@ -6326,7 +6326,7 @@ function SunPosVSOP(T) {
 
    function Sun_Z1 (t) // 243 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00000544343*Math.cos(1.80383716985 + 213.299095438*t);
    Z1 += 0.00000388234*Math.cos(4.66855221170 + 529.6909650946*t);
    Z1 += 0.00000133398;
@@ -6577,7 +6577,7 @@ function SunPosVSOP(T) {
 
    function Sun_Z2 (t) // 123 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00000037478*Math.cos(3.23028568613 + 213.299095438*t);
    Z2 += 0.00000027315*Math.cos(6.15507992196 + 529.6909650946*t);
    Z2 += 0.00000008616*Math.cos(0.77209239310 + 206.1855484372*t);
@@ -6708,7 +6708,7 @@ function SunPosVSOP(T) {
 
    function Sun_Z3 (t) // 61 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000001302*Math.cos(4.84806136860 + 213.299095438*t);
    Z3 += 0.00000001364*Math.cos(2.43564490971 + 206.1855484372*t);
    Z3 += 0.00000000920*Math.cos(1.65069146673 + 529.6909650946*t);
@@ -6777,7 +6777,7 @@ function SunPosVSOP(T) {
 
    function Sun_Z4 (t) // 26 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000000164*Math.cos(4.10546661445 + 206.1855484372*t);
    Z4 += 0.00000000072*Math.cos(6.04348211714 + 220.4126424388*t);
    Z4 += 0.00000000070*Math.cos(6.10651561968 + 213.299095438*t);
@@ -6811,7 +6811,7 @@ function SunPosVSOP(T) {
 
    function Sun_Z5 (t) // 9 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000015*Math.cos(5.75563126750 + 206.1855484372*t);
    Z5 += 0.00000000005*Math.cos(4.29978807671 + 220.4126424388*t);
    Z5 += 0.00000000003*Math.cos(0.96254361103 + 536.8045120954*t);

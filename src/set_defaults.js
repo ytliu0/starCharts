@@ -30,8 +30,8 @@ function geoloc() {
     if ("geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition( 
             function success(position) {
-                var long = position.coords.longitude;
-                var lat = position.coords.latitude;
+                let long = position.coords.longitude;
+                let lat = position.coords.latitude;
                 $("#place1in").val('');
                 $("#long1in").val(long);
                 $("#lat1in").val(lat);
@@ -343,7 +343,7 @@ function sanityCheck(x,inputId,min,max,message,errid) {
     $(inputId).css("background-color", "white");
     if (isNaN(x) || x < min || x > max) {
         $(inputId).css("background-color", "#e2a8a8");
-        var text = '<p style="color:red;">'+message+'</p>';
+        let text = '<p style="color:red;">'+message+'</p>';
         $(errid).append(text);
     }
 }
@@ -351,10 +351,10 @@ function sanityCheck(x,inputId,min,max,message,errid) {
 // Compute D (number of days from J2000) at midnight 
 // local time from yyyy, mm, dd, tz (year, month, date, timezone offset)
 function getDm(yyyy,mm,dd,tz) {
-    var dfrac = tz/1440;
-    var m1 = mm, yy = yyyy;
+    let dfrac = tz/1440;
+    let m1 = mm, yy = yyyy;
     if (m1 <= 2) {m1 +=12; yy--;}
-    var b;
+    let b;
     if (10000*yy+100*m1+dd <= 15821004) {
         // Julian calendar
         b = -2 + Math.floor((yy+4716)/4) - 1179;
@@ -362,6 +362,6 @@ function getDm(yyyy,mm,dd,tz) {
         // Gregorian calendar
         b = Math.floor(yy/400) - Math.floor(yy/100) + Math.floor(yy/4);
     }
-    var D0 = 365*yy - 679004 + b + Math.floor(30.6001*(m1+1)) + dd - 51544.5;
+    let D0 = 365*yy - 679004 + b + Math.floor(30.6001*(m1+1)) + dd - 51544.5;
     return(D0 + dfrac);
 }

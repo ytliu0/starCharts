@@ -32,12 +32,12 @@
 //   http://www.gnu.org/licenses/gpl.html
 
 function JupiterPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Jupiter_X0(t) + Jupiter_X1(t) + Jupiter_X2(t) + 
+       let t = 0.1*T;
+       let X = Jupiter_X0(t) + Jupiter_X1(t) + Jupiter_X2(t) + 
            Jupiter_X3(t) + Jupiter_X4(t) + Jupiter_X5(t);
-       var Y = Jupiter_Y0(t) + Jupiter_Y1(t) + Jupiter_Y2(t) + 
+       let Y = Jupiter_Y0(t) + Jupiter_Y1(t) + Jupiter_Y2(t) + 
            Jupiter_Y3(t) + Jupiter_Y4(t) + Jupiter_Y5(t);
-       var Z = Jupiter_Z0(t) + Jupiter_Z1(t) + Jupiter_Z2(t) + 
+       let Z = Jupiter_Z0(t) + Jupiter_Z1(t) + Jupiter_Z2(t) + 
            Jupiter_Z3(t) + Jupiter_Z4(t) + Jupiter_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -45,7 +45,7 @@ function JupiterPosVSOP(T) {
 
 function Jupiter_X0 (t) // 1055 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 5.19663470114*Math.cos(0.59945082355 + 529.6909650946*t);
    X0 -= 0.36662642320;
    X0 += 0.12593937922*Math.cos(0.94911583701 + 1059.3819301892*t);
@@ -1108,7 +1108,7 @@ function Jupiter_X0 (t) // 1055 terms of order 0
 
    function Jupiter_X1 (t) // 488 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 -= 0.00882389251;
    X1 += 0.00635297172*Math.cos(0.10662156868 + 1059.3819301892*t);
    X1 += 0.00599720482*Math.cos(2.42996678275 + 522.5774180938*t);
@@ -1604,7 +1604,7 @@ function Jupiter_X0 (t) // 1055 terms of order 0
 
 function Jupiter_X2 (t) // 255 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00123864644*Math.cos(4.13563277513 + 522.5774180938*t);
    X2 += 0.00121521296*Math.cos(0.21155109275 + 536.8045120954*t);
    X2 += 0.00085355503;
@@ -1867,7 +1867,7 @@ function Jupiter_X2 (t) // 255 terms of order 2
 
 function Jupiter_X3 (t) // 140 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00017071323*Math.cos(5.86133022278 + 522.5774180938*t);
    X3 += 0.00016713548*Math.cos(4.77458794485 + 536.8045120954*t);
    X3 += 0.00003348610;
@@ -2015,7 +2015,7 @@ function Jupiter_X3 (t) // 140 terms of order 3
 
 function Jupiter_X4 (t) // 58 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 += 0.00001762402*Math.cos(1.32863039757 + 522.5774180938*t);
    X4 += 0.00001717846*Math.cos(3.03331531843 + 536.8045120954*t);
    X4 += 0.00000304063*Math.cos(1.43144096257 + 515.463871093*t);
@@ -2081,7 +2081,7 @@ function Jupiter_X4 (t) // 58 terms of order 4
 
 function Jupiter_X5 (t) // 11 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000131471*Math.cos(3.21284928867 + 522.5774180938*t);
    X5 += 0.00000126748*Math.cos(1.16307002134 + 536.8045120954*t);
    X5 += 0.00000048324*Math.cos(3.19657723128 + 515.463871093*t);
@@ -2100,7 +2100,7 @@ function Jupiter_X5 (t) // 11 terms of order 5
 
 function Jupiter_Y0 (t) // 1037 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 5.19520046589*Math.cos(5.31203162731 + 529.6909650946*t);
    Y0 += 0.12592862602*Math.cos(5.66160227728 + 1059.3819301892*t);
    Y0 -= 0.09363670616;
@@ -3145,7 +3145,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Y1 (t) // 499 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 -= 0.01694798253;
    Y1 += 0.00634859798*Math.cos(4.81903199650 + 1059.3819301892*t);
    Y1 += 0.00601160431*Math.cos(0.85811249940 + 522.5774180938*t);
@@ -3652,7 +3652,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Y2 (t) // 259 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 += 0.00124032509*Math.cos(2.56495576833 + 522.5774180938*t);
    Y2 += 0.00121455991*Math.cos(4.92398766380 + 536.8045120954*t);
    Y2 += 0.00076523263*Math.cos(3.75913371793 + 529.6909650946*t);
@@ -3919,7 +3919,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Y3 (t) // 136 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00017085516*Math.cos(4.29096904063 + 522.5774180938*t);
    Y3 += 0.00016701353*Math.cos(3.20365737109 + 536.8045120954*t);
    Y3 += 0.00004006038;
@@ -4063,7 +4063,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Y4 (t) // 60 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00001762645*Math.cos(6.04159386554 + 522.5774180938*t);
    Y4 += 0.00001716045*Math.cos(1.46206285710 + 536.8045120954*t);
    Y4 += 0.00000305036*Math.cos(6.14052786819 + 515.463871093*t);
@@ -4131,7 +4131,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Y5 (t) // 11 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000131471*Math.cos(1.64205554066 + 522.5774180938*t);
    Y5 += 0.00000126634*Math.cos(5.87372673584 + 536.8045120954*t);
    Y5 += 0.00000048269*Math.cos(1.62788936723 + 515.463871093*t);
@@ -4150,7 +4150,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Z0 (t) // 216 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.11823100489*Math.cos(3.55844646343 + 529.6909650946*t);
    Z0 += 0.00859031952;
    Z0 += 0.00286562094*Math.cos(3.90812238338 + 1059.3819301892*t);
@@ -4374,7 +4374,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Z1 (t) // 104 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00407072175*Math.cos(1.52699353482 + 529.6909650946*t);
    Z1 += 0.00020307341*Math.cos(2.59878269248 + 1059.3819301892*t);
    Z1 += 0.00014424953*Math.cos(4.85400155025 + 536.8045120954*t);
@@ -4486,7 +4486,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Z2 (t) // 65 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00028635326*Math.cos(3.01374166973 + 529.6909650946*t);
    Z2 += 0.00003114752*Math.cos(3.13228646176 + 536.8045120954*t);
    Z2 += 0.00002379765*Math.cos(0.95574345340 + 522.5774180938*t);
@@ -4559,7 +4559,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Z3 (t) // 27 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000964355*Math.cos(4.79228412032 + 529.6909650946*t);
    Z3 += 0.00000443244*Math.cos(1.39969952998 + 536.8045120954*t);
    Z3 += 0.00000295600*Math.cos(2.81281406373 + 522.5774180938*t);
@@ -4594,7 +4594,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Z4 (t) // 10 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000046366*Math.cos(5.93695398581 + 536.8045120954*t);
    Z4 += 0.00000027761*Math.cos(4.80287441467 + 522.5774180938*t);
    Z4 += 0.00000005858*Math.cos(4.53622024534 + 515.463871093*t);
@@ -4612,7 +4612,7 @@ function Jupiter_Y0 (t) // 1037 terms of order 0
 
    function Jupiter_Z5 (t) // 3 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000003446*Math.cos(4.10413626462 + 536.8045120954*t);
    Z5 += 0.00000002243*Math.cos(0.82614663721 + 522.5774180938*t);
    Z5 += 0.00000001081*Math.cos(0.05498457769 + 515.463871093*t);

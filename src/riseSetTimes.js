@@ -1,20 +1,20 @@
 "use strict";
 
-var csvdata = "";
+let csvdata = "";
 
 // *** Rise and Set Page ***
 function riseSetPage() {
     $("#starCharts").hide();
     $("#riseSetArea").show();
     
-    var deg_to_rad = Math.PI/180;
+    let deg_to_rad = Math.PI/180;
     
     $("#riseSetPlace1").text(place1);
     $("#riseSetlong1").html(long1+"&deg;");
     $("#riseSetlat1").html(lat1+"&deg;");
     $("#riseSetDate1").html(date1.dateString);
     $("#riseSetTtimeZone1").html("GMT"+tz1.tzString);
-    var loc1 = {locNum:1, long:long1*deg_to_rad, 
+    let loc1 = {locNum:1, long:long1*deg_to_rad, 
                 lat:lat1*deg_to_rad, tz:tz1.tz, 
                 yyyy:date1.yyyy, mm:date1.mm, dd:date1.dd};
     riseSetLoc(loc1);
@@ -24,7 +24,7 @@ function riseSetPage() {
     $("#riseSetlat2").html(lat2+"&deg;");
     $("#riseSetDate2").html(date2.dateString);
     $("#riseSetTtimeZone2").html("GMT"+tz2.tzString);
-    var loc2 = {locNum:2, long:long2*deg_to_rad, 
+    let loc2 = {locNum:2, long:long2*deg_to_rad, 
                 lat:lat2*deg_to_rad, tz:tz2.tz, 
                 yyyy:date2.yyyy, mm:date2.mm, dd:date2.dd};
     riseSetLoc(loc2);
@@ -46,38 +46,38 @@ function riseSetChangeLocs() {
     $("#riseSetMainPage").slideDown();
     
     // Get the current locations and dates
-    var place1current = $("#riseSetPlace1").text();
-    var place2current = $("#riseSetPlace2").text();
-    var long1String = $("#riseSetlong1").html();
-    var pos = long1String.indexOf("&deg;")
-    var long1current = parseFloat(long1String.slice(0,pos));
-    var long2String = $("#riseSetlong2").html();
+    let place1current = $("#riseSetPlace1").text();
+    let place2current = $("#riseSetPlace2").text();
+    let long1String = $("#riseSetlong1").html();
+    let pos = long1String.indexOf("&deg;")
+    let long1current = parseFloat(long1String.slice(0,pos));
+    let long2String = $("#riseSetlong2").html();
     pos = long2String.indexOf("&deg;")
-    var long2current = parseFloat(long2String.slice(0,pos));
-    var lat1String = $("#riseSetlat1").html();
+    let long2current = parseFloat(long2String.slice(0,pos));
+    let lat1String = $("#riseSetlat1").html();
     pos = lat1String.indexOf("&deg;")
-    var lat1current = parseFloat(lat1String.slice(0,pos));
-    var lat2String = $("#riseSetlat2").html();
+    let lat1current = parseFloat(lat1String.slice(0,pos));
+    let lat2String = $("#riseSetlat2").html();
     pos = lat2String.indexOf("&deg;")
-    var lat2current = parseFloat(lat2String.slice(0,pos));
-    var d1String = $("#riseSetDate1").text();
-    var d2String = $("#riseSetDate2").text();
+    let lat2current = parseFloat(lat2String.slice(0,pos));
+    let d1String = $("#riseSetDate1").text();
+    let d2String = $("#riseSetDate2").text();
     pos = d1String.indexOf("-");
-    var yy1 = parseInt(d1String.slice(0,pos));
-    var mm1 = parseInt(d1String.substr(pos+1,2));
-    var dd1 = parseInt(d1String.substr(pos+4,2));
+    let yy1 = parseInt(d1String.slice(0,pos));
+    let mm1 = parseInt(d1String.substr(pos+1,2));
+    let dd1 = parseInt(d1String.substr(pos+4,2));
     pos = d2String.indexOf("-");
-    var yy2 = parseInt(d2String.slice(0,pos));
-    var mm2 = parseInt(d2String.substr(pos+1,2));
-    var dd2 = parseInt(d2String.substr(pos+4,2));
-    var tz1String = $("#riseSetTtimeZone1").text();
-    var tz2String = $("#riseSetTtimeZone2").text();
-    var tz1sign = tz1String.substr(3,1);
-    var tz2sign = tz2String.substr(3,1);
-    var tzone1 = parseFloat(tz1String.substr(4,2)) + 
+    let yy2 = parseInt(d2String.slice(0,pos));
+    let mm2 = parseInt(d2String.substr(pos+1,2));
+    let dd2 = parseInt(d2String.substr(pos+4,2));
+    let tz1String = $("#riseSetTtimeZone1").text();
+    let tz2String = $("#riseSetTtimeZone2").text();
+    let tz1sign = tz1String.substr(3,1);
+    let tz2sign = tz2String.substr(3,1);
+    let tzone1 = parseFloat(tz1String.substr(4,2)) + 
         parseFloat(tz1String.substr(6,2))/60;
     if (tz1sign=="-") {tzone1 = -tzone1;}
-    var tzone2 = parseFloat(tz2String.substr(4,2)) + 
+    let tzone2 = parseFloat(tz2String.substr(4,2)) + 
         parseFloat(tz2String.substr(6,2))/60;
     if (tz2sign=="-") {tzone2 = -tzone2;}
     
@@ -102,31 +102,31 @@ function riseSetChangeLocs() {
 }
 
 function riseSetChangeLocationsAndDates(form) {
-    var place1new = form.riseSetPlace1in.value;
-    var long1new = parseFloat(form.riseSetLong1in.value);
-    var lat1new = parseFloat(form.riseSetLat1in.value);
-    var tzoffset1 = parseFloat(form.riseSetTz1in.value);
-    var tz1new = {tz:-tzoffset1*60};
-    var tzof = Math.abs(tzoffset1) + 0.5/60; // used for rounding
+    let place1new = form.riseSetPlace1in.value;
+    let long1new = parseFloat(form.riseSetLong1in.value);
+    let lat1new = parseFloat(form.riseSetLat1in.value);
+    let tzoffset1 = parseFloat(form.riseSetTz1in.value);
+    let tz1new = {tz:-tzoffset1*60};
+    let tzof = Math.abs(tzoffset1) + 0.5/60; // used for rounding
     if (tzoffset1 >= 0) {
         tz1new.tzString = "+";
     }  else {
         tz1new.tzString = "-";
     }
-    var hs = Math.floor(tzof).toString();
+    let hs = Math.floor(tzof).toString();
     if (hs.length < 2) {hs = "0"+hs;}
-    var ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
+    let ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
     if (ms.length < 2) {ms = "0"+ms;}
     tz1new.tzString += hs+ms;
-    var yy1 = parseInt(form.riseSetYear1in.value);
-    var mm1 = parseInt(form.riseSetMonth1in.value);
-    var dd1 = parseInt(form.riseSetDay1in.value);
+    let yy1 = parseInt(form.riseSetYear1in.value);
+    let mm1 = parseInt(form.riseSetMonth1in.value);
+    let dd1 = parseInt(form.riseSetDay1in.value);
     
-    var place2new = form.riseSetPlace2in.value;
-    var long2new = parseFloat(form.riseSetLong2in.value);
-    var lat2new = parseFloat(form.riseSetLat2in.value);
-    var tzoffset2 = parseFloat(form.riseSetTz2in.value);
-    var tz2new = {tz:-tzoffset2*60};
+    let place2new = form.riseSetPlace2in.value;
+    let long2new = parseFloat(form.riseSetLong2in.value);
+    let lat2new = parseFloat(form.riseSetLat2in.value);
+    let tzoffset2 = parseFloat(form.riseSetTz2in.value);
+    let tz2new = {tz:-tzoffset2*60};
     tzof = Math.abs(tzoffset2) + 0.5/60; // used for rounding
     if (tzoffset2 >= 0) {
         tz2new.tzString = "+";
@@ -138,8 +138,8 @@ function riseSetChangeLocationsAndDates(form) {
     ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
     if (ms.length < 2) {ms = "0"+ms;}
     tz2new.tzString += hs+ms;
-    var sync = document.getElementById("riseSetSynTimeYes").checked;
-    var yy2,mm2,dd2;
+    let sync = document.getElementById("riseSetSynTimeYes").checked;
+    let yy2,mm2,dd2;
     if (sync) {
         yy2=yy1; mm2=mm1; dd2=dd1;
     } else {
@@ -149,10 +149,10 @@ function riseSetChangeLocationsAndDates(form) {
     }
     
     // sanity check
-    var errid = "#riseSetErrorlocs";
+    let errid = "#riseSetErrorlocs";
     $(errid).empty();
-    var min = -180, max = 180;
-    var message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
+    let min = -180, max = 180;
+    let message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
     sanityCheck(long1new,"#riseSetLong1in",min,max,message,errid);
     sanityCheck(long2new,"#riseSetLong2in",min,max,message,errid);
     
@@ -188,22 +188,22 @@ function riseSetChangeLocationsAndDates(form) {
         // Make sure the date is in the proper form
         // i.e. no stuff like 02-31 or 04-31
         // so convert date to Julian day and then back to date
-        var D = getDm(yy1,mm1,dd1,0);
-        var date = CalDat(D);
+        let D = getDm(yy1,mm1,dd1,0);
+        let date = CalDat(D);
         yy1 = date.yy; mm1=date.mm; dd1 = date.dd;
-        var d1String = date.dateString;
+        let d1String = date.dateString;
         D = getDm(yy2,mm2,dd2,0);
         date = CalDat(D);
         yy2 = date.yy; mm2=date.mm; dd2 = date.dd;
-        var d2String = date.dateString;
+        let d2String = date.dateString;
             
         $("#riseSetPlace1").text(place1new);
         $("#riseSetlong1").html(long1new+"&deg;");
         $("#riseSetlat1").html(lat1new+"&deg;");
         $("#riseSetDate1").html(d1String);
         $("#riseSetTtimeZone1").html("GMT"+tz1new.tzString);
-        var deg_to_rad = Math.PI/180;
-        var loc1 = {locNum:1, long:long1new*deg_to_rad, 
+        let deg_to_rad = Math.PI/180;
+        let loc1 = {locNum:1, long:long1new*deg_to_rad, 
                    lat:lat1new*deg_to_rad,
                    tz:tz1new.tz, yyyy:yy1, mm:mm1, dd:dd1};
         riseSetLoc(loc1);
@@ -213,7 +213,7 @@ function riseSetChangeLocationsAndDates(form) {
         $("#riseSetlat2").html(lat2new+"&deg;");
         $("#riseSetDate2").html(d2String);
         $("#riseSetTtimeZone2").html("GMT"+tz2new.tzString);
-        var loc2 = {locNum:2, long:long2new*deg_to_rad, 
+        let loc2 = {locNum:2, long:long2new*deg_to_rad, 
                     lat:lat2new*deg_to_rad,
                     tz:tz2new.tz, yyyy:yy2, mm:mm2, dd:dd2};
         riseSetLoc(loc2);
@@ -228,19 +228,19 @@ function riseSetMultipleDates() {
     $("#RSMultiResult").empty();
     $("#riseSetMultipleDays").slideDown(10);
     $("#riseSetMultipleDaysInput").slideDown(10);
-    var long1prev = $("#RSMultiLongin").val();
+    let long1prev = $("#RSMultiLongin").val();
     if (long1prev =="") {
         // Get location 1 data
-        var place1current = $("#riseSetPlace1").text();
-        var long1String = $("#riseSetlong1").html();
-        var pos = long1String.indexOf("&deg;")
-        var long1current = parseFloat(long1String.slice(0,pos));
-        var lat1String = $("#riseSetlat1").html();
+        let place1current = $("#riseSetPlace1").text();
+        let long1String = $("#riseSetlong1").html();
+        let pos = long1String.indexOf("&deg;")
+        let long1current = parseFloat(long1String.slice(0,pos));
+        let lat1String = $("#riseSetlat1").html();
         pos = lat1String.indexOf("&deg;")
-        var lat1current = parseFloat(lat1String.slice(0,pos));
-        var tz1String = $("#riseSetTtimeZone1").text();
-        var tz1sign = tz1String.substr(3,1);
-        var tzone1 = parseFloat(tz1String.substr(4,2)) + 
+        let lat1current = parseFloat(lat1String.slice(0,pos));
+        let tz1String = $("#riseSetTtimeZone1").text();
+        let tz1sign = tz1String.substr(3,1);
+        let tzone1 = parseFloat(tz1String.substr(4,2)) + 
             parseFloat(tz1String.substr(6,2))/60;
         if (tz1sign=="-") {tzone1 = -tzone1;}
         
@@ -257,58 +257,58 @@ function riseSetMultipleDates() {
 }
 
 function RSMultipleDays(form) {
-    var place = form.RSMultiPlacein.value;
-    var long = parseFloat(form.RSMultiLongin.value);
-    var lat = parseFloat(form.RSMultiLatin.value);
-    var tzoffset = parseFloat(form.RSMultiTzin.value);
-    var tzof = Math.abs(tzoffset) + 0.5/60; // used for rounding
-    var tzString = "GMT";
+    let place = form.RSMultiPlacein.value;
+    let long = parseFloat(form.RSMultiLongin.value);
+    let lat = parseFloat(form.RSMultiLatin.value);
+    let tzoffset = parseFloat(form.RSMultiTzin.value);
+    let tzof = Math.abs(tzoffset) + 0.5/60; // used for rounding
+    let tzString = "GMT";
     if (tzoffset >= 0) {
         tzString += "+";
     }  else {
         tzString += "-";
     }
-    var hs = Math.floor(tzof).toString();
+    let hs = Math.floor(tzof).toString();
     if (hs.length < 2) {hs = "0"+hs;}
-    var ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
+    let ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
     if (ms.length < 2) {ms = "0"+ms;}
     tzString += hs+ms;
-    var obj = form.objects.value;
-    var ra, dec, epoch;
+    let obj = form.objects.value;
+    let ra, dec, epoch;
     if (obj=="Star") {
         ra = parseFloat(form.RSMultiRa.value);
         dec = parseFloat(form.RSMultiDec.value);
         epoch = parseFloat(form.RSMultiEpoch.value);
     }
-    var yy1 = parseInt(form.RSMultiYear1in.value);
-    var mm1 = parseInt(form.RSMultiMonth1in.value);
-    var dd1 = parseInt(form.RSMultiDay1in.value);
-    var yy2 = parseInt(form.RSMultiYear2in.value);
-    var mm2 = parseInt(form.RSMultiMonth2in.value);
-    var dd2 = parseInt(form.RSMultiDay2in.value);
-    var deltaD = parseInt(form.RSMultiDt.value);
+    let yy1 = parseInt(form.RSMultiYear1in.value);
+    let mm1 = parseInt(form.RSMultiMonth1in.value);
+    let dd1 = parseInt(form.RSMultiDay1in.value);
+    let yy2 = parseInt(form.RSMultiYear2in.value);
+    let mm2 = parseInt(form.RSMultiMonth2in.value);
+    let dd2 = parseInt(form.RSMultiDay2in.value);
+    let deltaD = parseInt(form.RSMultiDt.value);
     
     // sanity check 
-    var errid = "#RSMultiErrorlocs";
+    let errid = "#RSMultiErrorlocs";
     $(errid).empty();
-    var objectList = 
+    let objectList = 
         ["Sun","Moon","Mercury","Venus","Mars",
          "Jupiter","Saturn","Uranus","Neptune","Star"];
-    var objectSelected = false;
+    let objectSelected = false;
     $("#objects").css("background-color", "white");
-    for (var i=0; i < objectList.length; i++) {
+    for (let i=0; i < objectList.length; i++) {
         if (obj == objectList[i]) {
             objectSelected = true;
             break;
         }
     }
     if (!objectSelected) {
-        var text = '<p style="color:red;">Please select an object.</p>';
+        let text = '<p style="color:red;">Please select an object.</p>';
         $("#objects").css("background-color", "#e2a8a8");
         $(errid).append(text);
     }
-    var min = -180, max = 180;
-    var message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
+    let min = -180, max = 180;
+    let message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
     sanityCheck(long,"#RSMultiLongin",min,max,message,errid);
     
     min = -90; max = 90;
@@ -355,7 +355,7 @@ function RSMultipleDays(form) {
         $("#riseSetMultipleDaysInput").slideUp();
         $('button.menu').attr("disabled", false);
         
-        var text = "<p>Location: "+place+
+        let text = "<p>Location: "+place+
             "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Longitude: "+
             long.toString()+"&deg;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Latitude: "+lat.toString()+"&deg;";
         $("#RSMultiResult").append(text);
@@ -370,9 +370,9 @@ function RSMultipleDays(form) {
         }
         $("#RSMultiResult").append(text);
         
-        var D1 = getDm(yy1,mm1,dd1,0);
-        var D2 = getDm(yy2,mm2,dd2,0);
-        var RSMultiInput = {long:long, lat:lat, tz:tzoffset, 
+        let D1 = getDm(yy1,mm1,dd1,0);
+        let D2 = getDm(yy2,mm2,dd2,0);
+        let RSMultiInput = {long:long, lat:lat, tz:tzoffset, 
                            D1:D1, D2:D2, deltaD:deltaD, 
                             obj:obj, ra:ra, dec:dec, epoch:epoch};
         calcRiseSetMultipleDates(RSMultiInput);
@@ -380,8 +380,8 @@ function RSMultipleDays(form) {
 }
 
 function riseSetShowHideRADec(Class) {
-    var classj = "."+Class;
-    var show = $("#objects").val()=='Star';
+    let classj = "."+Class;
+    let show = $("#objects").val()=='Star';
     if (show) {
        $(classj).show();
     } else {
@@ -394,11 +394,11 @@ function riseSetShowHideRADec(Class) {
 // offset in minutes
 function getLST0(D,T,long,tz) {
     // Get Julian date at midnight GMST
-    var D0 = Math.floor(D-0.5)+0.5;
+    let D0 = Math.floor(D-0.5)+0.5;
     // Get hours from tz
-    var H = tz/60;
+    let H = tz/60;
     if (H < 0) {H += 24;}
-    var GMST = 0.06570748587250752*D0;
+    let GMST = 0.06570748587250752*D0;
     GMST -= 24*Math.floor(GMST/24);
     GMST += 6.697374558336001 + 1.00273781191135448*H;
     GMST -= 24*Math.floor(GMST/24);
@@ -408,7 +408,7 @@ function getLST0(D,T,long,tz) {
 //                                               T*5.547407407407407e-10)));
     GMST += 2.686296296296296e-07 +T*(0.08541030618518518 
                                        + T*2.577003148148148e-05);
-    var LST0 = GMST + long*12/Math.PI;
+    let LST0 = GMST + long*12/Math.PI;
     LST0 -= 24*Math.floor(LST0/24); // LST in hours
     return LST0*Math.PI/12; // LST in radian
 }
@@ -421,12 +421,12 @@ function getLST0(D,T,long,tz) {
 // loc.yyyy, loc.mm, loc.dd: year, month and date where the 
 //     rise, set and transit times are to be calculated
 function riseSetLoc(loc) {
-    var locStr = loc.locNum.toString();
+    let locStr = loc.locNum.toString();
     // Number of days from J2000.0 at midnight local time
-    var Dm = getDm(loc.yyyy,loc.mm,loc.dd,loc.tz);
-    var T = Dm/36525;
+    let Dm = getDm(loc.yyyy,loc.mm,loc.dd,loc.tz);
+    let T = Dm/36525;
     // local sidereal time at midnight local time
-    var LST0 = getLST0(Dm,T+DeltaT(T),loc.long,loc.tz);
+    let LST0 = getLST0(Dm,T+DeltaT(T),loc.long,loc.tz);
     
     riseSetPlanetsTwilights(LST0,loc.locNum,loc.lat,T)
     riseSetBrightestStars(LST0, loc.locNum, loc.lat, T+DeltaT(T));
@@ -438,16 +438,16 @@ function riseSetLoc(loc) {
 function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     // First compute the positions of Sun, Moon and planets 
     // at 0h, 1h, ..., 24h
-    var dT = DeltaT(T);
-    var sinLat = Math.sin(lat), cosLat = Math.cos(lat);
-    var i;
-    var parray = [];
+    let dT = DeltaT(T);
+    let sinLat = Math.sin(lat), cosLat = Math.cos(lat);
+    let i;
+    let parray = [];
     for (i=0; i<25; i++) {
         parray[i] = sunMoonPlanets(T + i/876600 + dT);
     }
     
-    var ra=[], dec=[];
-    var locid, alt, trs, tt, txt;
+    let ra=[], dec=[];
+    let locid, alt, trs, tt, txt;
     
     // Sunrise, sunset and upper transit
     locid = "#riseSetSun"+locNum.toString();
@@ -526,15 +526,15 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     }
     $(locid).append(txt);
     // Illumination and phase
-    var raSun = parray[12][0].ra, decSun = parray[12][0].dec;
-    var raMoon = parray[12][1].ra, decMoon = parray[12][1].dec;
-    var Dmoon = parray[12][1].rGeo;
-    var Lsun = parray[12][0].lam2000;
-    var Dsun = parray[12][0].rGeo;
-    var Lmoon = parray[12][1].lam2000;
-    var illumPhase = moonIlluminated(raSun,decSun,raMoon,decMoon, Lsun,Lmoon, Dmoon, Dsun);
-    var illum = illumPhase.illuminated, phase = illumPhase.phase;
-    var mag = illumPhase.mag.toFixed(1);
+    let raSun = parray[12][0].ra, decSun = parray[12][0].dec;
+    let raMoon = parray[12][1].ra, decMoon = parray[12][1].dec;
+    let Dmoon = parray[12][1].rGeo;
+    let Lsun = parray[12][0].lam2000;
+    let Dsun = parray[12][0].rGeo;
+    let Lmoon = parray[12][1].lam2000;
+    let illumPhase = moonIlluminated(raSun,decSun,raMoon,decMoon, Lsun,Lmoon, Dmoon, Dsun);
+    let illum = illumPhase.illuminated, phase = illumPhase.phase;
+    let mag = illumPhase.mag.toFixed(1);
     
     txt ="<p>At 12:00 in the given time zone...<br />"
     txt += "Fraction of Moon illuminated: "+illum.toFixed(2)+",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase: "+phase+",<br />";
@@ -542,7 +542,7 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     $(locid).append(txt);
     
     // Planets
-    var names = ["Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"];
+    let names = ["Mercury","Venus","Mars","Jupiter","Saturn","Uranus","Neptune"];
     locid = "#riseSetPlanets"+locNum.toString();
     $(locid).empty();
     txt = "<p>The elongation is the angular distance between the planet and the Sun. Elongations, fractions illuminated and magnitudes of the planets are given at 12:00 in the given time zone.</p>";
@@ -551,31 +551,31 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     txt = "<tr><th>Planet</th> <th>Rise (Azimuth)</th> <th>Transit (Alt)</th> ";
     txt += "<th>Set (Azimuth)</th> <th>Elong.</th> <th>Illum.</th> <th>Mag.</th> </tr>";
     $(locid).append(txt);
-    for (var j=2; j<9; j++) {
+    for (let j=2; j<9; j++) {
         for (i=0; i<25; i++) {
             ra[i] = parray[i][j].ra; dec[i] = parray[i][j].dec;
         }
         tt = getTransitTime(LST0,lat,ra,dec, false);
         alt = -0.009890199094634533; // -34' in radians
         trs = getRiseSet(alt,LST0,lat,ra,dec);
-        var Rise=trs.rise+" ("+trs.azRise+")"; 
-        var Set=trs.set+" ("+trs.azSet+")";
+        let Rise=trs.rise+" ("+trs.azRise+")"; 
+        let Set=trs.set+" ("+trs.azSet+")";
         if (trs.rise=="above") {
             Rise = "circumpolar"; Set = "circumpolar";
         } else if (trs.rise=="below") {
             Rise = "invisible"; Set = "invisible";
         }
         // Elongation and fraction of planet illuminated
-        var planet = parray[12][j];
-        var sun = parray[12][0];
-        var elongIllum = elongationPhase(planet,sun);
-        var Elong = elongIllum.elongation;
-        var illum = elongIllum.illuminated;
+        let planet = parray[12][j];
+        let sun = parray[12][0];
+        let elongIllum = elongationPhase(planet,sun);
+        let Elong = elongIllum.elongation;
+        let illum = elongIllum.illuminated;
         // apparent magnitude
-        var magPara = {object:names[j-2], i:elongIllum.phaseAng, 
+        let magPara = {object:names[j-2], i:elongIllum.phaseAng, 
                        rHelio:planet.rHelio, rGeo:planet.rGeo, 
                        T:T+0.5/36525+dT, planet:planet, sun:sun};
-        var mag = planetMag(magPara);
+        let mag = planetMag(magPara);
         
         txt = "<tr><td>"+names[j-2]+"</td>";
         txt +=" <td>"+Rise+"</td>";
@@ -596,26 +596,26 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
 // locNum is the location number (1 or 2)
 function riseSetBrightestStars(LST0, locNum, lat, T) {
     // Load star data 
-    var bstars = brightestStarsLoc[locNum-1];
-    var T0 = bstars[0].Tepoch;
+    let bstars = brightestStarsLoc[locNum-1];
+    let T0 = bstars[0].Tepoch;
     if (Math.abs(T-T0) > 0.1) {
         // cortrect for precession and proper motions
         recomputeStarPos(T,bstars);
     }
     
     // Now compute rise, set and transit times
-    var locid = "#riseSetStars"+locNum.toString();
+    let locid = "#riseSetStars"+locNum.toString();
     $(locid).empty();
     $(locid).append("<table>");
-    var txt = "<tr><th>Star</th> <th>Rise (Azimuth)</th> <th>Transit</th> ";
+    let txt = "<tr><th>Star</th> <th>Rise (Azimuth)</th> <th>Transit</th> ";
     txt += "<th>Set</th> </tr>";
     $(locid).append(txt);
     // geocentric alt @ rise and set 
-    var alt = -0.009890199094634533; // -34' in radians
-    for (var i=1; i<bstars.length; i++) {
-        var t = riseSetStar(LST0, alt, lat, bstars[i].ra, bstars[i].dec);
-        var Rise = t.rise+" ("+t.azRise+")";
-        var Transit = t.transit+" ("+t.altTransit+")";
+    let alt = -0.009890199094634533; // -34' in radians
+    for (let i=1; i<bstars.length; i++) {
+        let t = riseSetStar(LST0, alt, lat, bstars[i].ra, bstars[i].dec);
+        let Rise = t.rise+" ("+t.azRise+")";
+        let Transit = t.transit+" ("+t.altTransit+")";
         if (t.rise == "above") {
             Rise = "circumpolar";
             t.set = "circumpolar";
@@ -651,21 +651,21 @@ function riseSetBrightestStars(LST0, locNum, lat, T) {
 //     given epoch. Note that epoch is a year. epoch = 2000 means 
 //     J2000.0. epoch = 2050 means 50 years after J2000.0.
 function calcRiseSetMultipleDates(input) {
-    var deg_to_rad = Math.PI/180;
-    var long = input.long * deg_to_rad;
-    var lat = input.lat * deg_to_rad;
+    let deg_to_rad = Math.PI/180;
+    let long = input.long * deg_to_rad;
+    let lat = input.lat * deg_to_rad;
     
-    var T1 = (input.D1 - input.tz/24)/36525;
-    var deltaT = input.deltaD/36525;
+    let T1 = (input.D1 - input.tz/24)/36525;
+    let deltaT = input.deltaD/36525;
     
-    var count = 0, max = 10000, max_table = 500;
-    var D,T,dT, LST0, raDec,i;
-    var outid = "#RSMultiResult";
+    let count = 0, max = 10000, max_table = 500;
+    let D,T,dT, LST0, raDec,i;
+    let outid = "#RSMultiResult";
     
-    var parray; 
-    var ra=[], dec=[];
-    var alt, trs, tt, txt, dateString;
-    var calculate = [false,false,false,false,false,false,false,false];
+    let parray; 
+    let ra=[], dec=[];
+    let alt, trs, tt, txt, dateString;
+    let calculate = [false,false,false,false,false,false,false,false];
     
     txt = '<p>Note: The table shows data up to '+
             max_table+' dates. The csv file contains data up to '+
@@ -694,7 +694,7 @@ function calcRiseSetMultipleDates(input) {
                 dateString = CalDat(D).dateString;
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
-                var d = D - input.tz/24;
+                let d = D - input.tz/24;
                 LST0 = getLST0(d,T+dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td>';
                 csvdata += dateString+', ';
@@ -788,13 +788,13 @@ function calcRiseSetMultipleDates(input) {
                 dateString = CalDat(D).dateString;
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
-                var d = D - input.tz/24;
+                let d = D - input.tz/24;
                 LST0 = getLST0(d,T+dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td>';
                 csvdata += dateString+', ';
-                var lam12, Dmoon;
+                let lam12, Dmoon;
                 for (i=0; i<25; i++) {
-                    var moon = MediumMoon(T+dT + i/24/36525);
+                    let moon = MediumMoon(T+dT + i/24/36525);
                     ra[i] = moon.ra; dec[i] = moon.dec;
                     if (i==12) {
                         lam12 = moon.lam2000;
@@ -825,14 +825,14 @@ function calcRiseSetMultipleDates(input) {
                 }
                 // Illumination and phase
                 calculate[2] = true;
-                var sun = planetPos(T+dT+0.5/36525, calculate)[2];
-                var raSun = sun.ra, decSun = sun.dec, Dsun = sun.rGeo;
-                var raMoon = ra[12], decMoon = dec[12];
-                var illumPhase = moonIlluminated(sun.ra,sun.dec,ra[12],dec[12], 
+                let sun = planetPos(T+dT+0.5/36525, calculate)[2];
+                let raSun = sun.ra, decSun = sun.dec, Dsun = sun.rGeo;
+                let raMoon = ra[12], decMoon = dec[12];
+                let illumPhase = moonIlluminated(sun.ra,sun.dec,ra[12],dec[12], 
                                 sun.lam2000,lam12,Dmoon,Dsun);
-                var illum = illumPhase.illuminated.toFixed(2);
-                var phase = illumPhase.phase;
-                var mag = illumPhase.mag.toFixed(1);
+                let illum = illumPhase.illuminated.toFixed(2);
+                let phase = illumPhase.phase;
+                let mag = illumPhase.mag.toFixed(1);
                 
                 txt += '<td>'+illum+'</td>';
                 csvdata += illum + ', ';
@@ -857,10 +857,10 @@ function calcRiseSetMultipleDates(input) {
         case "Saturn":
         case "Uranus":
         case "Neptune":
-            var pindex = {"Mercury":0, "Venus":1, "Mars":3, 
+            let pindex = {"Mercury":0, "Venus":1, "Mars":3, 
                      "Jupiter":4, "Saturn":5, "Uranus":6,
                      "Neptune":7};
-            var ind = pindex[input.obj];
+            let ind = pindex[input.obj];
             calculate[2] = true;
             calculate[ind] = true;
             txt = "<p>In the table below, the angles beside the rise and set times are the azimuths of "+input.obj;
@@ -879,11 +879,11 @@ function calcRiseSetMultipleDates(input) {
                 dateString = CalDat(D).dateString;
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
-                var d = D - input.tz/24;
+                let d = D - input.tz/24;
                 LST0 = getLST0(d,T+dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td> ';
                 csvdata += dateString+', ';
-                var sun, planet;
+                let sun, planet;
                 for (i=0; i<25; i++) {
                     parray = planetPos(T+i/876600+dT,calculate);
                     ra[i] = parray[ind].ra; 
@@ -895,22 +895,22 @@ function calcRiseSetMultipleDates(input) {
                 }
                 tt = getTransitTime(LST0,lat,ra,dec, false);
                 trs = getRiseSet(alt,LST0,lat,ra,dec);
-                var Rise=trs.rise+' ('+trs.azRise+')';
-                var Set=trs.set+' ('+trs.azSet+')';
+                let Rise=trs.rise+' ('+trs.azRise+')';
+                let Set=trs.set+' ('+trs.azSet+')';
                 if (trs.rise=="above") {
                    Rise = "circumpolar"; Set = "circumpolar";
                 } else if (trs.rise=="below") {
                    Rise = "invisible"; Set = "invisible";
                 }
                 // Elongation and fraction of planet illuminated
-                var elongIllum = elongationPhase(planet,sun);
-                var Elong = elongIllum.elongation;
-                var illum = elongIllum.illuminated;
+                let elongIllum = elongationPhase(planet,sun);
+                let Elong = elongIllum.elongation;
+                let illum = elongIllum.illuminated;
                 // apparent magnitude
-                var magPara = {object:input.obj, i:elongIllum.phaseAng, 
+                let magPara = {object:input.obj, i:elongIllum.phaseAng, 
                                rHelio:planet.rHelio, rGeo:planet.rGeo, 
                                T:T+0.5/36525+dT, planet:planet, sun:sun};
-                var mag = planetMag(magPara).toFixed(1);
+                let mag = planetMag(magPara).toFixed(1);
                 txt += '<td>'+Rise+'</td> <td>';
                 txt += tt.t+' ('+tt.alt+')</td> <td>';
                 txt += Set+'</td> <td>'+Elong+'</td> <td>'+illum+'</td> <td>';
@@ -929,9 +929,9 @@ function calcRiseSetMultipleDates(input) {
             $(outid).append(txt);
             txt = "<p>In the table below, the angles beside the rise time is the azimuth of the star at the rise time. Azimuth is measured from north and turning positive towards the east. For stars, the azimuth at the set time is always equal to the negative of the azimuth at the rise time and the azimuth is the same every day. The angle and direction beside the upper transit time is the altitute and direction of the star at transit, which is also the same every day. Atmospheric refraction is added when the altitude is above -1&deg;.</p>";
             $(outid).append(txt);
-            var raStar = input.ra * Math.PI/12;
-            var decStar = input.dec * deg_to_rad;
-            var Tepoch = (input.epoch - 2000)*0.01;
+            let raStar = input.ra * Math.PI/12;
+            let decStar = input.dec * deg_to_rad;
+            let Tepoch = (input.epoch - 2000)*0.01;
             txt = '<p><button onclick="download_csv(csvdata,'+"'star.csv')"+
             '">Download csv file</button></p>';
             $(outid).append(txt);
@@ -944,21 +944,21 @@ function calcRiseSetMultipleDates(input) {
                 dateString = CalDat(D).dateString;
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
-                var d = D - input.tz/24;
+                let d = D - input.tz/24;
                 LST0 = getLST0(d,T+dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td> ';
                 csvdata += dateString+', ';
                 if (Math.abs(T-Tepoch) > 0.1) {
                     // correct for precession
-                    var p = precession_matrix(Tepoch,T-Tepoch);
-                    var precessed = precessed_ra_dec(raStar,decStar,p);
+                    let p = precession_matrix(Tepoch,T-Tepoch);
+                    let precessed = precessed_ra_dec(raStar,decStar,p);
                     raStar = precessed.ra;
                     decStar = precessed.dec;
                     Tepoch = T;
                 }
-                var t = riseSetStar(LST0, alt, lat, raStar, decStar);
-                var Rise = t.rise+' ('+t.azRise+')';
-                var Set = t.set;
+                let t = riseSetStar(LST0, alt, lat, raStar, decStar);
+                let Rise = t.rise+' ('+t.azRise+')';
+                let Set = t.set;
                 if (t.rise == "above") {
                     Rise = "circumpolar";
                     Set = "circumpolar";
@@ -988,9 +988,9 @@ function calcRiseSetMultipleDates(input) {
 // y0: value of the function at x=0
 // yp: value of the function at x=1
 function Quad(x,ym,y0,yp) {
-    var a = 0.5*(yp+ym) - y0;
-    var b = 0.5*(yp-ym);
-    var c = y0;
+    let a = 0.5*(yp+ym) - y0;
+    let b = 0.5*(yp-ym);
+    let c = y0;
     return (a*x+b)*x + c;
 }
 
@@ -1008,11 +1008,11 @@ function Quad(x,ym,y0,yp) {
 // root2: second root of the quadratic functions
 // nroot: number of roots found in [-1,1]
 function QuadRootSearch(ym, y0,yp) {
-    var a = 0.5*(yp+ym) - y0;
-    var b = 0.5*(yp-ym);
-    var c = y0;
+    let a = 0.5*(yp+ym) - y0;
+    let b = 0.5*(yp-ym);
+    let c = y0;
     
-    var xe, ye, root1, root2, nroot;
+    let xe, ye, root1, root2, nroot;
     if (Math.abs(a) < 1e-6) {
         // the function is linear
         if (b>0) {
@@ -1037,11 +1037,11 @@ function QuadRootSearch(ym, y0,yp) {
     // Find extreme value
     xe = -0.5*b/a;
     ye = (a*xe + b)*xe + c;
-    var dis = b*b - 4*a*c; // discriminant of y=ax^2+bx+c
+    let dis = b*b - 4*a*c; // discriminant of y=ax^2+bx+c
     if (dis >= 0) {
         // parabola has roots
         if (Math.abs(a*c) > 1e-3*dis) {
-            var dx = 0.5*Math.sqrt(dis)/Math.abs(a);
+            let dx = 0.5*Math.sqrt(dis)/Math.abs(a);
             root1 = xe - dx; root2 = xe + dx;
         } else {
             // The function is nearly linear. The two roots 
@@ -1049,12 +1049,12 @@ function QuadRootSearch(ym, y0,yp) {
             // Use an alternative expression for the roots to 
             // prevent loss of accuracy due to substraction of 
             // two nearly equal large numbers
-            var tmp = b + Math.sqrt(dis);
+            let tmp = b + Math.sqrt(dis);
             if (b < 0) {
                 tmp = b - Math.sqrt(dis);
             }
-            var r1 = -2*c/tmp;
-            var r2 = -0.5*tmp/a;
+            let r1 = -2*c/tmp;
+            let r2 = -0.5*tmp/a;
             root1 = Math.min(r1,r2);
             root2 = Math.max(r1,r2);
         }
@@ -1079,15 +1079,15 @@ function QuadRootSearch(ym, y0,yp) {
 //  the parallax should be added to the altitude at 
 //  transit (only relevant to the Moon)
 function getTransitTime(LST0,lat,ra,dec, moonParallax) {
-    var twoPI = 2*Math.PI;
-    var HA = [];
-    var i;
+    let twoPI = 2*Math.PI;
+    let HA = [];
+    let i;
     for (i=0; i<25; i++) {
         HA[i] = LST0 - ra[i] + 0.262516170790829*i;
         HA[i] -= twoPI*Math.floor((HA[i]+Math.PI)/twoPI);
     }
     // Search for upper transit time
-    var j;
+    let j;
     for (i=0; i<24; i++) {
         if (HA[i]*HA[i+1] < 0 && Math.abs(HA[i]-HA[i+1]) < 1) {
             j=i;
@@ -1098,19 +1098,19 @@ function getTransitTime(LST0,lat,ra,dec, moonParallax) {
         return {t:"-", alt:"-"};
     } 
     if (j==0) {j=1;}
-    var result = QuadRootSearch(HA[j-1], HA[j], HA[j+1]);
+    let result = QuadRootSearch(HA[j-1], HA[j], HA[j+1]);
     if (result.nroot != 1) {
         return {t:"NA", alt:"NA"};
     }
     // transit time 
-    var t = convertHoursToHourMinute(j + result.root1);
+    let t = convertHoursToHourMinute(j + result.root1);
     // transit altitude and azimuth
     // First interpolate dec
-    var decTransit = Quad(result.root1,dec[j-1],dec[j],dec[j+1]);
-    var alt = 0.5*Math.PI - Math.abs(lat-decTransit);
+    let decTransit = Quad(result.root1,dec[j-1],dec[j],dec[j+1]);
+    let alt = 0.5*Math.PI - Math.abs(lat-decTransit);
     if (moonParallax) {
         // add parallax correction (only relevant for the moon)
-        var Rearth = 6371, Dmoon = 384400;
+        let Rearth = 6371, Dmoon = 384400;
         alt -= Rearth*Math.cos(alt)/(Dmoon - Rearth*Math.sin(alt));
     }
     if (alt > -0.0175) {
@@ -1132,22 +1132,22 @@ function getTransitTime(LST0,lat,ra,dec, moonParallax) {
 // at hourly speced time interval over the course of a day.
 // ra and dec must be arrays of length 25.
 function getRiseSet(alt0,LST0,lat,ra,dec) {
-    var i;
+    let i;
     // calculate sin(altitude) - sin(specified altitide)
-    var cosLat = Math.cos(lat), sinLat = Math.sin(lat);
-    var sinAlt0 = Math.sin(alt0);
-    var dSinAlt = [];
-    var HA;
+    let cosLat = Math.cos(lat), sinLat = Math.sin(lat);
+    let sinAlt0 = Math.sin(alt0);
+    let dSinAlt = [];
+    let HA;
     for (i=0; i<25; i++) {
         HA = LST0 - ra[i] + 0.262516170790829*i;
         dSinAlt[i] = sinLat*Math.sin(dec[i]) + 
             cosLat*Math.cos(dec[i])*Math.cos(HA) - sinAlt0;
     }
     // Now search for "rise" and "set" times
-    var foundRise = false, foundSet = false;
-    var iRise, iSet, tRise, tSet;
+    let foundRise = false, foundSet = false;
+    let iRise, iSet, tRise, tSet;
     for (i=1; i<25; i += 2) {
-        var result = QuadRootSearch(dSinAlt[i-1], dSinAlt[i], dSinAlt[i+1]);
+        let result = QuadRootSearch(dSinAlt[i-1], dSinAlt[i], dSinAlt[i+1]);
         if (result.nroot > 0) {
             if (result.nroot == 1) {
                 if (dSinAlt[i-1] < 0) {
@@ -1180,8 +1180,8 @@ function getRiseSet(alt0,LST0,lat,ra,dec) {
     // First, define a general function for the calculation
     // j is the index iRise or iSet, dj is tRise-iRise or 
     //     tSet-iSet
-    var getAz = function(j,dj) {
-        var cosDec, sinDec, sA,cA,y0,yp,ym,x,y, raI, decI;
+    let getAz = function(j,dj) {
+        let cosDec, sinDec, sA,cA,y0,yp,ym,x,y, raI, decI;
         // First interpolate ra and dec
         // For ra, interpolate sin(ra) and cos(ra) 
         // to take care of the discontinuity at pi
@@ -1199,13 +1199,13 @@ function getRiseSet(alt0,LST0,lat,ra,dec) {
         cosDec = Math.cos(decI), sinDec = Math.sin(decI);
         sA = cosDec*Math.sin(HA);
         cA = cosDec*Math.cos(HA)*sinLat - sinDec*cosLat;
-        var az = 180 + 180/Math.PI*Math.atan2(sA,cA);
+        let az = 180 + 180/Math.PI*Math.atan2(sA,cA);
         if (az > 180) {az -= 360;}
         return Math.round(az).toString()+"&deg;"
     }
     
-    var azRise = "-", azSet = "-";
-    var Rise = "-", Set = "-";
+    let azRise = "-", azSet = "-";
+    let Rise = "-", Set = "-";
     if (foundRise) {
         Rise = convertHoursToHourMinute(tRise);
         azRise = getAz(iRise,tRise-iRise);
@@ -1227,9 +1227,9 @@ function getRiseSet(alt0,LST0,lat,ra,dec) {
 
 // convert hours -> hh:mm 
 function convertHoursToHourMinute(hours) {
-    var hr = hours + 0.5/60 // take care of rounding
-    var h = Math.floor(hr);
-    var m = Math.floor((hr-h)*60).toString();
+    let hr = hours + 0.5/60 // take care of rounding
+    let h = Math.floor(hr);
+    let m = Math.floor((hr-h)*60).toString();
     h = h.toString();
     if (h.length < 2) {h = "0"+h;}
     if (m.length < 2) {m = "0"+m;}
@@ -1243,24 +1243,24 @@ function convertHoursToHourMinute(hours) {
 // Here LST0 is the local sidereal time at midnight.
 // All angles are measured in radians
 function riseSetStar(LST0, alt, lat, ra, dec) {
-    var halfPI = 0.5*Math.PI;
-    var rad_to_deg = 180/Math.PI;
-    var altMax = halfPI - Math.abs(lat-dec);
-    var altMin = -halfPI + Math.abs(lat+dec);
+    let halfPI = 0.5*Math.PI;
+    let rad_to_deg = 180/Math.PI;
+    let altMax = halfPI - Math.abs(lat-dec);
+    let altMin = -halfPI + Math.abs(lat+dec);
     
     // Calculate the upper transit time
-    var dHA = (ra-LST0)*12/Math.PI;
+    let dHA = (ra-LST0)*12/Math.PI;
     dHA = dHA - 24*Math.floor(dHA/24);
-    var t = dHA/1.00273781191135448;
-    var tTransit = convertHoursToHourMinute(t);
-    var azTransit=""; // azimuth at transit (either North, South or at zenith)
+    let t = dHA/1.00273781191135448;
+    let tTransit = convertHoursToHourMinute(t);
+    let azTransit=""; // azimuth at transit (either North, South or at zenith)
     if (lat < dec) {
         azTransit = "N";
     } else if (lat > dec) {
         azTransit = "S";
     }
     // upper transit altitude
-    var altTransit = altMax;
+    let altTransit = altMax;
     if (altTransit > -0.0175) {
         // add atm refraction
         altTransit += atmosphericRefraction(altMax,101,286);
@@ -1269,17 +1269,17 @@ function riseSetStar(LST0, alt, lat, ra, dec) {
     altTransit = altTransit.toFixed(1)+"&deg; "+azTransit;
     
     // Calculate the rise and set times
-    var tRise, tSet, azRise;
+    let tRise, tSet, azRise;
     if (alt < altMin) {
         tRise = "above"; tSet = "above"; azRise="-";
     } else if (alt > altMax) {
         tRise = "below"; tSet = "below"; azRise = "-";
     } else {
-        var sinRa = Math.sin(ra), cosRa = Math.cos(ra);
-        var sinDec = Math.sin(dec), cosDec = Math.cos(dec);
-        var sinLat = Math.sin(lat), cosLat = Math.cos(lat);
-        var HA = Math.acos( (Math.sin(alt) - sinLat*sinDec)/(cosLat*cosDec) );
-        var LST = HA + ra;
+        let sinRa = Math.sin(ra), cosRa = Math.cos(ra);
+        let sinDec = Math.sin(dec), cosDec = Math.cos(dec);
+        let sinLat = Math.sin(lat), cosLat = Math.cos(lat);
+        let HA = Math.acos( (Math.sin(alt) - sinLat*sinDec)/(cosLat*cosDec) );
+        let LST = HA + ra;
         t = (LST-LST0)*12/Math.PI;
         t = t-24*Math.floor(t/24);
         tSet = convertHoursToHourMinute(t/1.00273781191135448);
@@ -1296,7 +1296,7 @@ function riseSetStar(LST0, alt, lat, ra, dec) {
 
 function download_csv(data, filename) {
     // create link to download data
-    var hiddenElement = window.document.createElement('a');
+    let hiddenElement = window.document.createElement('a');
     hiddenElement.href = window.URL.createObjectURL(new Blob([data], {type: 'text/csv'}));
     hiddenElement.download = filename;
 

@@ -33,40 +33,40 @@
 
 // Geocentric apparent Ra and Dec of the Moon
 function MoonPosElpMpp02(T, lightTime) {
-    var T2 = T*T;
-    var T3 = T2*T;
-    var ra0 = 0.9999999498265204; 
-    var Tret = 0;
+    let T2 = T*T;
+    let T3 = T2*T;
+    let ra0 = 0.9999999498265204; 
+    let Tret = 0;
     if (lightTime) {
         // Calculate the retarded time 
-        var ang = getAnglesElpMpp02(T);
-        var r = ra0*(ELP_MAIN_dist(ang) + ELP_PERT_dist0(ang) + 
+        let ang = getAnglesElpMpp02(T);
+        let r = ra0*(ELP_MAIN_dist(ang) + ELP_PERT_dist0(ang) + 
             T*ELP_PERT_dist1(ang) + T2*ELP_PERT_dist2(ang) + 
             T3*ELP_PERT_dist3(ang));
         Tret = r*1.057000834024615e-15;
     }
-    var moon = MoonGeoElpMpp02(T-Tret);
+    let moon = MoonGeoElpMpp02(T-Tret);
     // ecliptic longitude and latitude wrt J2000.0 ecliptic
-    var lam2000 = Math.atan2(moon.Y, moon.X);
-    var bet2000 = Math.asin(moon.Z/moon.rGeo);
+    let lam2000 = Math.atan2(moon.Y, moon.X);
+    let bet2000 = Math.asin(moon.Z/moon.rGeo);
     
     // equatorial coordinates
-    var cosEps = 0.9174821430652418;
-    var sinEps = 0.397776969112606;
-    var Yeq = cosEps*moon.Y - sinEps*moon.Z;
-    var Zeq = sinEps*moon.Y + cosEps*moon.Z;
+    let cosEps = 0.9174821430652418;
+    let sinEps = 0.397776969112606;
+    let Yeq = cosEps*moon.Y - sinEps*moon.Z;
+    let Zeq = sinEps*moon.Y + cosEps*moon.Z;
     
     // Ra and Dec wrt J2000
-    var ra2000 = Math.atan2(Yeq, moon.X);
-    var dec2000 = Math.asin(Zeq/moon.rGeo);
+    let ra2000 = Math.atan2(Yeq, moon.X);
+    let dec2000 = Math.asin(Zeq/moon.rGeo);
     
     // precession
-    var p = precession_matrix(0,T);
-    var xp = p.p11*moon.X + p.p12*Yeq + p.p13*Zeq;
-    var yp = p.p21*moon.X + p.p22*Yeq + p.p23*Zeq;
-    var zp = p.p31*moon.X + p.p32*Yeq + p.p33*Zeq;
-    var ra = Math.atan2(yp,xp);
-    var dec = Math.asin(zp/moon.rGeo);
+    let p = precession_matrix(0,T);
+    let xp = p.p11*moon.X + p.p12*Yeq + p.p13*Zeq;
+    let yp = p.p21*moon.X + p.p22*Yeq + p.p23*Zeq;
+    let zp = p.p31*moon.X + p.p32*Yeq + p.p33*Zeq;
+    let ra = Math.atan2(yp,xp);
+    let dec = Math.asin(zp/moon.rGeo);
     
     return {Xgeo:moon.X, Ygeo:moon.Y, Zgeo:moon.Z, 
            rGeo:moon.rGeo, lam2000:lam2000, bet2000:bet2000, 
@@ -77,86 +77,86 @@ function MoonPosElpMpp02(T, lightTime) {
 // with respect to the mean ecliptic and equinox 
 // of J2000 at time T (century from J2000.0)
 function MoonGeoElpMpp02(T) {
-    var twoPi = 6.283185307179586; // 2 pi
-    var f1opi = 0.3183098861837907; // 1/pi
+    let twoPi = 6.283185307179586; // 2 pi
+    let f1opi = 0.3183098861837907; // 1/pi
     // function that convert an angle to the range [-pi, pi)
-    var mod2pi = function(x) {
+    let mod2pi = function(x) {
            return x - twoPi*Math.floor(0.5*(x*f1opi + 1));
         }
-    var T2 = T*T;
-    var T3 = T2*T;
-    var T4 = T2*T2;
-    var T5 = T2*T3;
-    var ra0 = 0.9999999498265204;
-    var ang = getAnglesElpMpp02(T);
-    var long = ang.W1 + ELP_MAIN_long(ang) + ELP_PERT_long0(ang) + 
+    let T2 = T*T;
+    let T3 = T2*T;
+    let T4 = T2*T2;
+    let T5 = T2*T3;
+    let ra0 = 0.9999999498265204;
+    let ang = getAnglesElpMpp02(T);
+    let long = ang.W1 + ELP_MAIN_long(ang) + ELP_PERT_long0(ang) + 
                mod2pi(ELP_PERT_long1(ang)*T) + 
                mod2pi(ELP_PERT_long2(ang)*T2) + 
                mod2pi(ELP_PERT_long3(ang)*T3);
-    var lat = ELP_MAIN_lat(ang) + ELP_PERT_lat0(ang) + 
+    let lat = ELP_MAIN_lat(ang) + ELP_PERT_lat0(ang) + 
               mod2pi(ELP_PERT_lat1(ang)*T) + 
               mod2pi(ELP_PERT_lat2(ang)*T2);
-    var r = ra0*(ELP_MAIN_dist(ang) + ELP_PERT_dist0(ang) + 
+    let r = ra0*(ELP_MAIN_dist(ang) + ELP_PERT_dist0(ang) + 
             T*ELP_PERT_dist1(ang) + T2*ELP_PERT_dist2(ang) + 
             T3*ELP_PERT_dist3(ang));
-    var x = r*Math.cos(long)*Math.cos(lat);
-    var y = r*Math.sin(long)*Math.cos(lat);
-    var z = r*Math.sin(lat);
+    let x = r*Math.cos(long)*Math.cos(lat);
+    let y = r*Math.sin(long)*Math.cos(lat);
+    let z = r*Math.sin(lat);
     // precession
-    var p1 = 0.10180391e-4*T + 0.47020439e-6*T2 - 0.5417367e-9*T3 - 0.2507948e-11*T4 + 0.463486e-14*T5;
-    var q1 = -0.113469002e-3*T + 0.12372674e-6*T2 + 0.12654170e-8*T3 - 0.1371808e-11*T4 - 0.320334e-14*T5;
-    var sq = Math.sqrt(1-p1*p1-q1*q1);
-    var p11 = 1-2*p1*p1;
-    var p12 = 2*p1*q1;
-    var p13 = 2*p1*sq;
-    var p21 = p12;
-    var p22 = 1-2*q1*q1;
-    var p23 = -2*q1*sq;
-    var p31 = -2*p1*sq;
-    var p32 = 2*q1*sq;
-    var p33 = 1 - 2*p1*p1 - 2*q1*q1;
-    var x2000 = p11*x + p12*y + p13*z;
-    var y2000 = p21*x + p22*y + p23*z;
-    var z2000 = p31*x + p32*y + p33*z;
+    let p1 = 0.10180391e-4*T + 0.47020439e-6*T2 - 0.5417367e-9*T3 - 0.2507948e-11*T4 + 0.463486e-14*T5;
+    let q1 = -0.113469002e-3*T + 0.12372674e-6*T2 + 0.12654170e-8*T3 - 0.1371808e-11*T4 - 0.320334e-14*T5;
+    let sq = Math.sqrt(1-p1*p1-q1*q1);
+    let p11 = 1-2*p1*p1;
+    let p12 = 2*p1*q1;
+    let p13 = 2*p1*sq;
+    let p21 = p12;
+    let p22 = 1-2*q1*q1;
+    let p23 = -2*q1*sq;
+    let p31 = -2*p1*sq;
+    let p32 = 2*q1*sq;
+    let p33 = 1 - 2*p1*p1 - 2*q1*q1;
+    let x2000 = p11*x + p12*y + p13*z;
+    let y2000 = p21*x + p22*y + p23*z;
+    let z2000 = p31*x + p32*y + p33*z;
     
     return {X:x2000, Y:y2000, Z:z2000,rGeo:r};
 }
 
 // Compute the angles (in rad) at time T (century from J2000.0)
 function getAnglesElpMpp02(T) {
-    var twoPi = 6.283185307179586; // 2 pi
-    var f1opi = 0.3183098861837907; // 1/pi
+    let twoPi = 6.283185307179586; // 2 pi
+    let f1opi = 0.3183098861837907; // 1/pi
     // function that convert an angle to the range [-pi, pi)
-    var mod2pi = function(x) {
+    let mod2pi = function(x) {
            return x - twoPi*Math.floor(0.5*(x*f1opi + 1));
         }
-    var T2 = T*T;
-    var T3 = T2*T;
-    var T4 = T2*T2;
+    let T2 = T*T;
+    let T3 = T2*T;
+    let T4 = T2*T2;
     
-    var W1 = 3.8103440908308803 + mod2pi(8399.6847300719292*T) + 
+    let W1 = 3.8103440908308803 + mod2pi(8399.6847300719292*T) + 
         mod2pi(-3.3189520425500942e-5*T2) + 
         mod2pi(3.1102494491060616e-8*T3) + 
         mod2pi(-2.0328237648922845e-10*T4);
-    var W2 = 1.4547895404440776 + mod2pi(70.993305448479248*T) + 
+    let W2 = 1.4547895404440776 + mod2pi(70.993305448479248*T) + 
         mod2pi(-1.8548192818782712e-4*T2) + 
         mod2pi(-2.1961637966359412e-7*T3) + 
         mod2pi(1.0327016221314225e-9*T4);
-    var W3 = 2.1824388474237688 + mod2pi(-33.781427419672326*T) + 
+    let W3 = 2.1824388474237688 + mod2pi(-33.781427419672326*T) + 
         mod2pi(3.0816644950982666e-5*T2) + 
         mod2pi(3.6447710769397583e-8*T3) + 
         mod2pi(-1.738541860458796e-10*T4);
-    var Ea = 1.7534699452640696 + mod2pi(628.30758508103156*T) + 
+    let Ea = 1.7534699452640696 + mod2pi(628.30758508103156*T) + 
         mod2pi(-9.7932363584126268e-8*T2) + 
         mod2pi(4.3633231299858238e-11*T3) + 
         mod2pi(7.2722052166430391e-13*T4);
-    var pomp = 1.7965956331206001 + mod2pi(5.6298669711442699e-3*T) + 
+    let pomp = 1.7965956331206001 + mod2pi(5.6298669711442699e-3*T) + 
         mod2pi(2.5659491293243853e-6*T2) + 
         mod2pi(-5.7275888286280579e-10*T3) + 
         mod2pi(5.5166948773454099e-11*T4);
     
     // Arguments of Delaunay
-    var ang = {D:mod2pi(W1-Ea+Math.PI), F:mod2pi(W1-W3), 
+    let ang = {D:mod2pi(W1-Ea+Math.PI), F:mod2pi(W1-W3), 
                L:mod2pi(W1-W2), Lp:mod2pi(Ea-pomp)};
     ang.zeta = mod2pi(W1 + 0.02438029560881907*T);
     // planetary arguments
@@ -176,7 +176,7 @@ function getAnglesElpMpp02(T) {
 
 // MAIN PROBLEM. LONGITUDE, 371 terms
 function ELP_MAIN_long(ang) {
-   var s = 0;
+   let s = 0;
    s += -0.001995472498018293 * Math.sin(2*ang.F);
    s += 2.037795438926712e-06 * Math.sin(4*ang.F);
    s += -3.8875915898435e-07 * Math.sin(-4*ang.F + ang.L);
@@ -553,7 +553,7 @@ function ELP_MAIN_long(ang) {
 
 // MAIN PROBLEM. LATITUDE, 339 terms
 function ELP_MAIN_lat(ang) {
-   var s = 0;
+   let s = 0;
    s += 0.08950261906476278 * Math.sin(ang.F);
    s += -3.052618492304011e-05 * Math.sin(3*ang.F);
    s += 2.869974021688759e-08 * Math.sin(5*ang.F);
@@ -898,7 +898,7 @@ function ELP_MAIN_lat(ang) {
 
 // MAIN PROBLEM. DISTANCE, 106 terms
 function ELP_MAIN_dist(ang) {
-   var s = 385000.529032284;
+   let s = 385000.529032284;
    s += -3.148302192275278 * Math.cos(2*ang.F);
    s += 79.66057047643527 * Math.cos(-2*ang.F + ang.L);
    s += -20905.35493520509 * Math.cos(ang.L);
@@ -1009,7 +1009,7 @@ function ELP_MAIN_dist(ang) {
 
 // PERTURBATIONS. LONGITUDE,  1015 terms,  power of t: 0
 function ELP_PERT_long0(ang) {
-   var s = 0;
+   let s = 0;
    s += 6.909301607260658e-05 * Math.sin(ang.L - 18*ang.Ve + 16*ang.EM + 2.67830987461731);
    s += 3.424234181539617e-05 * Math.sin(ang.F - ang.zeta + 3.14157624749482);
    s += 5.541395367122112e-06 * Math.sin(2*ang.D - ang.L + 2*ang.EM - 2*ang.Ju - 3.13952359904097);
@@ -2030,7 +2030,7 @@ function ELP_PERT_long0(ang) {
 
 // PERTURBATIONS. LONGITUDE, 808 terms, power of t: 1
 function ELP_PERT_long1(ang) {
-   var s = 0;
+   let s = 0;
    s += 8.1293558048447e-06 * Math.sin(ang.Lp);
    s += 2.503674811985866e-06 * Math.sin(2*ang.D - ang.L - ang.Lp + 3.14159265358979);
    s += 2.006304456535593e-06 * Math.sin(2*ang.D - ang.Lp + 3.14159265358979);
@@ -2844,7 +2844,7 @@ function ELP_PERT_long1(ang) {
 
 // PERTURBATIONS. LONGITUDE, 219 terms, power of t: 2
 function ELP_PERT_long2(ang) {
-   var s = 0;
+   let s = 0;
    s += 2.36104262700344e-08 * Math.sin(ang.Lp);
    s += 1.105378445496381e-08 * Math.sin(ang.L - 18*ang.Ve + 16*ang.EM - 0.411185325890861);
    s += 7.27220521664304e-09 * Math.sin(2*ang.D - ang.L - ang.Lp + 3.14159265358979);
@@ -3069,7 +3069,7 @@ function ELP_PERT_long2(ang) {
 
 // PERTURBATIONS. LONGITUDE, 2 terms, power of t: 3
 function ELP_PERT_long3(ang) {
-   var s = 0;
+   let s = 0;
    s += 5.80192932115778e-11 * Math.sin(ang.L - 18*ang.Ve + 16*ang.EM - 2.04456364581958);
    s += 8.200887507949931e-12 * Math.sin(2*ang.Ju - 5*ang.Sa - 1.23246888669211);
    return s;
@@ -3077,7 +3077,7 @@ function ELP_PERT_long3(ang) {
 
 // PERTURBATIONS. LATITUDE, 446 terms, power of t: 0
 function ELP_PERT_lat0(ang) {
-   var s = 0;
+   let s = 0;
    s += 3.900345457073310e-05 * Math.sin(ang.zeta - 3.1415802617521);
    s += 7.321700982099486e-06 * Math.sin(ang.D + ang.EM - 1.45420712336957);
    s += 3.056849325564841e-06 * Math.sin(ang.F - ang.L + 18*ang.Ve - 16*ang.EM + 0.463282471363486);
@@ -3529,7 +3529,7 @@ function ELP_PERT_lat0(ang) {
 
 // PERTURBATIONS. LATITUDE, 314 terms, power of t: 1
 function ELP_PERT_lat1(ang) {
-   var s = 0;
+   let s = 0;
    s += 3.602165650643853e-07 * Math.sin(2*ang.D - ang.F - ang.Lp + 3.14159265358979);
    s += 1.475288031616318e-07 * Math.sin(2*ang.D - ang.F + ang.Lp);
    s += 1.080649695193156e-07 * Math.sin(2*ang.D + ang.F - ang.L - ang.Lp + 3.14159265358979);
@@ -3849,7 +3849,7 @@ function ELP_PERT_lat1(ang) {
 
 // PERTURBATIONS. LATITUDE, 51 terms, power of t: 2
 function ELP_PERT_lat2(ang) {
-   var s = 0;
+   let s = 0;
    s += 1.066590098440979e-09 * Math.sin(2*ang.D - ang.F - ang.Lp + 3.14159265358979);
    s += 4.890468109728096e-10 * Math.sin(ang.F - ang.L + 18*ang.Ve - 16*ang.EM - 2.73040592091874);
    s += 4.888538506754535e-10 * Math.sin(ang.F + ang.L - 18*ang.Ve + 16*ang.EM - 0.411186646720251);
@@ -3906,7 +3906,7 @@ function ELP_PERT_lat2(ang) {
 
 // PERTURBATIONS. DISTANCE, 31 terms, power of t: 0
 function ELP_PERT_dist0(ang) {
-   var s = 0;
+   let s = 0;
    s += 1.05861899454692 * Math.sin(2*ang.D - ang.L + 2*ang.EM - 2*ang.Ju + 1.57286475842235);
    s += 0.7280520195337479 * Math.sin(2*ang.L - 18*ang.Ve + 16*ang.EM + 1.10751515496098);
    s += 0.68280880054649 * Math.sin(18*ang.Ve - 16*ang.EM - 1.10749968416726);
@@ -3943,7 +3943,7 @@ function ELP_PERT_dist0(ang) {
 
 // PERTURBATIONS. DISTANCE, 40 terms, power of t: 1
 function ELP_PERT_dist1(ang) {
-   var s = 0;
+   let s = 0;
    s += 0.51395 * Math.sin(2*ang.D - ang.Lp + 1.5707963267949);
    s += 0.38245 * Math.sin(2*ang.D - ang.L - ang.Lp + 1.5707963267949);
    s += 0.32654 * Math.sin(ang.L - ang.Lp + 1.5707963267949);
@@ -3989,7 +3989,7 @@ function ELP_PERT_dist1(ang) {
 
 // PERTURBATIONS. DISTANCE, 17 terms, power of t: 2
 function ELP_PERT_dist2(ang) {
-   var s = 0;
+   let s = 0;
    s += 0.00149 * Math.sin(2*ang.D - ang.Lp + 1.5707963267949);
    s += 0.00111 * Math.sin(2*ang.D - ang.L - ang.Lp + 1.5707963267949);
    s += 0.00095 * Math.sin(ang.L - ang.Lp + 1.5707963267949);
@@ -4012,6 +4012,6 @@ function ELP_PERT_dist2(ang) {
 
 // PERTURBATIONS. DISTANCE, 0 terms, power of t: 3
 function ELP_PERT_dist3(ang) {
-   var s = 0;
+   let s = 0;
    return s;
 }

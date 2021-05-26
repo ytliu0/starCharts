@@ -36,12 +36,12 @@
 */
 
 function MarsPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Mars_X0(t) + Mars_X1(t) + Mars_X2(t) + 
+       let t = 0.1*T;
+       let X = Mars_X0(t) + Mars_X1(t) + Mars_X2(t) + 
            Mars_X3(t) + Mars_X4(t) + Mars_X5(t);
-       var Y = Mars_Y0(t) + Mars_Y1(t) + Mars_Y2(t) + 
+       let Y = Mars_Y0(t) + Mars_Y1(t) + Mars_Y2(t) + 
            Mars_Y3(t) + Mars_Y4(t) + Mars_Y5(t);
-       var Z = Mars_Z0(t) + Mars_Z1(t) + Mars_Z2(t) + 
+       let Z = Mars_Z0(t) + Mars_Z1(t) + Mars_Z2(t) + 
            Mars_Z3(t) + Mars_Z4(t) + Mars_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -49,7 +49,7 @@ function MarsPosVSOP(T) {
 
    function Mars_X0 (t) // 1584 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 1.51769936383*Math.cos(6.20403346548 + 3340.6124266998*t);
    X0 -= 0.19502945246;
    X0 += 0.07070919655*Math.cos(0.25870338558 + 6681.2248533996*t);
@@ -1641,7 +1641,7 @@ function MarsPosVSOP(T) {
 
    function Mars_X1 (t) // 956 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 -= 0.00861441374;
    X1 += 0.00552437949*Math.cos(5.09565872891 + 6681.2248533996*t);
    X1 += 0.00077184977*Math.cos(5.43315636209 + 10021.8372800994*t);
@@ -2605,7 +2605,7 @@ function MarsPosVSOP(T) {
 
    function Mars_X2 (t) // 387 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00056323939;
    X2 += 0.00022122528*Math.cos(3.54372113272 + 6681.2248533996*t);
    X2 += 0.00006091409*Math.cos(3.93272649649 + 10021.8372800994*t);
@@ -3000,7 +3000,7 @@ function MarsPosVSOP(T) {
 
    function Mars_X3 (t) // 135 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00000849999;
    X3 += 0.00000560133*Math.cos(1.94007552058 + 6681.2248533996*t);
    X3 += 0.00000318062*Math.cos(2.39391695789 + 10021.8372800994*t);
@@ -3143,7 +3143,7 @@ function MarsPosVSOP(T) {
 
    function Mars_X4 (t) // 41 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 -= 0.00000025349;
    X4 += 0.00000012260*Math.cos(0.83414775886 + 10021.8372800994*t);
    X4 += 0.00000010035*Math.cos(0.40425836057 + 6681.2248533996*t);
@@ -3192,7 +3192,7 @@ function MarsPosVSOP(T) {
 
    function Mars_X5 (t) // 21 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000000360*Math.cos(5.54721578166 + 10021.8372800994*t);
    X5 += 0.00000000274*Math.cos(2.70467042100 + 3185.1920272656*t);
    X5 += 0.00000000274*Math.cos(0.28001490932 + 3496.032826134*t);
@@ -3221,7 +3221,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Y0 (t) // 1612 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 1.51558976277*Math.cos(4.63212206588 + 3340.6124266998*t);
    Y0 += 0.07064550239*Math.cos(4.97051892902 + 6681.2248533996*t);
    Y0 += 0.08655481102;
@@ -4841,7 +4841,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Y1 (t) // 969 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 -= 0.01427324210;
    Y1 += 0.00551063753*Math.cos(3.52128320402 + 6681.2248533996*t);
    Y1 += 0.00077091913*Math.cos(3.86082685753 + 10021.8372800994*t);
@@ -5818,7 +5818,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Y2 (t) // 384 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 -= 0.00035396765;
    Y2 += 0.00021950759*Math.cos(1.96291594946 + 6681.2248533996*t);
    Y2 += 0.00006075990*Math.cos(2.35864321001 + 10021.8372800994*t);
@@ -6210,7 +6210,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Y3 (t) // 136 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00001448778;
    Y3 += 0.00000548277*Math.cos(0.33360423382 + 6681.2248533996*t);
    Y3 += 0.00000316422*Math.cos(0.81609547752 + 10021.8372800994*t);
@@ -6354,7 +6354,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Y4 (t) // 44 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00000012136*Math.cos(5.53171096923 + 10021.8372800994*t);
    Y4 += 0.00000014558;
    Y4 += 0.00000009397*Math.cos(5.00023134055 + 6681.2248533996*t);
@@ -6406,7 +6406,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Y5 (t) // 21 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000353*Math.cos(3.94830849426 + 10021.8372800994*t);
    Y5 += 0.00000000274*Math.cos(4.99240388971 + 3496.032826134*t);
    Y5 += 0.00000000272*Math.cos(1.12308951649 + 3185.1920272656*t);
@@ -6435,7 +6435,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Z0 (t) // 355 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.04901207220*Math.cos(3.76712324286 + 3340.6124266998*t);
    Z0 += 0.00660669541;
    Z0 += 0.00228333904*Math.cos(4.10544022266 + 6681.2248533996*t);
@@ -6798,7 +6798,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Z1 (t) // 232 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00331842958*Math.cos(6.05027773492 + 3340.6124266998*t);
    Z1 -= 0.00047930411;
    Z1 += 0.00009896501*Math.cos(1.61155844715 + 6681.2248533996*t);
@@ -7038,7 +7038,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Z2 (t) // 122 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00013705360*Math.cos(1.04212852598 + 3340.6124266998*t);
    Z2 -= 0.00005931596;
    Z2 += 0.00000716728*Math.cos(0.12154825255 + 6681.2248533996*t);
@@ -7168,7 +7168,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Z3 (t) // 51 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000489822*Math.cos(2.06392886831 + 3340.6124266998*t);
    Z3 += 0.00000212575;
    Z3 += 0.00000008245*Math.cos(4.91827993759 + 6681.2248533996*t);
@@ -7227,7 +7227,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Z4 (t) // 16 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000015141;
    Z4 += 0.00000010395*Math.cos(3.33271505543 + 3340.6124266998*t);
    Z4 += 0.00000000256*Math.cos(3.76243173590 + 10021.8372800994*t);
@@ -7251,7 +7251,7 @@ function MarsPosVSOP(T) {
 
    function Mars_Z5 (t) // 7 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000505*Math.cos(4.62558150778 + 3340.6124266998*t);
    Z5 -= 0.00000000080;
    Z5 += 0.00000000027*Math.cos(5.16649907997 + 6681.2248533996*t);

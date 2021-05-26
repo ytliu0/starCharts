@@ -4,28 +4,28 @@
 // Planets.
 
 // returns the fractional part of a number
-var Frac = function(x) {
+let Frac = function(x) {
     return(x - Math.floor(x));
 }
 
-var Modulus = function(x,y) {
+let Modulus = function(x,y) {
     return(x - y*Math.floor(x/y));
 }
 
 // ecliptic -> equatorial 
 function eclipticToEquatorial(lam,bet, eps) {
-    var cosEps = Math.cos(eps);
-    var sinEps = Math.sin(eps);
-    var cosLam = Math.cos(lam);
-    var sinLam = Math.sin(lam);
-    var cosBet = Math.cos(bet);
-    var sinBet = Math.sin(bet);
+    let cosEps = Math.cos(eps);
+    let sinEps = Math.sin(eps);
+    let cosLam = Math.cos(lam);
+    let sinLam = Math.sin(lam);
+    let cosBet = Math.cos(bet);
+    let sinBet = Math.sin(bet);
     
-    var delta = sinBet*cosEps + cosBet*sinEps*sinLam;
+    let delta = sinBet*cosEps + cosBet*sinEps*sinLam;
     delta = Math.asin(delta);
-    var sA = cosBet*sinLam*cosEps - sinBet*sinEps;
-    var cA = cosBet*cosLam;
-    var alpha = Math.atan2(sA,cA);
+    let sA = cosBet*sinLam*cosEps - sinBet*sinEps;
+    let cA = cosBet*cosLam;
+    let alpha = Math.atan2(sA,cA);
     
     return({ra:alpha, dec:delta});
 }
@@ -34,10 +34,10 @@ function eclipticToEquatorial(lam,bet, eps) {
 // at dynamical time T (number of centuries from 2000)
 function sunMoonPlanets(T) {
     
-    var planets = [];
+    let planets = [];
     
     // approximate position of the Sun, Moon and planets
-    var others = planetPos(T,[true,true,true,true,true,true,true,true]);
+    let others = planetPos(T,[true,true,true,true,true,true,true,true]);
     
     // index: 0=Sun, 1=Moon, 2=Mercury, 3=Venus, 4=Mars, 
     //        5=Jupiter, 6=Saturn, 7=Uranus, 8=Neptune
@@ -57,46 +57,46 @@ function sunMoonPlanets(T) {
 // Calculate the approximate position of the Sun
 // Using the foemula in Astronomy on Personal Computer
 function MiniSun(T) {
-    var pi2 = 2*Math.PI;
-    var Rad = Math.PI/180;
-    var eps = 23.43929111*Math.PI/180;
-    var Msun = pi2*Frac(0.993133 + 99.997361*T);
-    var Lsun = pi2*Frac(0.7859453 + Msun/pi2 + 
+    let pi2 = 2*Math.PI;
+    let Rad = Math.PI/180;
+    let eps = 23.43929111*Math.PI/180;
+    let Msun = pi2*Frac(0.993133 + 99.997361*T);
+    let Lsun = pi2*Frac(0.7859453 + Msun/pi2 + 
                        (6893*Math.sin(Msun)+72*Math.sin(2*Msun) + 
                        6191.2*T)/1296000);
-    var raDec = eclipticToEquatorial(Lsun,0,eps);
+    let raDec = eclipticToEquatorial(Lsun,0,eps);
     return {ra:raDec.ra, dec:raDec.dec, lam:Lsun, bet:0};
 }
 
 // Calculate the approximate position of the Moon
 // Using the foemula in Astronomy on Personal Computer
 function MiniMoon(T) {
-    var pi2 = 2*Math.PI;
-    var Rad = Math.PI/180;
-    var Arcs = 3600/Math.PI*180;
-    var eps = 23.43929111*Math.PI/180;
-    var L_0 = Frac(0.606433+1336.855225*T);
-    var l = pi2*Frac(0.374897+1325.55241*T);
-    var ls = pi2*Frac(0.993133 + 99.997361*T);
-    var D = pi2*Frac(0.827361+1236.853086*T);
-    var F = pi2*Frac(0.259086+1342.227825*T);
+    let pi2 = 2*Math.PI;
+    let Rad = Math.PI/180;
+    let Arcs = 3600/Math.PI*180;
+    let eps = 23.43929111*Math.PI/180;
+    let L_0 = Frac(0.606433+1336.855225*T);
+    let l = pi2*Frac(0.374897+1325.55241*T);
+    let ls = pi2*Frac(0.993133 + 99.997361*T);
+    let D = pi2*Frac(0.827361+1236.853086*T);
+    let F = pi2*Frac(0.259086+1342.227825*T);
     
-    var dL = 22640*Math.sin(l) - 4586*Math.sin(l-2*D) + 
+    let dL = 22640*Math.sin(l) - 4586*Math.sin(l-2*D) + 
         2370*Math.sin(2*D) + 769*Math.sin(2*l) - 
         668*Math.sin(ls) - 412*Math.sin(2*F) - 
         212*Math.sin(2*l-2*D) - 206*Math.sin(l+ls-2*D) + 
         192*Math.sin(l+2*D) - 165*Math.sin(ls-2*D) - 
         125*Math.sin(D) - 110*Math.sin(l+ls) + 
         148*Math.sin(l-ls) - 55*Math.sin(2*F-2*D);
-    var S = F + (dL+412*Math.sin(2*F) + 541*Math.sin(ls))/Arcs;
-    var h = F - 2*D;
-    var N = -526*Math.sin(h) + 44*Math.sin(l+h) - 
+    let S = F + (dL+412*Math.sin(2*F) + 541*Math.sin(ls))/Arcs;
+    let h = F - 2*D;
+    let N = -526*Math.sin(h) + 44*Math.sin(l+h) - 
         31*Math.sin(h-l) - 23*Math.sin(ls+h) + 
         11*Math.sin(h-ls) - 25*Math.sin(F-2*l) + 
         21*Math.sin(F-l);
-    var lam = pi2*Frac(L_0 + dL/1296000);
-    var bet = (18520*Math.sin(S) + N)/Arcs;
-    var raDec = eclipticToEquatorial(lam,bet, eps);
+    let lam = pi2*Frac(L_0 + dL/1296000);
+    let bet = (18520*Math.sin(S) + N)/Arcs;
+    let raDec = eclipticToEquatorial(lam,bet, eps);
     
     return {ra:raDec.ra, dec:raDec.dec, lam:lam, bet:bet};
 }
@@ -107,38 +107,38 @@ function MiniMoon(T) {
 // distance series: terms with amplitudes less 
 // than 100km are removed.
 function MiniMoonDist(T) {
-    var twoPi = 6.283185307179586; // 2 pi
-    var f1opi = 0.3183098861837907; // 1/pi
+    let twoPi = 6.283185307179586; // 2 pi
+    let f1opi = 0.3183098861837907; // 1/pi
     // function that convert an angle to the range [-pi, pi)
-    var frac = function(x) {
+    let frac = function(x) {
            return x - twoPi*Math.floor(0.5*(x*f1opi + 1));
     }
-    var T2 = T*T;
-    var T3 = T2*T;
-    var T4 = T2*T2;
+    let T2 = T*T;
+    let T3 = T2*T;
+    let T4 = T2*T2;
     
-    var W1 = -2.472840876591278 +frac(8399.684731773916*T);
-    var W1full = W1 + frac(-2.854728398477281e-05*T2) + 
+    let W1 = -2.472840876591278 +frac(8399.684731773916*T);
+    let W1full = W1 + frac(-2.854728398477281e-05*T2) + 
         frac(3.201709550047375e-08*T3) + 
         frac(-1.53637455543612e-10*T4);
-    var W2 = 1.454788532322509 + frac(70.99330481835962*T);
-    var W2full = W2 + frac(-0.0001855750416003838*T2) + 
+    let W2 = 1.454788532322509 + frac(70.99330481835962*T);
+    let W2full = W2 + frac(-0.0001855750416003838*T2) + 
         frac(-2.183940189294126e-07*T3) + 
         frac(1.032701622131422e-09*T4);
-    var pomp = 1.796595523358783 + frac(0.005629793667315685*T);
-    var pompfull = pomp + frac(2.582602479270498e-06*T2) + 
+    let pomp = 1.796595523358783 + frac(0.005629793667315685*T);
+    let pompfull = pomp + frac(2.582602479270498e-06*T2) + 
         frac(-6.690428799311597e-10*T3);
-    var Ea = 1.753470343150658 + frac(628.3075849621554*T);
-    var Eafull = Ea + frac(-9.793236358412627e-08*T2) + 
+    let Ea = 1.753470343150658 + frac(628.3075849621554*T);
+    let Eafull = Ea + frac(-9.793236358412627e-08*T2) + 
         frac(4.363323129985824e-11*T3) + 
         frac(7.272205216643039e-13*T4);
     
     // Delaunay's arguments
-    var Dfull = W1full-Eafull+Math.PI;
-    var Lfull = W1full-W2full;
-    var Lpfull = Eafull-pompfull;
+    let Dfull = W1full-Eafull+Math.PI;
+    let Lfull = W1full-W2full;
+    let Lpfull = Eafull-pompfull;
    
-   var s = 385000.5289868034;
+   let s = 385000.5289868034;
    s += -20905.35504324328 * Math.cos(Lfull);
    s += -569.9251213522875 * Math.cos(2*Lfull);
    s += -129.6201386785059 * Math.cos(Lpfull - Lfull);
@@ -165,46 +165,46 @@ function MiniMoonDist(T) {
 // This is the ELP/Mpp02L series described in the 
 // pdf documentation
 function MediumMoon(T) {
-    var twoPi = 6.283185307179586; // 2 pi
-    var f1opi = 0.3183098861837907; // 1/pi
+    let twoPi = 6.283185307179586; // 2 pi
+    let f1opi = 0.3183098861837907; // 1/pi
     // function that convert an angle to the range [-pi, pi)
-    var mod2pi = function(x) {
+    let mod2pi = function(x) {
            return x - twoPi*Math.floor(0.5*(x*f1opi + 1));
     }
-    var T2 = T*T;
-    var T3 = T2*T;
-    var T4 = T2*T2;
-    var T5 = T2*T3;
-    var ra0 = 0.9999999498265204;
+    let T2 = T*T;
+    let T3 = T2*T;
+    let T4 = T2*T2;
+    let T5 = T2*T3;
+    let ra0 = 0.9999999498265204;
     
-    var W1 = 3.8103440908308803 + mod2pi(8399.6847300719292*T) + 
+    let W1 = 3.8103440908308803 + mod2pi(8399.6847300719292*T) + 
         mod2pi(-3.3189520425500942e-5*T2) + 
         mod2pi(3.1102494491060616e-8*T3) + 
         mod2pi(-2.0328237648922845e-10*T4);
-    var W2 = 1.4547895404440776 + mod2pi(70.993305448479248*T) + 
+    let W2 = 1.4547895404440776 + mod2pi(70.993305448479248*T) + 
         mod2pi(-1.8548192818782712e-4*T2) + 
         mod2pi(-2.1961637966359412e-7*T3) + 
         mod2pi(1.0327016221314225e-9*T4);
-    var W3 = 2.1824388474237688 + mod2pi(-33.781427419672326*T) + 
+    let W3 = 2.1824388474237688 + mod2pi(-33.781427419672326*T) + 
         mod2pi(3.0816644950982666e-5*T2) + 
         mod2pi(3.6447710769397583e-8*T3) + 
         mod2pi(-1.738541860458796e-10*T4);
-    var Ea = 1.7534699452640696 + mod2pi(628.30758508103156*T) + 
+    let Ea = 1.7534699452640696 + mod2pi(628.30758508103156*T) + 
         mod2pi(-9.7932363584126268e-8*T2) + 
         mod2pi(4.3633231299858238e-11*T3) + 
         mod2pi(7.2722052166430391e-13*T4);
-    var pomp = 1.7965956331206001 + mod2pi(5.6298669711442699e-3*T) + 
+    let pomp = 1.7965956331206001 + mod2pi(5.6298669711442699e-3*T) + 
         mod2pi(2.5659491293243853e-6*T2) + 
         mod2pi(-5.7275888286280579e-10*T3) + 
         mod2pi(5.5166948773454099e-11*T4);
     
     // Arguments of Delaunay
-    var D = mod2pi(W1-Ea+Math.PI);
-    var F = mod2pi(W1-W3);
-    var L = mod2pi(W1-W2);
-    var Lp = mod2pi(Ea-pomp);
+    let D = mod2pi(W1-Ea+Math.PI);
+    let F = mod2pi(W1-W3);
+    let L = mod2pi(W1-W2);
+    let Lp = mod2pi(Ea-pomp);
     
-    var long = W1;
+    let long = W1;
     long += -0.001995472498018293 * Math.sin(2*F);
     long += 0.0001916628565478175 * Math.sin(-2*F + L);
     long += 0.1097598086261916 * Math.sin(L);
@@ -226,7 +226,7 @@ function MediumMoon(T) {
     long += 0.0001863130931752139 * Math.sin(4*D - L);
     long += T*(8.1293558048447e-06 * Math.sin(Lp));
 
-    var lat = 0.08950261906476278 * Math.sin(F);
+    let lat = 0.08950261906476278 * Math.sin(F);
     lat += 0.004846651648159632 * Math.sin(-F + L);
     lat += 0.004897428574922555 * Math.sin(F + L);
     lat += 0.0001539752292512595 * Math.sin(-F + 2*L);
@@ -237,7 +237,7 @@ function MediumMoon(T) {
     lat += 0.0005684958997727675 * Math.sin(2*D + F);
     lat += 0.0001617202836489691 * Math.sin(2*D - F + L);
 
-    var r = 385000.529032284;
+    let r = 385000.529032284;
     r += -20905.35493520509 * Math.cos(L);
     r += -569.9251153350947 * Math.cos(2*L);
     r += -129.6202221720506 * Math.cos(-L + Lp);
@@ -251,47 +251,47 @@ function MediumMoon(T) {
     r += -170.7330771247706 * Math.cos(2*D + L);
     r *= ra0;
     
-    var x = r*Math.cos(long)*Math.cos(lat);
-    var y = r*Math.sin(long)*Math.cos(lat);
-    var z = r*Math.sin(lat);
+    let x = r*Math.cos(long)*Math.cos(lat);
+    let y = r*Math.sin(long)*Math.cos(lat);
+    let z = r*Math.sin(lat);
     // precessed to J2000 mean ecliptic and equinox
-    var p1 = 0.10180391e-4*T + 0.47020439e-6*T2 - 0.5417367e-9*T3 - 0.2507948e-11*T4 + 0.463486e-14*T5;
-    var q1 = -0.113469002e-3*T + 0.12372674e-6*T2 + 0.12654170e-8*T3 - 0.1371808e-11*T4 - 0.320334e-14*T5;
-    var sq = Math.sqrt(1-p1*p1-q1*q1);
-    var p11 = 1-2*p1*p1;
-    var p12 = 2*p1*q1;
-    var p13 = 2*p1*sq;
-    var p21 = p12;
-    var p22 = 1-2*q1*q1;
-    var p23 = -2*q1*sq;
-    var p31 = -2*p1*sq;
-    var p32 = 2*q1*sq;
-    var p33 = 1 - 2*p1*p1 - 2*q1*q1;
-    var x2000 = p11*x + p12*y + p13*z;
-    var y2000 = p21*x + p22*y + p23*z;
-    var z2000 = p31*x + p32*y + p33*z;
+    let p1 = 0.10180391e-4*T + 0.47020439e-6*T2 - 0.5417367e-9*T3 - 0.2507948e-11*T4 + 0.463486e-14*T5;
+    let q1 = -0.113469002e-3*T + 0.12372674e-6*T2 + 0.12654170e-8*T3 - 0.1371808e-11*T4 - 0.320334e-14*T5;
+    let sq = Math.sqrt(1-p1*p1-q1*q1);
+    let p11 = 1-2*p1*p1;
+    let p12 = 2*p1*q1;
+    let p13 = 2*p1*sq;
+    let p21 = p12;
+    let p22 = 1-2*q1*q1;
+    let p23 = -2*q1*sq;
+    let p31 = -2*p1*sq;
+    let p32 = 2*q1*sq;
+    let p33 = 1 - 2*p1*p1 - 2*q1*q1;
+    let x2000 = p11*x + p12*y + p13*z;
+    let y2000 = p21*x + p22*y + p23*z;
+    let z2000 = p31*x + p32*y + p33*z;
     
     // ecliptic longitude and latitude wrt J2000.0 ecliptic
-    var lam2000 = Math.atan2(y2000, x2000);
-    var bet2000 = Math.asin(z2000/r);
+    let lam2000 = Math.atan2(y2000, x2000);
+    let bet2000 = Math.asin(z2000/r);
     
     // equatorial coordinates
-    var cosEps = 0.9174821430652418;
-    var sinEps = 0.397776969112606;
-    var Yeq = cosEps*y2000 - sinEps*z2000;
-    var Zeq = sinEps*y2000 + cosEps*z2000;
+    let cosEps = 0.9174821430652418;
+    let sinEps = 0.397776969112606;
+    let Yeq = cosEps*y2000 - sinEps*z2000;
+    let Zeq = sinEps*y2000 + cosEps*z2000;
     
     // Ra and Dec wrt J2000 mean equator and equinox
-    var ra2000 = Math.atan2(Yeq, x2000);
-    var dec2000 = Math.asin(Zeq/r);
+    let ra2000 = Math.atan2(Yeq, x2000);
+    let dec2000 = Math.asin(Zeq/r);
     
     // precessed to equinox and equator of date
-    var p = precession_matrix(0,T);
-    var xp = p.p11*x2000 + p.p12*Yeq + p.p13*Zeq;
-    var yp = p.p21*x2000 + p.p22*Yeq + p.p23*Zeq;
-    var zp = p.p31*x2000 + p.p32*Yeq + p.p33*Zeq;
-    var ra = Math.atan2(yp,xp);
-    var dec = Math.asin(zp/r);
+    let p = precession_matrix(0,T);
+    let xp = p.p11*x2000 + p.p12*Yeq + p.p13*Zeq;
+    let yp = p.p21*x2000 + p.p22*Yeq + p.p23*Zeq;
+    let zp = p.p31*x2000 + p.p32*Yeq + p.p33*Zeq;
+    let ra = Math.atan2(yp,xp);
+    let dec = Math.asin(zp/r);
     
     return {Xgeo:x2000, Ygeo:y2000, Zgeo:z2000, 
            rGeo:r, lam2000:lam2000, bet2000:bet2000, 
@@ -312,16 +312,16 @@ function MediumMoon(T) {
 // For planets whose positions are not calculated, as indicated
 // in the variable 'calculate', ra and dec are not defined.
 function planetPos(T, calculate) {
-    var pi2 = 2*Math.PI;
+    let pi2 = 2*Math.PI;
     // 1/light speed in century/AU
-    var f1oc = 1.58125073358306e-07; 
-    //var eps = 0.409092610296857; // obliquity @ J2000 in rad
-    var cosEps = 0.917482139208287;
-    var sinEps = 0.397776978008764;
+    let f1oc = 1.58125073358306e-07; 
+    //let eps = 0.409092610296857; // obliquity @ J2000 in rad
+    let cosEps = 0.917482139208287;
+    let sinEps = 0.397776978008764;
         
     // Angles have been converted to radians
-    var a0,adot, e0,edot, I0,Idot, L0,Ldot, pom0,pomdot, Omg0,Omgdot;
-    var b,c,s,f;
+    let a0,adot, e0,edot, I0,Idot, L0,Ldot, pom0,pomdot, Omg0,Omgdot;
+    let b,c,s,f;
     if (T > -2 && T < 0.5) {
         // use the parameters for 1800 AD - 2050 AD
         a0 = [0.38709927, 0.72333566, 1.00000261, 1.52371034, 
@@ -424,56 +424,56 @@ function planetPos(T, calculate) {
             0.133871116951095, 0.133871116951095];
     }
     
-    var i,xp,yp,zp;
-    var x=[0,0,0,0,0,0,0,0]; 
-    var y=[0,0,0,0,0,0,0,0];
-    var z=[0,0,0,0,0,0,0,0];
-    var rHelio = [0,0,0,0,0,0,0,0];
-    var rGeo = [0,0,0,0,0,0,0,0]; 
-    var vx=[0,0,0,0,0,0,0,0];
-    var vy=[0,0,0,0,0,0,0,0];
-    var vz=[0,0,0,0,0,0,0,0];
+    let i,xp,yp,zp;
+    let x=[0,0,0,0,0,0,0,0]; 
+    let y=[0,0,0,0,0,0,0,0];
+    let z=[0,0,0,0,0,0,0,0];
+    let rHelio = [0,0,0,0,0,0,0,0];
+    let rGeo = [0,0,0,0,0,0,0,0]; 
+    let vx=[0,0,0,0,0,0,0,0];
+    let vy=[0,0,0,0,0,0,0,0];
+    let vz=[0,0,0,0,0,0,0,0];
     for (i=0; i<8; i++) {
         if (!calculate[i] && i != 2) { continue;}
-        var a = a0[i] + adot[i]*T;
-        var e = e0[i] + edot[i]*T;
-        var I = I0[i] + Idot[i]*T;
-        var L = L0[i] + Modulus(Ldot[i]*T, pi2);
-        var pom = pom0[i] + pomdot[i]*T;
-        var Omg = Omg0[i] + Omgdot[i]*T;
-        var omg = pom - Omg;
-        var M = L - pom;
+        let a = a0[i] + adot[i]*T;
+        let e = e0[i] + edot[i]*T;
+        let I = I0[i] + Idot[i]*T;
+        let L = L0[i] + Modulus(Ldot[i]*T, pi2);
+        let pom = pom0[i] + pomdot[i]*T;
+        let Omg = Omg0[i] + Omgdot[i]*T;
+        let omg = pom - Omg;
+        let M = L - pom;
         if (T <= -2 || T >=0.5) {
             if (i >3) {
                 M = M + b[i]*T*T + c[i]*Math.cos(f[i]*T) + 
                     s[i]*Math.sin(f[i]*T);
             }
         }
-        var E = kepler(M,e);
-        var sinE = Math.sin(E);
-        var cosE = Math.cos(E);
-        var bb = a*Math.sqrt(1-e*e);
-        var Edot = Ldot[i]/(1-e*cosE);
+        let E = kepler(M,e);
+        let sinE = Math.sin(E);
+        let cosE = Math.cos(E);
+        let bb = a*Math.sqrt(1-e*e);
+        let Edot = Ldot[i]/(1-e*cosE);
         xp = a*(cosE-e);
         yp = bb*sinE;
-        var vxp = -a*sinE*Edot;
-        var vyp = bb*cosE*Edot;
-        var cos_omg = Math.cos(omg);
-        var sin_omg = Math.sin(omg);
-        var cosOmg = Math.cos(Omg);
-        var sinOmg = Math.sin(Omg);
-        var sinI = Math.sin(I);
-        var cosI = Math.cos(I);
-        var m11 = cos_omg*cosOmg - sin_omg*sinOmg*cosI;
-        var m12 = -sin_omg*cosOmg - cos_omg*sinOmg*cosI;
+        let vxp = -a*sinE*Edot;
+        let vyp = bb*cosE*Edot;
+        let cos_omg = Math.cos(omg);
+        let sin_omg = Math.sin(omg);
+        let cosOmg = Math.cos(Omg);
+        let sinOmg = Math.sin(Omg);
+        let sinI = Math.sin(I);
+        let cosI = Math.cos(I);
+        let m11 = cos_omg*cosOmg - sin_omg*sinOmg*cosI;
+        let m12 = -sin_omg*cosOmg - cos_omg*sinOmg*cosI;
         x[i] = m11*xp + m12*yp;
         vx[i] = m11*vxp + m12*vyp;
-        var m21 = cos_omg*sinOmg + sin_omg*cosOmg*cosI;
-        var m22 = cos_omg*cosOmg*cosI - sin_omg*sinOmg;
+        let m21 = cos_omg*sinOmg + sin_omg*cosOmg*cosI;
+        let m22 = cos_omg*cosOmg*cosI - sin_omg*sinOmg;
         y[i] = m21*xp + m22*yp;
         vy[i] = m21*vxp + m22*vyp;
-        var m31 = sin_omg*sinI;
-        var m32 = cos_omg*sinI;
+        let m31 = sin_omg*sinI;
+        let m32 = cos_omg*sinI;
         z[i] = m31*xp + m32*yp;
         vz[i] = m31*vxp + m32*vyp;
         // heliocentric distance
@@ -485,7 +485,7 @@ function planetPos(T, calculate) {
     x[2] = -x[2]; y[2] = -y[2]; z[2] = -z[2];
     rGeo[2] = rHelio[2]; rHelio[2]=0;
     vx[2] = -vx[2]; vy[2] = -vy[2]; vz[2] = -vz[2];
-    //var dT;
+    //let dT;
     for (i=0; i<8; i++) {
         if (i != 2 && calculate[i]) {
             x[i] = x[i] + x[2];
@@ -493,7 +493,7 @@ function planetPos(T, calculate) {
             z[i] = z[i] + z[2];
             rGeo[i] = Math.sqrt(x[i]*x[i]+y[i]*y[i]+z[i]*z[i]);
             // correct for light time
-            var dT = rGeo[i]*f1oc;
+            let dT = rGeo[i]*f1oc;
             x[i] -= vx[i]*dT;
             y[i] -= vy[i]*dT;
             z[i] -= vz[i]*dT;
@@ -501,29 +501,29 @@ function planetPos(T, calculate) {
     }
     
     // RA and Dec with respect to J2000 
-    var p = precession_matrix(0,T);
-    var output = [];
+    let p = precession_matrix(0,T);
+    let output = [];
     for (i=0; i<8; i++) {
         if (!calculate[i]) { continue;}
         // ecliptic long. and lat. wrt J2000
-        var lam2000 = Math.atan2(y[i],x[i]);
-        var bet2000 = Math.asin(z[i]/rGeo[i]);
+        let lam2000 = Math.atan2(y[i],x[i]);
+        let bet2000 = Math.asin(z[i]/rGeo[i]);
         // equatorial coordinates
-        var xeq = x[i];
-        var yeq = cosEps*y[i] - sinEps*z[i];
-        var zeq = sinEps*y[i] + cosEps*z[i];
+        let xeq = x[i];
+        let yeq = cosEps*y[i] - sinEps*z[i];
+        let zeq = sinEps*y[i] + cosEps*z[i];
         // velocity/c wrt J2000.0 mean equator and equinox
-        var bx = vx[i]*f1oc;
-        var by = (cosEps*vy[i] - sinEps*vz[i])*f1oc;
-        var bz = (sinEps*vy[i] + cosEps*vz[i])*f1oc;
+        let bx = vx[i]*f1oc;
+        let by = (cosEps*vy[i] - sinEps*vz[i])*f1oc;
+        let bz = (sinEps*vy[i] + cosEps*vz[i])*f1oc;
         // precessed to the mean equator and equinox of the date
         xp = p.p11*xeq + p.p12*yeq + p.p13*zeq;
         yp = p.p21*xeq + p.p22*yeq + p.p23*zeq;
         zp = p.p31*xeq + p.p32*yeq + p.p33*zeq;
-        var betax = p.p11*bx + p.p12*by + p.p13*bz;
-        var betay = p.p21*bx + p.p22*by + p.p23*bz;
-        var betaz = p.p31*bx + p.p32*by + p.p33*bz;
-        var r = Math.sqrt(xp*xp+yp*yp+zp*zp);
+        let betax = p.p11*bx + p.p12*by + p.p13*bz;
+        let betay = p.p21*bx + p.p22*by + p.p23*bz;
+        let betaz = p.p31*bx + p.p32*by + p.p33*bz;
+        let r = Math.sqrt(xp*xp+yp*yp+zp*zp);
         output[i] = {ra:Math.atan2(yp,xp), 
                      dec:Math.asin(zp/r), 
                      ra2000:Math.atan2(yeq,xeq),
@@ -553,8 +553,8 @@ function planetPos(T, calculate) {
 // and errata on 
 // http://aa.usno.navy.mil/publications/docs/exp_supp_errata.pdf
 function planetMag(para) {
-    var i = para.i;
-    var mag = 5*Math.LOG10E*Math.log(para.rHelio*para.rGeo);
+    let i = para.i;
+    let mag = 5*Math.LOG10E*Math.log(para.rHelio*para.rGeo);
     switch (para.object) {
         case "Mercury":
             mag += -0.6 + (((3.02e-6*i - 0.000488)*i + 0.0498)*i);
@@ -581,49 +581,49 @@ function planetMag(para) {
         case "Saturn":
             // this is from Astronomy on Personal Computer
             mag += -8.88 + 0.044*i;
-            var deg_to_rad = Math.PI/180;
-            var alp0 = (40.589 - 0.036*para.T)*deg_to_rad;
-            var del0 = (83.537 - 0.004*para.T)*deg_to_rad;
-            var cosAlp0 = Math.cos(alp0), sinAlp0 = Math.sin(alp0);
-            var cosDel0 = Math.cos(del0), sinDel0 = Math.sin(del0);
-//            var tmp1 = 30838057.5*para.T;
+            let deg_to_rad = Math.PI/180;
+            let alp0 = (40.589 - 0.036*para.T)*deg_to_rad;
+            let del0 = (83.537 - 0.004*para.T)*deg_to_rad;
+            let cosAlp0 = Math.cos(alp0), sinAlp0 = Math.sin(alp0);
+            let cosDel0 = Math.cos(del0), sinDel0 = Math.sin(del0);
+//            let tmp1 = 30838057.5*para.T;
 //            tmp1 -= 360*Math.floor(tmp1/360);
-//            var W = (227.2037 + tmp1)*deg_to_rad;
-//            var cosW = Math.cos(W), sinW = Math.sin(W);
-//            var e1x = -cosW*sinAlp0 - sinW*sinDel0*cosAlp0;
-//            var e1y = cosW*cosAlp0 - sinW*sinDel0*sinAlp0;
-//            var e1z = sinW*cosDel0;
-//            var e2x = sinW*sinAlp0 - cosW*sinDel0*cosAlp0;
-//            var e2y = -sinW*cosAlp0 - cosW*sinDel0*sinAlp0;
-//            var e2z = cosW*cosDel0;
-            var e3x = cosDel0*cosAlp0;
-            var e3y = cosDel0*sinAlp0;
-            var e3z = sinDel0;
-            var lam = para.planet.lam2000, bet = para.planet.bet2000;
-            var Xgeo = para.planet.rGeo*Math.cos(bet)*Math.cos(lam);
-            var Ygeo_ec = para.planet.rGeo*Math.cos(bet)*Math.sin(lam);
-            var Zgeo_ec = para.planet.rGeo*Math.sin(bet);
+//            let W = (227.2037 + tmp1)*deg_to_rad;
+//            let cosW = Math.cos(W), sinW = Math.sin(W);
+//            let e1x = -cosW*sinAlp0 - sinW*sinDel0*cosAlp0;
+//            let e1y = cosW*cosAlp0 - sinW*sinDel0*sinAlp0;
+//            let e1z = sinW*cosDel0;
+//            let e2x = sinW*sinAlp0 - cosW*sinDel0*cosAlp0;
+//            let e2y = -sinW*cosAlp0 - cosW*sinDel0*sinAlp0;
+//            let e2z = cosW*cosDel0;
+            let e3x = cosDel0*cosAlp0;
+            let e3y = cosDel0*sinAlp0;
+            let e3z = sinDel0;
+            let lam = para.planet.lam2000, bet = para.planet.bet2000;
+            let Xgeo = para.planet.rGeo*Math.cos(bet)*Math.cos(lam);
+            let Ygeo_ec = para.planet.rGeo*Math.cos(bet)*Math.sin(lam);
+            let Zgeo_ec = para.planet.rGeo*Math.sin(bet);
             lam = para.sun.lam2000; bet = para.sun.bet2000;
-            var X = Xgeo - para.sun.rGeo*Math.cos(bet)*Math.cos(lam);
-            var Y_ec = Ygeo_ec - para.sun.rGeo*Math.cos(bet)*Math.sin(lam);
-            var Z_ec = Zgeo_ec - para.sun.rGeo*Math.sin(bet);
+            let X = Xgeo - para.sun.rGeo*Math.cos(bet)*Math.cos(lam);
+            let Y_ec = Ygeo_ec - para.sun.rGeo*Math.cos(bet)*Math.sin(lam);
+            let Z_ec = Zgeo_ec - para.sun.rGeo*Math.sin(bet);
             // convert to equatorial coordinates
-            var cosEps = 0.917482139208287;
-            var sinEps = 0.397776978008764;
-            var Ygeo = cosEps*Ygeo_ec - sinEps*Zgeo_ec;
-            var Zgeo = sinEps*Ygeo_ec + cosEps*Zgeo_ec;
-            var Y = cosEps*Y_ec - sinEps*Z_ec;
-            var Z = sinEps*Y_ec + cosEps*Z_ec;
-            //var sx = Xgeo*e1x + Ygeo*e1y + Zgeo*e1z;
-            //var sy = Xgeo*e2x + Ygeo*e2y + Zgeo*e2z;
-            var sz = Xgeo*e3x + Ygeo*e3y + Zgeo*e3z;
-            //var longI = Math.atan2(sy,sx);
-            var absSinLatc = Math.abs(sz)/para.planet.rGeo;
+            let cosEps = 0.917482139208287;
+            let sinEps = 0.397776978008764;
+            let Ygeo = cosEps*Ygeo_ec - sinEps*Zgeo_ec;
+            let Zgeo = sinEps*Ygeo_ec + cosEps*Zgeo_ec;
+            let Y = cosEps*Y_ec - sinEps*Z_ec;
+            let Z = sinEps*Y_ec + cosEps*Z_ec;
+            //let sx = Xgeo*e1x + Ygeo*e1y + Zgeo*e1z;
+            //let sy = Xgeo*e2x + Ygeo*e2y + Zgeo*e2z;
+            let sz = Xgeo*e3x + Ygeo*e3y + Zgeo*e3z;
+            //let longI = Math.atan2(sy,sx);
+            let absSinLatc = Math.abs(sz)/para.planet.rGeo;
             //sx = X*e1x + Y*e1y + Z*e1z;
             //sy = X*e2x + Y*e2y + Z*e2z;
-            //var long_sun = Math.atan2(sy,sx);
-            //var dlong = (long_sun - longI)/deg_to_rad;
-            //var dlong_100 = 0.01*Math.abs(dlong-360*Math.floor((dlong+180)/360));
+            //let long_sun = Math.atan2(sy,sx);
+            //let dlong = (long_sun - longI)/deg_to_rad;
+            //let dlong_100 = 0.01*Math.abs(dlong-360*Math.floor((dlong+180)/360));
             mag += absSinLatc*(-2.6 + 1.25*absSinLatc);
     }
     return mag;
@@ -639,8 +639,8 @@ function planetMag(para) {
 //   sun: the object outputed by planetPos() above for the Sun
 // This formulae are taken from Astronomy on Personal Computer
 function planetMag_astroOnPersonalComputer(para) {
-    var io100 = 0.01*para.i;
-    var mag = 5*Math.LOG10E*Math.log(para.rHelio*para.rGeo);
+    let io100 = 0.01*para.i;
+    let mag = 5*Math.LOG10E*Math.log(para.rHelio*para.rGeo);
     switch (para.object) {
         case "Mercury":
             mag += -0.42 + io100*(3.8 - 2.73*io100 + 2*io100*io100);
@@ -662,51 +662,51 @@ function planetMag_astroOnPersonalComputer(para) {
             break;
         case "Saturn":
             mag -= 8.88;
-            var deg_to_rad = Math.PI/180;
-            var alp0 = (40.589 - 0.036*para.T)*deg_to_rad;
-            var del0 = (83.537 - 0.004*para.T)*deg_to_rad;
-            var cosAlp0 = Math.cos(alp0), sinAlp0 = Math.sin(alp0);
-            var cosDel0 = Math.cos(del0), sinDel0 = Math.sin(del0);
-            var tmp1 = 844*36525*para.T;
+            let deg_to_rad = Math.PI/180;
+            let alp0 = (40.589 - 0.036*para.T)*deg_to_rad;
+            let del0 = (83.537 - 0.004*para.T)*deg_to_rad;
+            let cosAlp0 = Math.cos(alp0), sinAlp0 = Math.sin(alp0);
+            let cosDel0 = Math.cos(del0), sinDel0 = Math.sin(del0);
+            let tmp1 = 844*36525*para.T;
             tmp1 -= 360*Math.floor(tmp1/360);
-            var tmp2 = 0.3*36525*para.T;
+            let tmp2 = 0.3*36525*para.T;
             tmp2 -= 360*Math.floor(tmp2/360);
-            var W = (227.2037 + tmp1 + tmp2)*deg_to_rad;
-            var cosW = Math.cos(W), sinW = Math.sin(W);
-            var e1x = -cosW*sinAlp0 - sinW*sinDel0*cosAlp0;
-            var e1y = cosW*cosAlp0 - sinW*sinDel0*sinAlp0;
-            var e1z = sinW*cosDel0;
-            var e2x = sinW*sinAlp0 - cosW*sinDel0*cosAlp0;
-            var e2y = -sinW*cosAlp0 - cosW*sinDel0*sinAlp0;
-            var e2z = cosW*cosDel0;
-            var e3x = cosDel0*cosAlp0;
-            var e3y = cosDel0*sinAlp0;
-            var e3z = sinDel0;
-            var lam = para.planet.lam2000, bet = para.planet.bet2000;
-            var Xgeo = para.planet.rGeo*Math.cos(bet)*Math.cos(lam);
-            var Ygeo_ec = para.planet.rGeo*Math.cos(bet)*Math.sin(lam);
-            var Zgeo_ec = para.planet.rGeo*Math.sin(bet);
+            let W = (227.2037 + tmp1 + tmp2)*deg_to_rad;
+            let cosW = Math.cos(W), sinW = Math.sin(W);
+            let e1x = -cosW*sinAlp0 - sinW*sinDel0*cosAlp0;
+            let e1y = cosW*cosAlp0 - sinW*sinDel0*sinAlp0;
+            let e1z = sinW*cosDel0;
+            let e2x = sinW*sinAlp0 - cosW*sinDel0*cosAlp0;
+            let e2y = -sinW*cosAlp0 - cosW*sinDel0*sinAlp0;
+            let e2z = cosW*cosDel0;
+            let e3x = cosDel0*cosAlp0;
+            let e3y = cosDel0*sinAlp0;
+            let e3z = sinDel0;
+            let lam = para.planet.lam2000, bet = para.planet.bet2000;
+            let Xgeo = para.planet.rGeo*Math.cos(bet)*Math.cos(lam);
+            let Ygeo_ec = para.planet.rGeo*Math.cos(bet)*Math.sin(lam);
+            let Zgeo_ec = para.planet.rGeo*Math.sin(bet);
             lam = para.sun.lam2000; bet = para.sun.bet2000;
-            var X = Xgeo - para.sun.rGeo*Math.cos(bet)*Math.cos(lam);
-            var Y_ec = Ygeo_ec - para.sun.rGeo*Math.cos(bet)*Math.sin(lam);
-            var Z_ec = Zgeo_ec - para.sun.rGeo*Math.sin(bet);
+            let X = Xgeo - para.sun.rGeo*Math.cos(bet)*Math.cos(lam);
+            let Y_ec = Ygeo_ec - para.sun.rGeo*Math.cos(bet)*Math.sin(lam);
+            let Z_ec = Zgeo_ec - para.sun.rGeo*Math.sin(bet);
             // convert to equatorial coordinates
-            var cosEps = 0.917482139208287;
-            var sinEps = 0.397776978008764;
-            var Ygeo = cosEps*Ygeo_ec - sinEps*Zgeo_ec;
-            var Zgeo = sinEps*Ygeo_ec + cosEps*Zgeo_ec;
-            var Y = cosEps*Y_ec - sinEps*Z_ec;
-            var Z = sinEps*Y_ec + cosEps*Z_ec;
-            var sx = Xgeo*e1x + Ygeo*e1y + Zgeo*e1z;
-            var sy = Xgeo*e2x + Ygeo*e2y + Zgeo*e2z;
-            var sz = Xgeo*e3x + Ygeo*e3y + Zgeo*e3z;
-            var longI = Math.atan2(sy,sx);
-            var absSinLatc = Math.abs(sz)/Math.sqrt(sx*sx+sy*sy+sz*sz);
+            let cosEps = 0.917482139208287;
+            let sinEps = 0.397776978008764;
+            let Ygeo = cosEps*Ygeo_ec - sinEps*Zgeo_ec;
+            let Zgeo = sinEps*Ygeo_ec + cosEps*Zgeo_ec;
+            let Y = cosEps*Y_ec - sinEps*Z_ec;
+            let Z = sinEps*Y_ec + cosEps*Z_ec;
+            let sx = Xgeo*e1x + Ygeo*e1y + Zgeo*e1z;
+            let sy = Xgeo*e2x + Ygeo*e2y + Zgeo*e2z;
+            let sz = Xgeo*e3x + Ygeo*e3y + Zgeo*e3z;
+            let longI = Math.atan2(sy,sx);
+            let absSinLatc = Math.abs(sz)/Math.sqrt(sx*sx+sy*sy+sz*sz);
             sx = X*e1x + Y*e1y + Z*e1z;
             sy = X*e2x + Y*e2y + Z*e2z;
-            var long_sun = Math.atan2(sy,sx);
-            var dlong = (long_sun - longI)/deg_to_rad;
-            var dlong_100 = 0.01*Math.abs(dlong-360*Math.floor((dlong+180)/360));
+            let long_sun = Math.atan2(sy,sx);
+            let dlong = (long_sun - longI)/deg_to_rad;
+            let dlong_100 = 0.01*Math.abs(dlong-360*Math.floor((dlong+180)/360));
             mag += absSinLatc*(-2.6 + 1.25*absSinLatc) + 4.4*dlong_100;
     }
     return mag;
@@ -715,15 +715,15 @@ function planetMag_astroOnPersonalComputer(para) {
 // Solve the Kepler's equation M =  - e sin E
 function kepler(M, e) {
     // mean anomaly -> [-pi, pi)
-  var n2pi = Math.floor(M/(2.0*Math.PI) + 0.5) * (2.0*Math.PI);
-  var Mp = M - n2pi;
+  let n2pi = Math.floor(M/(2.0*Math.PI) + 0.5) * (2.0*Math.PI);
+  let Mp = M - n2pi;
 
   // Solve Kepler's equation E - e sin E = M using Newton's iteration method
-  var E = Mp; // initial guess
+  let E = Mp; // initial guess
   if (e > 0.8) {E = Math.PI;} // need another initial guess for very eccentric orbit
-  var E0 = E*1.01;
-  var tol = 1.e-15;
-  var iter = 0, maxit = 100;
+  let E0 = E*1.01;
+  let tol = 1.e-15;
+  let iter = 0, maxit = 100;
   while (Math.abs(E-E0) > tol && iter < maxit) {
     E0 = E;
     E = E0 - (E0 - e*Math.sin(E0) - Mp)/(1.0 - e*Math.cos(E0));
@@ -738,8 +738,8 @@ function kepler(M, e) {
       E = 0.0; E0 = -Math.PI;
     }
     while (E-E0 > tol && iter < maxit) {
-      var E1 = 0.5*(E+E0);
-      var z = E1 - e*Math.sin(E1) - Mp;
+      let E1 = 0.5*(E+E0);
+      let z = E1 - e*Math.sin(E1) - Mp;
       if (z > 0.0) {
         E = E1;
       } else {
@@ -764,31 +764,31 @@ function kepler(M, e) {
 //                  calculate the diurnal aberration of light.
 function aberration(ra, dec, para) {
     // Calculate Earth's heliocentric v/c
-    var calculate = [false,false,true,false,false,false,false,false];
-    var sun = planetPos(para.T, calculate)[2];
+    let calculate = [false,false,true,false,false,false,false,false];
+    let sun = planetPos(para.T, calculate)[2];
     // transform to components wrt true equator and equinox of date
     // - sign comes from beta_earth = -beta_sun
-    var betax = -(para.m.p11*sun.betax + para.m.p12*sun.betay + para.m.p13*sun.betaz);
-    var betay = -(para.m.p21*sun.betax + para.m.p22*sun.betay + para.m.p23*sun.betaz);
-    var betaz = -(para.m.p31*sun.betax + para.m.p32*sun.betay + para.m.p33*sun.betaz);
+    let betax = -(para.m.p11*sun.betax + para.m.p12*sun.betay + para.m.p13*sun.betaz);
+    let betay = -(para.m.p21*sun.betax + para.m.p22*sun.betay + para.m.p23*sun.betaz);
+    let betaz = -(para.m.p31*sun.betax + para.m.p32*sun.betay + para.m.p33*sun.betaz);
     
     // Add diurnal aberration of light
     if ("LAST" in para) {
-        var omega = 7.292115855264215e-5; // Earth's spin ang. velocity
+        let omega = 7.292115855264215e-5; // Earth's spin ang. velocity
         // Earth's equatorial spin speed / c
-        var a = omega*6378.1366/299792.458; 
+        let a = omega*6378.1366/299792.458; 
         // (1-f)^2, where f = 1/298.25642 
-        var f1_f2 = 0.9933056020041341;
-        var aC_cosLat = para.cosLat * a/Math.sqrt(para.cosLat*para.cosLat + f1_f2*para.sinLat*para.sinLat);
+        let f1_f2 = 0.9933056020041341;
+        let aC_cosLat = para.cosLat * a/Math.sqrt(para.cosLat*para.cosLat + f1_f2*para.sinLat*para.sinLat);
         betax -= aC_cosLat*Math.sin(para.LAST);
         betay += aC_cosLat*Math.cos(para.LAST);
     }
     
     // Correct for aberration of light
-    var x = Math.cos(ra)*Math.cos(dec) + betax;
-    var y = Math.sin(ra)*Math.cos(dec) + betay;
-    var z = Math.sin(dec) + betaz;
-    var norm = Math.sqrt(x*x + y*y + z*z);
+    let x = Math.cos(ra)*Math.cos(dec) + betax;
+    let y = Math.sin(ra)*Math.cos(dec) + betay;
+    let z = Math.sin(dec) + betaz;
+    let norm = Math.sqrt(x*x + y*y + z*z);
     
     return {ra:Math.atan2(y,x), dec:Math.asin(z/norm)};
 }
@@ -807,24 +807,24 @@ function aberration(ra, dec, para) {
 function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam, 
                            Dmoon, Dsun) {
     // Earth-Moon dist/Earth-Sun dist.
-    var sigma = Dmoon/(149597870.7*Dsun); 
+    let sigma = Dmoon/(149597870.7*Dsun); 
     // cos(angle between Sun and Moon)
-    var cosE = Math.sin(sunDec)*Math.sin(moonDec) +  
+    let cosE = Math.sin(sunDec)*Math.sin(moonDec) +  
         Math.cos(sunDec)*Math.cos(moonDec)*Math.cos(sunRa-moonRa);
     // Moon-Sun distance/Earth-Sun distance
-    var dMS = Math.sqrt(1 - 2*sigma*cosE + sigma*sigma);
+    let dMS = Math.sqrt(1 - 2*sigma*cosE + sigma*sigma);
     // Moon's cos(phase angle)
-    var cosi = (sigma - cosE)/dMS;
-    var illum = 0.5*(1+cosi);
+    let cosi = (sigma - cosE)/dMS;
+    let illum = 0.5*(1+cosi);
     
     // apparent magnitude
-    var i = Math.acos(cosi)*180.0/Math.PI;
-    var mag = -12.73 + 0.026*i + 4.e-9*i*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon*dMS*Dsun/384400.0);
+    let i = Math.acos(cosi)*180.0/Math.PI;
+    let mag = -12.73 + 0.026*i + 4.e-9*i*i*i*i + 5.0*Math.LOG10E*Math.log(Dmoon*dMS*Dsun/384400.0);
     
     // phase 
     // waxing or waning?
-    var waxWan = "waning";
-    var dL = moonLam-sunLam;
+    let waxWan = "waning";
+    let dL = moonLam-sunLam;
     dL -= 2*Math.PI*Math.floor(0.5*(dL/Math.PI + 1));
     if (dL > 0) {
         waxWan = "waxing";
@@ -836,7 +836,7 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam,
     // crescent if illum in (0.05, 0.45)
     // thin crescent if illum in (0.01,0.05),
     // new if illum <= 0.05
-    var phase = "";
+    let phase = "";
     if (illum >= 0.95) {
         phase = "full moon";
         if (illum < 0.99) {phase = "nearly full";}
@@ -857,8 +857,8 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam,
     }
     
     // Solar elongation
-    var elong = Math.acos(cosE);
-    var elongTxt = (elong*180/Math.PI).toFixed(1)+"&deg;";
+    let elong = Math.acos(cosE);
+    let elongTxt = (elong*180/Math.PI).toFixed(1)+"&deg;";
     if (dL > 0) {
         elongTxt += " E";
     } else {
@@ -877,14 +877,14 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam,
 // are floats. elongFloat is positive if it the planet is to 
 // the east of the Sun, negative if it's to the west of the Sun.
 function elongationPhase(planet,sun) {
-    var rad_to_deg = 180/Math.PI;
+    let rad_to_deg = 180/Math.PI;
     // Elongation
-    var Elong = 0.5*(planet.rGeo*planet.rGeo + sun.rGeo*sun.rGeo 
+    let Elong = 0.5*(planet.rGeo*planet.rGeo + sun.rGeo*sun.rGeo 
                  -planet.rHelio*planet.rHelio) / (sun.rGeo*planet.rGeo);
     Elong = Math.acos(Elong)*180/Math.PI;
-    var dL = planet.lam2000 - sun.lam2000;
+    let dL = planet.lam2000 - sun.lam2000;
     dL -= 2*Math.PI*Math.floor(0.5*(dL/Math.PI + 1));
-    var ElongString;
+    let ElongString;
     if (dL > 0) {
         ElongString = Elong.toFixed(1)+"&deg; E";
     } else {
@@ -892,10 +892,10 @@ function elongationPhase(planet,sun) {
         Elong = -Elong;
     }
     // compute the fraction of the planet illuminated 
-    var cosi = 0.5*(planet.rGeo*planet.rGeo + planet.rHelio*planet.rHelio 
+    let cosi = 0.5*(planet.rGeo*planet.rGeo + planet.rHelio*planet.rHelio 
                      - sun.rGeo*sun.rGeo)/(planet.rHelio*planet.rGeo);
-    var illum = 0.5*(1+cosi);
-    var phaseAng = Math.acos(cosi)*rad_to_deg;
+    let illum = 0.5*(1+cosi);
+    let phaseAng = Math.acos(cosi)*rad_to_deg;
     
     return {elongation:ElongString, illuminated:illum.toFixed(2), 
             phaseAng:phaseAng, elongFloat:Elong};

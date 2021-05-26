@@ -8,20 +8,3 @@ The [equatorial star charts](https://ytliu0.github.io/starCharts/chartGCRS.html)
 
 All calculations are done using JavaScript. The physics and mathematics involved in creating the star charts is explained briefly in this [pdf document](https://ytliu0.github.io/starCharts/docs/star_charts.pdf).
 
-## Files:
-
-- index.html: HTML page for the local star charts. 
-- chartGCRS.html: HTML page for the equatorial star charts.
-- Constellations.html: HTML page showing a table of the names and abbreviations of the 88 constellations.
-- MilkyWay.html: HTML page briefly describing the generation of Milky Way for star charts.
-- src: folder that contains the javascript functions used by the webpages. See the README file in that folder for more detailed information.
-- sidereal.css: style file for both sidereal.html and chartGCRS.html
-- core_min.js: combine dateAndTime.js, brightStars.js, milkyWay_polygons.js, precession.js and SunMoonPlanets.js in the src folder
-- sseph_min.js: combine MoonElpMpp02DE.js, Mercury.js, Venus.js, Earth.js, Mars.js, Jupiter.js, Saturn.js, Uranus.js, Neptune.js and planetPosVSOP87.js in the src folder
-- sidereal_min.js: combine sidereal.js, animation.js and riseSetTimes.js in the src folder
-- cities.js: contain data of major cities in the world
-- city.html: List all cities in cities.js
-- set_defaults.html, set_defaults.js: A tool that generates URL query strings for customizing the initial settings in index.html
-- docs/star_charts.pdf: pdf document describes the physics and mathematics involved in the calculations on the two webpages.
-- docs/star_charts.tex: LaTeX file for docs/star_charts.pdf.
-- docs/*.jpg: jpg files of the figures in docs/star_charts.pdf.

@@ -15,14 +15,14 @@ let magLimit = 5.3; // limiting magnitude
 let milkyPoly = {poly:mw_poly(), sb:mw_sb()};
 
 // Set the default animation parameters
-var animateDtStep = 1; // number of days per step
-var frameRate = 40; // number of milliseconds to update the frame
-var animate_id; // variable for animation
+let animateDtStep = 1; // number of days per step
+let frameRate = 40; // number of milliseconds to update the frame
+let animate_id; // variable for animation
 
 // Initial setup
 function init() {
     $('#wrapper').show();
-    var d = new Date(); // current time from computer's clock
+    let d = new Date(); // current time from computer's clock
     
     // Set up the object date
     let yyyy = d.getUTCFullYear();
@@ -57,11 +57,11 @@ function showHide2(name) {
 
 // Display change date and time
 function displayChangeTime() {
-    var id = "#changeTime";
+    let id = "#changeTime";
     $('button.menu').attr("disabled", true);
     $(id).empty();
     $(id).slideDown();
-    var txt = "<h2>Change Date and Time</h2>";
+    let txt = "<h2>Change Date and Time</h2>";
     $(id).append(txt);
     txt = '<form name="changeTime" action="" method="get">';
     txt += "<table>";
@@ -86,18 +86,18 @@ function displayChangeTime() {
 }
 
 function changeTimeAction(form) {
-    var yy = parseInt(form.yearIn.value);
-    var mm = parseInt(form.monthIn.value);
-    var dd = parseInt(form.dayIn.value);
-    var h = parseInt(form.hourIn.value);
-    var m = parseInt(form.minuteIn.value);
-    var s = parseFloat(form.secondIn.value);
+    let yy = parseInt(form.yearIn.value);
+    let mm = parseInt(form.monthIn.value);
+    let dd = parseInt(form.dayIn.value);
+    let h = parseInt(form.hourIn.value);
+    let m = parseInt(form.minuteIn.value);
+    let s = parseFloat(form.secondIn.value);
     
     // sanity check
-    var errid = "#changeTimeErrorlocs";
+    let errid = "#changeTimeErrorlocs";
     $(errid).empty();
-    var min=-200000, max=200000;
-    var message = "Invalid year! Please enter an integer between "+min+" and "+max+". Note that 0 means 1 BCE, -1 means 2 BCE and so on. Note that the positions of the Sun, Moon and planets are only accurate for years between -3000 and 3000.";
+    let min=-200000, max=200000;
+    let message = "Invalid year! Please enter an integer between "+min+" and "+max+". Note that 0 means 1 BCE, -1 means 2 BCE and so on. Note that the positions of the Sun, Moon and planets are only accurate for years between -3000 and 3000.";
     sanityCheck(yy,"#yearIn",min,max,message,errid);
     
     min=1; max=12;
@@ -121,17 +121,17 @@ function changeTimeAction(form) {
     sanityCheck(s,"#secondIn",min,max,message,errid);
     
     if ($(errid).text()=="") {
-        var id = "#changeTime";
+        let id = "#changeTime";
         $(id).slideUp();
         $(id).empty;
         $('button.menu').attr("disabled", false);
         
-        var D = getDm(yy,mm,dd,0);
-        var d = CalDat(D);
-        var timeString = generateTimeString(h,m,s);
+        let D = getDm(yy,mm,dd,0);
+        let d = CalDat(D);
+        let timeString = generateTimeString(h,m,s);
         D += (h + m/60 + s/3600)/24;
-        var T = D/36525;
-        var dT = DeltaT(T);
+        let T = D/36525;
+        let dT = DeltaT(T);
         date = {yyyy:d.yy, mm:d.mm, dd:d.dd, h:h, m:m, s:s,
                 dateString:d.dateString, 
                 timeString:timeString, D:D, T:T, dT:dT};
@@ -217,7 +217,7 @@ function drawStarChart(para) {
     
     drawChartBoundaryAndGrid(ctx,canvas,para);
     
-    var raDec;
+    let raDec;
     if (para.pDraw.showMilkyWay) {
         drawMilkyWay(ctx, para);
         ctx.setLineDash([]);
@@ -258,7 +258,7 @@ function drawChartBoundaryAndGrid(ctx,canvas,para) {
     let showPrecession = $("#showPrecession").hasClass("active");
     let p,ra1,dec1,ra2,dec2,ra,dec;
     if (showPrecession) {
-        var TD = date.T + date.dT;
+        let TD = date.T + date.dT;
         p = precession_matrix(TD, -TD);
     }
     n = 180
@@ -376,7 +376,7 @@ function drawChartBoundaryAndGrid(ctx,canvas,para) {
 // Draw stars on a canvas
 function drawStars(ctx, canvas, para) {
     // Variables for popup box
-    var newStar, tipInd;
+    let newStar, tipInd;
     if (tipsEnabled) {
         newStar = new Array(stars.length);
         newStar.fill(true);
@@ -390,18 +390,18 @@ function drawStars(ctx, canvas, para) {
         tips[tipInd].length = 0;
     }
     
-    var showConLines = $("#showConLines").hasClass("active");
+    let showConLines = $("#showConLines").hasClass("active");
     if (showConLines || tipsEnabled) {
         drawConstellationLinesAndAddTips(ctx,newStar,showConLines,
                                            tipInd,para);
     }
 
-    var pDraw = para.pDraw;
+    let pDraw = para.pDraw;
     ctx.fillStyle = "black";
-    var i,s;
-    var twoPI = 2*Math.PI;
+    let i,s;
+    let twoPI = 2*Math.PI;
     for (i=0; i<stars.length; i++) {
-        var coord = getXY(stars[i].ra, stars[i].dec,para);
+        let coord = getXY(stars[i].ra, stars[i].dec,para);
         if (coord.inChart && stars[i].mag < magLimit) {
            s = pDraw.starMagA*stars[i].mag + pDraw.starMagB;
            s = Math.max(s,1);
@@ -431,17 +431,17 @@ function drawStars(ctx, canvas, para) {
 
 // Recompute stars' positions by adding proper motions to the epoch T
 function recomputeStarPos(T,stars) {
-    var T0 = stars[0].Tepoch;
-    var dcen = T-T0; //number of centuries between T and T0
+    let T0 = stars[0].Tepoch;
+    let dcen = T-T0; //number of centuries between T and T0
     stars[0].epoch = "";
     stars[0].Tepoch = T;
-    var p = precession_matrix(T0,dcen);
-    for (var i=1; i<stars.length; i++) {
+    let p = precession_matrix(T0,dcen);
+    for (let i=1; i<stars.length; i++) {
         // add proper motion
-        var x = stars[i].x + stars[i].vx*dcen;
-        var y = stars[i].y + stars[i].vy*dcen;
-        var z = stars[i].z + stars[i].vz*dcen;
-        var r = Math.sqrt(x*x+y*y+z*z);
+        let x = stars[i].x + stars[i].vx*dcen;
+        let y = stars[i].y + stars[i].vy*dcen;
+        let z = stars[i].z + stars[i].vz*dcen;
+        let r = Math.sqrt(x*x+y*y+z*z);
         // Modify star's magnitude based on the new distance
         if (stars[i].dist2000 < 9.9e4) {
             stars[i].mag = stars[i].mag2000 + 5*Math.LOG10E*Math.log(r/stars[i].dist2000);
@@ -466,13 +466,13 @@ function recomputeStarPos(T,stars) {
 function drawConstellationLinesAndAddTips(ctx,newStar,showConLines,
                                            tipInd,gpara) {
     ctx.strokeStyle = "#1B9722";
-    var pDraw = gpara.pDraw;
+    let pDraw = gpara.pDraw;
     ctx.setLineDash([]);
-    var ind,s,rad2;
-    for (var i=0; i<conLine.length; i++) {
+    let ind,s,rad2;
+    for (let i=0; i<conLine.length; i++) {
         $.each(conLine[i], function(key, line) {
             if (key != "name" && key != "abbr") {
-                var ra1,ra2,dec1,dec2,coord;
+                let ra1,ra2,dec1,dec2,coord;
                 ra2 = stars[line[0]].ra;
                 dec2 = stars[line[0]].dec;
                 // Add popup box point
@@ -492,7 +492,7 @@ function drawConstellationLinesAndAddTips(ctx,newStar,showConLines,
                         });
                     }
                 }
-                for (var j=1; j<line.length; j++) {
+                for (let j=1; j<line.length; j++) {
                     ra1=ra2; dec1=dec2;
                     ra2 = stars[line[j]].ra;
                     dec2 = stars[line[j]].dec;
@@ -524,33 +524,33 @@ function drawConstellationLinesAndAddTips(ctx,newStar,showConLines,
 
 // Draw a great circle perpendicular to a given point
 function drawCircle(ctx,raPole,decPole,gpara) {
-    var xPole = Math.cos(raPole)*Math.cos(decPole);
-    var yPole = Math.sin(raPole)*Math.cos(decPole);
-    var zPole = Math.sin(decPole);
+    let xPole = Math.cos(raPole)*Math.cos(decPole);
+    let yPole = Math.sin(raPole)*Math.cos(decPole);
+    let zPole = Math.sin(decPole);
     // R0 = normalized Z cross Rpole 
-    var x0 = -yPole, y0 = xPole, z0 = 0;
-    var pom = Math.sqrt(x0*x0+y0*y0);
+    let x0 = -yPole, y0 = xPole, z0 = 0;
+    let pom = Math.sqrt(x0*x0+y0*y0);
     x0 /= pom; y0 /= pom;
     // R1 = Rpole cross R0
-    var x1 = -y0*zPole;
-    var y1 = x0*zPole;
-    var z1 = xPole*y0 - yPole*x0;
+    let x1 = -y0*zPole;
+    let y1 = x0*zPole;
+    let z1 = xPole*y0 - yPole*x0;
     // The circle can be parametrized by 
     //  R(phi) = cos(phi) R0 + sin(phi) R1
     //  for phi in [0,2 pi)
-    var n = 180;
-    var dphi = 2*Math.PI/(n-1);
-    var x=x0, y=y0, z=z0;
-    var ra1 = Math.atan2(y,x);
-    var dec1 = Math.asin(z);
-    for (var i=1; i<n; i++) {
-        var phi = i*dphi;
-        var cosPhi = Math.cos(phi), sinPhi = Math.sin(phi);
+    let n = 180;
+    let dphi = 2*Math.PI/(n-1);
+    let x=x0, y=y0, z=z0;
+    let ra1 = Math.atan2(y,x);
+    let dec1 = Math.asin(z);
+    for (let i=1; i<n; i++) {
+        let phi = i*dphi;
+        let cosPhi = Math.cos(phi), sinPhi = Math.sin(phi);
         x = cosPhi*x0 + sinPhi*x1;
         y = cosPhi*y0 + sinPhi*y1;
         z = cosPhi*z0 + sinPhi*z1;
-        var ra2 = Math.atan2(y,x);
-        var dec2 = Math.asin(z);
+        let ra2 = Math.atan2(y,x);
+        let dec2 = Math.asin(z);
         addLine(ctx, ra1,dec1,ra2,dec2,gpara);
         ra1 = ra2; dec1=dec2;
     }
@@ -720,7 +720,7 @@ function drawMW_polypons_mollweide(ctx, mwPoly, gpara, max_alpha, fillColor) {
                 let y2 = (p2.y - gpara.yc)/gpara.r;
                 sign = (x1 > 0 ? 1:-1);
                 x2 += 2*sign*Math.cos(p2.theta);
-                var dx = x2-x1, dy = y2-y1;
+                let dx = x2-x1, dy = y2-y1;
                 let t1 = x1*dx + 4*y1*dy;
                 let t2 = 1 - x1*x1 - 4*y1*y1;
                 let s = t2/(t1 + Math.sqrt(t1*t1 + t2*(dx*dx + 4*dy*dy)));
@@ -736,12 +736,12 @@ function drawMW_polypons_mollweide(ctx, mwPoly, gpara, max_alpha, fillColor) {
 
 // Add constellation labels
 function drawConstellationLabel(ctx, gpara) {
-    var fontSize = 12;
+    let fontSize = 12;
     ctx.font = fontSize.toString()+"px Arial";
-    var textColor = "#6c3483";
-    var bgColor = "white";
-    var coord,w;
-    for (var i=1; i<conLab.length; i++) {
+    let textColor = "#6c3483";
+    let bgColor = "white";
+    let coord,w;
+    for (let i=1; i<conLab.length; i++) {
         coord = getXY(conLab[i].ra, conLab[i].dec, gpara);
         if (coord.inChart) {
             w = ctx.measureText(conLab[i].abbr).width;
@@ -766,7 +766,7 @@ function drawConstellationLabel(ctx, gpara) {
 
 // Draw Sun, Moon and Planets on one canvas
 function drawPlanets(ctx, canvas, para) {
-    var tipInd;
+    let tipInd;
     if (tipsEnabled) {
         if (para.timeId=="timeNorth") {
             tipInd = 0;
@@ -776,16 +776,16 @@ function drawPlanets(ctx, canvas, para) {
             tipInd = 2;
         }
     }
-    var pDraw = para.pDraw;
-    var twoPI = 2*Math.PI;
+    let pDraw = para.pDraw;
+    let twoPI = 2*Math.PI;
     ctx.font="20px Arial";
-    for (var i=0; i<9; i++) {
-        var ra = pDraw.planets[i].ra2000;
-        var dec = pDraw.planets[i].dec2000;
-        var coord = getXY(ra,dec,para);
+    for (let i=0; i<9; i++) {
+        let ra = pDraw.planets[i].ra2000;
+        let dec = pDraw.planets[i].dec2000;
+        let coord = getXY(ra,dec,para);
         if (coord.inChart) {
-            var x = coord.x, y = coord.y;
-            var pSymbol = String.fromCharCode(pDraw.code[i]);
+            let x = coord.x, y = coord.y;
+            let pSymbol = String.fromCharCode(pDraw.code[i]);
             ctx.fillStyle = pDraw.color[i];
             ctx.fillText(pSymbol,
                            x+pDraw.offset[i].x, y+pDraw.offset[i].y);
@@ -794,7 +794,7 @@ function drawPlanets(ctx, canvas, para) {
             ctx.fill();
             
             if (tipsEnabled) {
-                var s = 0.5*ctx.measureText(pSymbol).width;
+                let s = 0.5*ctx.measureText(pSymbol).width;
                 s = Math.max(s, 10);
                 tips[tipInd].push({
                                 x: x+pDraw.offset[i].x+s,
@@ -898,9 +898,9 @@ function mollweideThetaSolver(dec) {
         // Newton solver fails to converge after maxIter iterations.
         // Use bisection method instead.
         let u1 = 0, u2 = Math.PI;
-        for (var j=0; j<50; j++) {
+        for (let j=0; j<50; j++) {
             u = 0.5*(u1+u2);
-            var fu = u + Math.sin(u) - piSinDec;
+            let fu = u + Math.sin(u) - piSinDec;
             if (fu < 0) {
                 u1 = u;
             } else {
@@ -957,27 +957,27 @@ function addLine(ctx, ra1,dec1, ra2,dec2, gpara) {
 // A pioint (x,y) is inside the chart if 
 // (x-gpara.xc)^2+(y-gpara.yc)^2 <= gpara.r2
 function addLineXY(Ctx,x1,y1,x2,y2,gpara) {
-   var SQR = function(x) {return x*x;}
+   let SQR = function(x) {return x*x;}
 
-    var r1sq = SQR(x1-gpara.xc) + SQR(y1-gpara.yc);
-    var r2sq = SQR(x2-gpara.xc) + SQR(y2-gpara.yc);
+    let r1sq = SQR(x1-gpara.xc) + SQR(y1-gpara.yc);
+    let r2sq = SQR(x2-gpara.xc) + SQR(y2-gpara.yc);
     
     if (r1sq > gpara.r2 && r2sq > gpara.r2) {
         // Both points are outside the chart. Don't plot anything.
         return;
     }
     
-    var x1p=x1, x2p=x2, y1p=y1, y2p=y2;
+    let x1p=x1, x2p=x2, y1p=y1, y2p=y2;
     if (r1sq > gpara.r2 || r2sq > gpara.r2) {
         // Conside a vector R(s) = R1 + s (R2-R1). 
         // Here R1 is the position vector of (x1,y1), 
         //      R2 is the position vector of (x2,y2).
         // Find s between 0 and 1 such that |R(s)|^2 = gpara.r2
         // Need to solve a quadratic equation.
-        var R1dotR2 = (x1-gpara.xc)*(x2-gpara.xc) + (y1-gpara.yc)*(y2-gpara.yc);
-        var dR1R2sq = SQR(x1-x2) + SQR(y1-y2);
-        var q = r1sq - R1dotR2;
-        var s;
+        let R1dotR2 = (x1-gpara.xc)*(x2-gpara.xc) + (y1-gpara.yc)*(y2-gpara.yc);
+        let dR1R2sq = SQR(x1-x2) + SQR(y1-y2);
+        let q = r1sq - R1dotR2;
+        let s;
         if (r1sq <= gpara.r2) {
             s = ( q + Math.sqrt(q*q + dR1R2sq*(gpara.r2-r1sq)) )/dR1R2sq;
             x2p = x1 + s*(x2-x1); y2p = y1 + s*(y2-y1);
@@ -1011,7 +1011,7 @@ function addLinesXYmollweideAcross(ctx, coord1,coord2, gpara) {
     let dx = x2-x1, dy = y2-y1;
     let t1 = x1*dx + 4*y1*dy;
     let t2 = 1 - x1*x1 - 4*y1*y1;
-    var s = t2/(t1 + Math.sqrt(t1*t1 + t2*(dx*dx + 4*dy*dy)));
+    let s = t2/(t1 + Math.sqrt(t1*t1 + t2*(dx*dx + 4*dy*dy)));
     let x = x1 + s*dx, y = y1 + s*dy;
     
     // Now add a line joining (x1,y1) and (x,y) on the canvas
@@ -1032,7 +1032,7 @@ function addLinesXYmollweideAcross(ctx, coord1,coord2, gpara) {
 
 // Display tooltip (actually a popup box) on mouse click
 function displayPopup(e, canvasId) {
-    var ind, tipId;
+    let ind, tipId;
     if (canvasId=="canvasNorth") {
         ind = 0;
         tipId = "#tipNorth";
@@ -1043,29 +1043,29 @@ function displayPopup(e, canvasId) {
         ind = 2;
         tipId = "#tipSouth";
     }
-    var canvas = document.getElementById(canvasId);
-    var rect = canvas.getBoundingClientRect();
-    var x = e.clientX - rect.left;
-    var y = e.clientY - rect.top;
-    var hit = false;
-    var i, tip;
+    let canvas = document.getElementById(canvasId);
+    let rect = canvas.getBoundingClientRect();
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+    let hit = false;
+    let i, tip;
     for (i=0; i < tips[ind].length; i++) {
         tip = tips[ind][i];
-        var dx = x - tip.x;
-        var dy = y - tip.y;
+        let dx = x - tip.x;
+        let dy = y - tip.y;
         if (dx*dx + dy*dy < tip.r2) {
             hit = true;
             break;
         }
     }
     if (hit) {
-        var tipText = tipId+"Text";
+        let tipText = tipId+"Text";
         $(tipText).empty();
         // set up pararameters to be passed to the functions 
         // that displays the popup...
-        var para = {tipInd:ind, tipId:tipId};
+        let para = {tipInd:ind, tipId:tipId};
         // Nutation (only calculate when -50 < TD < 10)
-        var TD = date.T+date.dT;
+        let TD = date.T+date.dT;
         if (TD > -50 && TD < 10) {
             para.nu = nutation(TD);
         }
@@ -1088,7 +1088,7 @@ function displayPopup(e, canvasId) {
 
 // Close popup
 function closePopup(idn) {
-    var id = "#"+idn;
+    let id = "#"+idn;
     $(id).hide();
     $(id+"text").empty();
     $(id).css("left","-200px");
@@ -1096,36 +1096,36 @@ function closePopup(idn) {
 
 // Display popup box for the Sun
 function displayPopupSun(tip,para) {
-    var sun;
-    var TD = date.T+date.dT;
+    let sun;
+    let TD = date.T+date.dT;
     if (highPrecCalInTips) {
         sun = planetGeoVSOP(TD, "Sun", false);
     } else {
-        var calculate = [false,false,true,false,false,false,false,false];
+        let calculate = [false,false,true,false,false,false,false,false];
         sun = planetPos(TD, calculate)[2];
     }
     // ra and dec wrt GCRS
-    var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
-    var conNames = constellationAbbrNames();
-    var conste = conNames[get_constellation(sun.ra2000, sun.dec2000)];
-    var ra2000 = convertDM(sun.ra2000*rad_to_hr, "hm");
-    var dec2000 = convertDM(sun.dec2000*rad_to_deg, "dm");
+    let rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
+    let conNames = constellationAbbrNames();
+    let conste = conNames[get_constellation(sun.ra2000, sun.dec2000)];
+    let ra2000 = convertDM(sun.ra2000*rad_to_hr, "hm");
+    let dec2000 = convertDM(sun.dec2000*rad_to_deg, "dm");
     // ra and dec of date
-    var p = precession_matrix(0,TD);
-    var raDec = precessed_ra_dec(sun.ra2000,sun.dec2000,p);
+    let p = precession_matrix(0,TD);
+    let raDec = precessed_ra_dec(sun.ra2000,sun.dec2000,p);
     // Add nutation and aberration of light
     if ("nu" in para) {
         raDec = precessed_ra_dec(raDec.ra, raDec.dec, para.nu);
-        var aberpara = {T:TD, m:para.nu};
+        let aberpara = {T:TD, m:para.nu};
         raDec = aberration(raDec.ra, raDec.dec, aberpara);
     }
-    var ra = convertDM(raDec.ra*rad_to_hr, "hm");
-    var dec = convertDM(raDec.dec*rad_to_deg, "dm");
+    let ra = convertDM(raDec.ra*rad_to_hr, "hm");
+    let dec = convertDM(raDec.dec*rad_to_deg, "dm");
     // Angular diameter at 1 AU (arcmin)
-    var ang1AU = 31.965; 
-    var ang = ang1AU / sun.rGeo;
+    let ang1AU = 31.965; 
+    let ang = ang1AU / sun.rGeo;
     
-    var txt ="<table>";
+    let txt ="<table>";
     txt += '<tr><th colspan="2">Sun</th></tr>';
     txt += '<tr><td>Distance</td> <td>'+sun.rGeo.toFixed(3)+' AU</td></tr>';
     txt += '<tr><td>Angular Diameter</td> <td>'+ang.toFixed(1)+
@@ -1143,12 +1143,12 @@ function displayPopupSun(tip,para) {
 
 // Display popup box for the Moon
 function displayPopupMoon(tip,para) {
-    var moon,sun, Dmoon, Lmoon, Lsun, Dsun;
-    var TD = date.T + date.dT;
+    let moon,sun, Dmoon, Lmoon, Lsun, Dsun;
+    let TD = date.T + date.dT;
     if (highPrecCalInTips) {
         moon = MoonPosElpMpp02(TD, true);
         Dmoon = moon.rGeo;
-        var calculate = [false,false,true,false,false,false,false,false];
+        let calculate = [false,false,true,false,false,false,false,false];
         sun = planetPos(TD, calculate)[2];
         Dsun = sun.rGeo;
         Lsun = sun.lam2000;
@@ -1161,31 +1161,31 @@ function displayPopupMoon(tip,para) {
         Lmoon = moon.lam;
         Dmoon = moon.rGeo;
     }
-    var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
+    let rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
     // Geocentric ra and dec wrt J2000
-    var conNames = constellationAbbrNames();
-    var conste = conNames[get_constellation(moon.ra2000, moon.dec2000)];
-    var ra2000 = convertDM(moon.ra2000*rad_to_hr, "hm");
-    var dec2000 = convertDM(moon.dec2000*rad_to_deg, "dm");
+    let conNames = constellationAbbrNames();
+    let conste = conNames[get_constellation(moon.ra2000, moon.dec2000)];
+    let ra2000 = convertDM(moon.ra2000*rad_to_hr, "hm");
+    let dec2000 = convertDM(moon.dec2000*rad_to_deg, "dm");
     // Geocentric ra and dec of date
-    var raDec = {ra:moon.ra, dec:moon.dec};
+    let raDec = {ra:moon.ra, dec:moon.dec};
     // Add nutation and aberration of light
     if ("nu" in para) {
         raDec = precessed_ra_dec(raDec.ra, raDec.dec, para.nu);
-        var aberpara = {T:TD, m:para.nu};
+        let aberpara = {T:TD, m:para.nu};
         raDec = aberration(raDec.ra, raDec.dec, aberpara);
     }
-    var ra = convertDM(raDec.ra*rad_to_hr, "hm");
-    var dec = convertDM(raDec.dec*rad_to_deg, "dm");
+    let ra = convertDM(raDec.ra*rad_to_hr, "hm");
+    let dec = convertDM(raDec.dec*rad_to_deg, "dm");
     // illumination, phase and solar elongation
-    var illumPhase = moonIlluminated(sun.ra,sun.dec,moon.ra,moon.dec, 
+    let illumPhase = moonIlluminated(sun.ra,sun.dec,moon.ra,moon.dec, 
                                      Lsun,Lmoon, Dmoon, Dsun);
-    var illum = illumPhase.illuminated.toFixed(2);
-    var phase = illumPhase.phase;
-    var elong = illumPhase.elongTxt;
-    var mag = illumPhase.mag.toFixed(1);
+    let illum = illumPhase.illuminated.toFixed(2);
+    let phase = illumPhase.phase;
+    let elong = illumPhase.elongTxt;
+    let mag = illumPhase.mag.toFixed(1);
     
-    var txt ="<table>";
+    let txt ="<table>";
     txt += '<tr><th colspan="2">Moon</th></tr>';
     txt += '<tr><td>Geocentric Distance</td><td>'+
         Dmoon.toFixed(0)+' km ('+(Dmoon/6371).toFixed(1)+
@@ -1209,59 +1209,59 @@ function displayPopupMoon(tip,para) {
 
 // Display popup box for a planet
 function displayPopupPlanet(tip,para) {
-    var calculate = [false,false,true,false,false,false,false,false];
-    var ind = tip.pIndex-1;
+    let calculate = [false,false,true,false,false,false,false,false];
+    let ind = tip.pIndex-1;
     if (tip.pIndex < 4) { ind--;}
     calculate[ind] = true;
-    var TD = date.T + date.dT;
-    var planet, sun;
+    let TD = date.T + date.dT;
+    let planet, sun;
     if (highPrecCalInTips) {
         planet = planetGeoVSOP(TD, tip.object, true);
         sun = {rGeo:planet.dSunEarth, 
                lam2000:planet.lamSun2000, 
                bet2000:planet.betSun2000};
     } else {
-        var planets = planetPos(TD, calculate);
+        let planets = planetPos(TD, calculate);
         planet = planets[ind];
         sun = planets[2];
     }
-    var rHelio = planet.rHelio, rGeo = planet.rGeo;
+    let rHelio = planet.rHelio, rGeo = planet.rGeo;
     // ra and dec wrt J2000
-    var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
-    var conNames = constellationAbbrNames();
-    var conste = conNames[get_constellation(planet.ra2000, planet.dec2000)];
-    var ra2000 = convertDM(planet.ra2000*rad_to_hr, "hm");
-    var dec2000 = convertDM(planet.dec2000*rad_to_deg, "dm");
+    let rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
+    let conNames = constellationAbbrNames();
+    let conste = conNames[get_constellation(planet.ra2000, planet.dec2000)];
+    let ra2000 = convertDM(planet.ra2000*rad_to_hr, "hm");
+    let dec2000 = convertDM(planet.dec2000*rad_to_deg, "dm");
     // ra and dec of date
-    var raDec = {ra:planet.ra, dec:planet.dec};
+    let raDec = {ra:planet.ra, dec:planet.dec};
     // Add nutation and aberration of light
     if ("nu" in para) {
         raDec = precessed_ra_dec(raDec.ra, raDec.dec, para.nu);
-        var aberpara = {T:TD, m:para.nu};
+        let aberpara = {T:TD, m:para.nu};
         raDec = aberration(raDec.ra, raDec.dec, aberpara);
     }
-    var ra = convertDM(raDec.ra*rad_to_hr, "hm");
-    var dec = convertDM(raDec.dec*rad_to_deg, "dm");
+    let ra = convertDM(raDec.ra*rad_to_hr, "hm");
+    let dec = convertDM(raDec.dec*rad_to_deg, "dm");
     // Elongation and fraction of planet illuminated
-    var elongIllum = elongationPhase(planet,sun);
-    var Elong = elongIllum.elongation;
-    var illum = elongIllum.illuminated;
+    let elongIllum = elongationPhase(planet,sun);
+    let Elong = elongIllum.elongation;
+    let illum = elongIllum.illuminated;
     // apparent magnitude
-    var magPara = {object:tip.object, i:elongIllum.phaseAng, 
+    let magPara = {object:tip.object, i:elongIllum.phaseAng, 
                    rHelio:rHelio, rGeo:rGeo, 
                    T:TD, planet:planet, sun:sun};
-    var mag = planetMag(magPara);
+    let mag = planetMag(magPara);
     // angular size (arcsec)
-    var ang1AU = {Mercury:6.726865375887558, 
+    let ang1AU = {Mercury:6.726865375887558, 
                   Venus:16.68838398040351,
                   Mars:9.3468517633725, 
                   Jupiter:192.785883944279362, 
                   Saturn:160.579988754892298, 
                   Uranus:69.938001009781189,
                   Neptune:67.897384309708713};
-    var ang = ang1AU[tip.object]/rGeo;
+    let ang = ang1AU[tip.object]/rGeo;
     
-    var txt ="<table>";
+    let txt ="<table>";
     txt += '<tr><th colspan="2">'+tip.object+'</th></tr>';
     txt += '<tr><td>Heliocentric Distance</td> <td>'+rHelio.toFixed(3)+' AU</td></tr>';
     txt += '<tr><td>Geocentric Distance</td> <td>'+rGeo.toFixed(3)+' AU</td></tr>';
@@ -1284,64 +1284,64 @@ function displayPopupPlanet(tip,para) {
 
 // Display popup box for stars
 function displayPopupStar(tip, para) {
-    var stars = brightStars();
-    var s = stars[tip.starInd]; // this star
+    let stars = brightStars();
+    let s = stars[tip.starInd]; // this star
     // ra and dec at current time
-    var TD = date.T + date.dT; 
-    var T0 = stars[0].Tepoch;
-    var dcen = TD-T0;
+    let TD = date.T + date.dT; 
+    let T0 = stars[0].Tepoch;
+    let dcen = TD-T0;
     // correct for proper motion
-    var x = s.x + s.vx*dcen;
-    var y = s.y + s.vy*dcen;
-    var z = s.z + s.vz*dcen;
-    var distpc = Math.sqrt(x*x + y*y + z*z);
+    let x = s.x + s.vx*dcen;
+    let y = s.y + s.vy*dcen;
+    let z = s.z + s.vz*dcen;
+    let distpc = Math.sqrt(x*x + y*y + z*z);
     // Correct for annual parallax
     if (TD > -50 && TD < 10) {
-        var calculate = [false,false,true,false,false,false,false,false];
-        var sun = planetPos(TD, calculate)[2];
-        var rpc = sun.rGeo*Math.PI/648000; // dist. from Sun in pc
-        var xe = -rpc*Math.cos(sun.ra2000)*Math.cos(sun.dec2000);
-        var ye = -rpc*Math.sin(sun.ra2000)*Math.cos(sun.dec2000);
-        var ze = -rpc*Math.sin(sun.dec2000);
+        let calculate = [false,false,true,false,false,false,false,false];
+        let sun = planetPos(TD, calculate)[2];
+        let rpc = sun.rGeo*Math.PI/648000; // dist. from Sun in pc
+        let xe = -rpc*Math.cos(sun.ra2000)*Math.cos(sun.dec2000);
+        let ye = -rpc*Math.sin(sun.ra2000)*Math.cos(sun.dec2000);
+        let ze = -rpc*Math.sin(sun.dec2000);
         x -= xe;
         y -= ye;
         z -= ze;
         distpc = Math.sqrt(x*x + y*y + z*z);
     }
     // ra and dec wrt J2000.0 (after correcting for proper motion)
-    var rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
-    var ra2000r = Math.atan2(y,x), dec2000r = Math.asin(z/distpc);
-    var ra2000 = convertDM(ra2000r*rad_to_hr, "hm");
-    var dec2000 = convertDM(dec2000r*rad_to_deg, "dm");
-    var conNames = constellationAbbrNames();
-    var conste = conNames[get_constellation(ra2000r, dec2000r)];
-    var conste2000 = conNames[s.con];
+    let rad_to_deg = 180/Math.PI, rad_to_hr = 12/Math.PI;
+    let ra2000r = Math.atan2(y,x), dec2000r = Math.asin(z/distpc);
+    let ra2000 = convertDM(ra2000r*rad_to_hr, "hm");
+    let dec2000 = convertDM(dec2000r*rad_to_deg, "dm");
+    let conNames = constellationAbbrNames();
+    let conste = conNames[get_constellation(ra2000r, dec2000r)];
+    let conste2000 = conNames[s.con];
     if (conste != conste2000) {
         conste = conste2000 + ' (2000), '+conste+' ('+date.yyyy+')';
     }
     // precession
-    var p = precession_matrix(T0,dcen);
-    var x1 = p.p11*x + p.p12*y + p.p13*z;
-    var y1 = p.p21*x + p.p22*y + p.p23*z;
-    var z1 = p.p31*x + p.p32*y + p.p33*z;
-    var ra = Math.atan2(y1,x1);
-    var dec = Math.asin(z1/distpc);
+    let p = precession_matrix(T0,dcen);
+    let x1 = p.p11*x + p.p12*y + p.p13*z;
+    let y1 = p.p21*x + p.p22*y + p.p23*z;
+    let z1 = p.p31*x + p.p32*y + p.p33*z;
+    let ra = Math.atan2(y1,x1);
+    let dec = Math.asin(z1/distpc);
     // Add nutation and aberration of light
     if ("nu" in para) {
-        var raDec = precessed_ra_dec(ra, dec, para.nu);
-        var aberpara = {T:TD, m:para.nu};
+        let raDec = precessed_ra_dec(ra, dec, para.nu);
+        let aberpara = {T:TD, m:para.nu};
         raDec = aberration(raDec.ra, raDec.dec, aberpara);
         ra = raDec.ra; dec = raDec.dec;
     }
-    var raStr = convertDM(ra*rad_to_hr, "hm");
-    var decStr = convertDM(dec*rad_to_deg, "dm");
+    let raStr = convertDM(ra*rad_to_hr, "hm");
+    let decStr = convertDM(dec*rad_to_deg, "dm");
     
-    var txt = "<table>";
-    var name = s.name;
-    var dist2000 = s.dist2000;
-    var distly = distpc*3.2616;
+    let txt = "<table>";
+    let name = s.name;
+    let dist2000 = s.dist2000;
+    let distly = distpc*3.2616;
     // round distance to 3 sig. fig.
-    var dist, varmag="";
+    let dist, varmag="";
     if (dist2000 >= 9.9e4) {
         dist = "?"; 
     } else {
@@ -1350,11 +1350,11 @@ function displayPopupStar(tip, para) {
     if ("bayer" in s && name.slice(0,1) != "<") {
         name += ", "+s.bayer+" "+s.con;
     }
-    var mag = s.mag2000.toFixed(2);
-    var magStr = "Mag.";
-    var delMag = 0;
+    let mag = s.mag2000.toFixed(2);
+    let magStr = "Mag.";
+    let delMag = 0;
     if (s.dist2000 < 9.9e4) {
-        var absmag = s.mag2000 + 5 - 5*Math.LOG10E*Math.log(s.dist2000);
+        let absmag = s.mag2000 + 5 - 5*Math.LOG10E*Math.log(s.dist2000);
         // correct mag. as a result of change in distance
         delMag = 5*Math.LOG10E*Math.log(distpc/s.dist2000);
         mag = s.mag2000 + delMag;
@@ -1362,8 +1362,8 @@ function displayPopupStar(tip, para) {
         mag = mag.toFixed(2)+", "+absmag.toFixed(2);
     }
     if ("varMax" in s && "varMin" in s) {
-        var varMax = parseFloat(s.varMax)+delMag;
-        var varMin = parseFloat(s.varMin)+delMag;
+        let varMax = parseFloat(s.varMax)+delMag;
+        let varMin = parseFloat(s.varMin)+delMag;
         varmag = varMax.toFixed(2)+" &ndash; "+varMin.toFixed(2);
     }
     txt += '<tr><th colspan="2">'+name+'</th></tr>';
@@ -1426,19 +1426,19 @@ function setupDrawingParameters() {
 
 // Add legend to the legend canvas
 function addLegend(pDraw) {
-    var Canvas = document.getElementById('legend');
-    var Ctx = Canvas.getContext('2d');
+    let Canvas = document.getElementById('legend');
+    let Ctx = Canvas.getContext('2d');
     Ctx.clearRect(0, 0, Canvas.width, Canvas.height);
     // magnitude scale
     Ctx.font="20px Arial";
     Ctx.fillStyle = "black";
     Ctx.fillText("Magnitude scale:",0,20);
-    var m,s,x,y;
-    var twoPI = 2*Math.PI;
+    let m,s,x,y;
+    let twoPI = 2*Math.PI;
     for (m=-1; m<6; m++) {
         s = pDraw.starMagA*m + pDraw.starMagB;
         x = 180+(m+1)*40;
-        var dx = -20;
+        let dx = -20;
         if (m==-1) {dx=-22;}
         Ctx.fillText(m.toString(),x+dx,20);
         Ctx.beginPath();
@@ -1559,14 +1559,14 @@ function addLegend(pDraw) {
 }
 
 function displayAnimationSetup(anid) {
-    var animId = "#"+anid;
+    let animId = "#"+anid;
     $('button.menu').attr("disabled", true);
     $('button.setupAnimate').attr("disabled", true);
     $('button.controlAnimate').attr("disabled", true);
     $(animId).empty();
     $(animId).slideDown();
     
-    var txt = "<h2>Animation Setup</h2>";
+    let txt = "<h2>Animation Setup</h2>";
     $(animId).append(txt);
     txt = '<form name="animSetup" action="" method="get">';
     txt += '<table>';
@@ -1653,20 +1653,20 @@ function animRadioClick(select) {
 }
 
 function animationSetup(form,anid) {
-    var yy = parseInt(form.yearAnim.value);
-    var mm = parseInt(form.monthAnim.value);
-    var dd = parseInt(form.dayAnim.value);
-    var h = parseInt(form.hourAnim.value);
-    var m = parseInt(form.minuteAnim.value);
-    var s = parseFloat(form.secondAnim.value);
-    var dt = parseFloat(form.timeStepAnim.value);
-    var fr = parseInt(form.frameRateAnim.value);
+    let yy = parseInt(form.yearAnim.value);
+    let mm = parseInt(form.monthAnim.value);
+    let dd = parseInt(form.dayAnim.value);
+    let h = parseInt(form.hourAnim.value);
+    let m = parseInt(form.minuteAnim.value);
+    let s = parseFloat(form.secondAnim.value);
+    let dt = parseFloat(form.timeStepAnim.value);
+    let fr = parseInt(form.frameRateAnim.value);
     
     // sanity check
-    var errid = "#animationErrorlocs";
+    let errid = "#animationErrorlocs";
     $(errid).empty();
-    var min=-200000, max=200000;
-    var message = "Invalid year! Please enter an integer between "+min+" and "+max+". Note that 0 means 1 BCE, -1 means 2 BCE and so on. Note that the positions of the Sun, Moon and planets are only accurate for years between -3000 and 3000.";
+    let min=-200000, max=200000;
+    let message = "Invalid year! Please enter an integer between "+min+" and "+max+". Note that 0 means 1 BCE, -1 means 2 BCE and so on. Note that the positions of the Sun, Moon and planets are only accurate for years between -3000 and 3000.";
     sanityCheck(yy,"#yearAnim",min,max,message,errid);
     
     min=1; max=12;
@@ -1698,18 +1698,18 @@ function animationSetup(form,anid) {
     sanityCheck(fr, "#frameRateAnim",min,max,message,errid);
     
     if ($(errid).text()=="") {
-        var animId = "#"+anid;
+        let animId = "#"+anid;
         $(animId).slideUp();
         $(animId).empty();
         $('button.menu').attr("disabled", false);
         $('button.setupAnimate').attr("disabled", false);
         $('button.controlAnimate').attr("disabled", false);
-        var D = getDm(yy,mm,dd,0);
-        var d = CalDat(D);
-        var timeString = generateTimeString(h,m,s);
+        let D = getDm(yy,mm,dd,0);
+        let d = CalDat(D);
+        let timeString = generateTimeString(h,m,s);
         D += (h + m/60 + s/3600)/24;
-        var T = D/36525;
-        var dT = DeltaT(T);
+        let T = D/36525;
+        let dT = DeltaT(T);
         date = {yyyy:d.yy, mm:d.mm, dd:d.dd, h:h, m:m, s:s,
                 dateString:d.dateString, 
                 timeString:timeString, D:D, T:T, dT:dT};
@@ -1721,10 +1721,10 @@ function animationSetup(form,anid) {
 
 // Animation manager function
 function Animate() {
-    var id1 = "#animateNorth";
-    var id2 = "#animateCentral";
-    var id3 = "#animateSouth";
-    var state = $(id1).text();
+    let id1 = "#animateNorth";
+    let id2 = "#animateCentral";
+    let id3 = "#animateSouth";
+    let state = $(id1).text();
     if (state=="Play Animation") {
         $(id1).text("Stop Animation");
         $(id2).text("Stop Animation");
@@ -1758,15 +1758,15 @@ function Animate() {
 
 // Update the star chart by dframes frames
 function playAnimation(dframes) {
-    var deltaD = dframes*animateDtStep;
+    let deltaD = dframes*animateDtStep;
     date.D += deltaD;
     date.T = date.D/36525;
     date.dT = DeltaT(date.T);
-    var d = CalDat(date.D);
+    let d = CalDat(date.D);
     date.yyyy = d.yy; date.mm = d.mm; date.dd = d.dd;
     date.dateString = d.dateString;
-    var deltaH = 24*(deltaD - Math.floor(deltaD));
-    var hour = date.h + date.m/60 + date.s/3600 + deltaH;
+    let deltaH = 24*(deltaD - Math.floor(deltaD));
+    let hour = date.h + date.m/60 + date.s/3600 + deltaH;
     hour -= 24*Math.floor(hour/24);
     date.h = Math.floor(hour);
     date.m = Math.floor((hour - date.h)*60);
@@ -1776,9 +1776,9 @@ function playAnimation(dframes) {
     if (Math.abs(date.yyyy) > 200000) {
         // stop the animation
         clearInterval(animate_id);
-        var id1 = "#animateNorth";
-        var id2 = "#animateCentral";
-        var id3 = "#animateSouth";
+        let id1 = "#animateNorth";
+        let id2 = "#animateCentral";
+        let id3 = "#animateSouth";
         $(id1).text("Play Animation");
         $(id2).text("Play Animation");
         $(id3).text("Play Animation");

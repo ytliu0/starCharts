@@ -36,12 +36,12 @@
 */
 
 function MercuryPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Mercury_X0(t) + Mercury_X1(t) + Mercury_X2(t) + 
+       let t = 0.1*T;
+       let X = Mercury_X0(t) + Mercury_X1(t) + Mercury_X2(t) + 
            Mercury_X3(t) + Mercury_X4(t) + Mercury_X5(t);
-       var Y = Mercury_Y0(t) + Mercury_Y1(t) + Mercury_Y2(t) + 
+       let Y = Mercury_Y0(t) + Mercury_Y1(t) + Mercury_Y2(t) + 
            Mercury_Y3(t) + Mercury_Y4(t) + Mercury_Y5(t);
-       var Z = Mercury_Z0(t) + Mercury_Z1(t) + Mercury_Z2(t) + 
+       let Z = Mercury_Z0(t) + Mercury_Z1(t) + Mercury_Z2(t) + 
            Mercury_Z3(t) + Mercury_Z4(t) + Mercury_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -50,7 +50,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_X0 (t) // 1449 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 0.37546291728*Math.cos(4.39651506942 + 26087.9031415742*t);
    X0 += 0.03825746672*Math.cos(1.16485604339 + 52175.8062831484*t);
    X0 -= 0.02625615963;
@@ -1507,7 +1507,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_X1 (t) // 792 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 += 0.00318848034;
    X1 += 0.00105289019*Math.cos(5.91600475006 + 52175.8062831484*t);
    X1 += 0.00032316001*Math.cos(2.68247273347 + 78263.70942472259*t);
@@ -2307,7 +2307,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_X2 (t) // 299 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00001484185*Math.cos(4.35401210269 + 52175.8062831484*t);
    X2 += 0.00000907467*Math.cos(1.13216343018 + 78263.70942472259*t);
    X2 += 0.00001214995;
@@ -2614,7 +2614,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_X3 (t) // 54 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 -= 0.00000046252;
    X3 += 0.00000017461*Math.cos(5.90570575226 + 78263.70942472259*t);
    X3 += 0.00000014855*Math.cos(2.98081270061 + 52175.8062831484*t);
@@ -2676,7 +2676,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_X4 (t) // 15 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 -= 0.00000000396;
    X4 += 0.00000000277*Math.cos(4.46911521792 + 78263.70942472259*t);
    X4 += 0.00000000233*Math.cos(1.15859255567 + 104351.61256629678*t);
@@ -2699,7 +2699,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_X5 (t) // 10 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000000010;
    X5 += 0.00000000004*Math.cos(5.91649200666 + 104351.61256629678*t);
    X5 += 0.00000000004*Math.cos(2.83757947000 + 78263.70942472259*t);
@@ -2717,7 +2717,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Y0 (t) // 1438 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 0.37953642888*Math.cos(2.83780617820 + 26087.9031415742*t);
    Y0 -= 0.11626131831;
    Y0 += 0.03854668215*Math.cos(5.88780608966 + 52175.8062831484*t);
@@ -4163,7 +4163,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Y1 (t) // 782 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 += 0.00107803852*Math.cos(4.34964793883 + 52175.8062831484*t);
    Y1 -= 0.00080651544;
    Y1 += 0.00032715354*Math.cos(1.11763734425 + 78263.70942472259*t);
@@ -4953,7 +4953,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Y2 (t) // 299 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 += 0.00004612157;
    Y2 += 0.00001575670*Math.cos(2.81172733349 + 52175.8062831484*t);
    Y2 += 0.00000927896*Math.cos(5.85368769122 + 78263.70942472259*t);
@@ -5260,7 +5260,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Y3 (t) // 59 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00000018231*Math.cos(4.35141183918 + 78263.70942472259*t);
    Y3 += 0.00000017840*Math.cos(1.45419068020 + 52175.8062831484*t);
    Y3 += 0.00000015722;
@@ -5327,7 +5327,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Y4 (t) // 15 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 -= 0.00000000448;
    Y4 += 0.00000000299*Math.cos(2.91725329579 + 78263.70942472259*t);
    Y4 += 0.00000000241*Math.cos(5.88233684971 + 104351.61256629678*t);
@@ -5350,7 +5350,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Y5 (t) // 10 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000005*Math.cos(4.36366479961 + 104351.61256629678*t);
    Y5 += 0.00000000004*Math.cos(1.29818204726 + 78263.70942472259*t);
    Y5 += 0.00000000003*Math.cos(1.10210039292 + 130439.51570787099*t);
@@ -5368,7 +5368,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Z0 (t) // 598 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.04607665326*Math.cos(1.99295081967 + 26087.9031415742*t);
    Z0 -= 0.00708734365;
    Z0 += 0.00469171617*Math.cos(5.04215742764 + 52175.8062831484*t);
@@ -5974,7 +5974,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Z1 (t) // 351 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00108722177*Math.cos(3.91134750825 + 26087.9031415742*t);
    Z1 -= 0.00057826621;
    Z1 += 0.00004297352*Math.cos(2.56373047177 + 52175.8062831484*t);
@@ -6333,7 +6333,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Z2 (t) // 143 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00001053118*Math.cos(5.37979214357 + 26087.9031415742*t);
    Z2 += 0.00001185024;
    Z2 += 0.00000087113*Math.cos(0.42206932430 + 52175.8062831484*t);
@@ -6484,7 +6484,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Z3 (t) // 28 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000021392*Math.cos(2.12804278460 + 26087.9031415742*t);
    Z3 += 0.00000017872;
    Z3 += 0.00000002919*Math.cos(5.41085836184 + 52175.8062831484*t);
@@ -6520,7 +6520,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Z4 (t) // 10 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000000587*Math.cos(4.86442699315 + 26087.9031415742*t);
    Z4 -= 0.00000000283;
    Z4 += 0.00000000055*Math.cos(3.04082107246 + 52175.8062831484*t);
@@ -6538,7 +6538,7 @@ function MercuryPosVSOP(T) {
 
    function Mercury_Z5 (t) // 7 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000004;
    Z5 += 0.00000000002*Math.cos(5.42849777894 + 26087.9031415742*t);
    Z5 += 0.00000000002*Math.cos(1.19011087498 + 52175.8062831484*t);

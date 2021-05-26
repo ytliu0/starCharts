@@ -1,13 +1,13 @@
 "use strict";
 
 // set up global variables for animations
-var animateDtStep = 2; // number of minutes per step
-var frameRate = 40; // number of milliseconds to update the frame
-var animate_id; // variable for animation
+let animateDtStep = 2; // number of minutes per step
+let frameRate = 40; // number of milliseconds to update the frame
+let animate_id; // variable for animation
 
 function Animate(loc) {
-    var id = "#animate"+loc;
-    var state = $(id).text();
+    let id = "#animate"+loc;
+    let state = $(id).text();
     if (state=="Play Animation") {
         $(id).text("Stop Animation");
         $('button.menu').attr("disabled", true);
@@ -35,7 +35,7 @@ function Animate(loc) {
 
 // Update the star chart by dframes frames
 function playAnimation(loc,dframes) {
-    var d,tzString,long;
+    let d,tzString,long;
     if (loc==1) {
         d = date1;
         tzString = "GMT"+tz1.tzString;
@@ -48,23 +48,23 @@ function playAnimation(loc,dframes) {
     d.D += dframes*animateDtStep/1440;
     d.T = d.D/36525;
     d.dT = DeltaT(d.T);
-    var date = CalDat(d.D - d.tz/1440);
+    let date = CalDat(d.D - d.tz/1440);
     d.yyyy = date.yy; d.mm = date.mm; d.dd = date.dd;
     d.dateString = date.dateString;
-    var deltaH = dframes*animateDtStep/60;
+    let deltaH = dframes*animateDtStep/60;
     deltaH -= 24*Math.floor(deltaH/24);
-    var hour = d.h + d.m/60 + d.s/3600 + deltaH;
+    let hour = d.h + d.m/60 + d.s/3600 + deltaH;
     hour -= 24*Math.floor(hour/24);
     d.h = Math.floor(hour);
     d.m = Math.floor((hour - d.h)*60);
     d.s = 3600*(hour - d.h - d.m/60);
     d.timeString = generateTimeString(d.h,d.m,d.s);
-    var GMST = getGMST(d);
-    var LST = getSidereal(GMST,long);
+    let GMST = getGMST(d);
+    let LST = getSidereal(GMST,long);
     d.LST = LST.hour;
     d.LST_rad = LST.rad;
     d.LSTstring = LST.string;
-    var dString = d.dateString+"&nbsp;&nbsp;"+d.timeString+"  "+tzString;
+    let dString = d.dateString+"&nbsp;&nbsp;"+d.timeString+"  "+tzString;
     
     if (Math.abs(d.yyyy) > 200000) {
         // stop the animation
@@ -87,11 +87,11 @@ function displayAnimationSetup(loc) {
     $('button.menu').attr("disabled", true);
     $('button.setupAnimate').attr("disabled", true);
     $('button.controlAnimate').attr("disabled", true);
-    var animId = "#animationSetup"+loc;
+    let animId = "#animationSetup"+loc;
     $(animId).empty();
     $(animId).slideDown();
     
-    var txt = "<h2>Animation Setup</h2>";
+    let txt = "<h2>Animation Setup</h2>";
     $(animId).append(txt);
     txt = '<form name="animSetup" action="" method="get">';
     txt += '<table>';
@@ -136,7 +136,7 @@ function displayAnimationSetup(loc) {
     txt += '</ul></p>';
     $(animId).append(txt);
     
-    var d, place, long, lat, tz;
+    let d, place, long, lat, tz;
     if (loc==1) {
         d = date1;
         place = place1;
@@ -207,36 +207,36 @@ function animRadioClick(select) {
 }
         
 function animationSetup(form, loc) {
-    var place = form.placeAnim.value;
-    var long = parseFloat(form.longAnim.value);
-    var lat = parseFloat(form.latAnim.value);
-    var tzoffset = parseFloat(form.tzAnim.value);
-    var tz = {tz:-tzoffset*60};
-    var tzof = Math.abs(tzoffset) + 0.5/60; // used for rounding
+    let place = form.placeAnim.value;
+    let long = parseFloat(form.longAnim.value);
+    let lat = parseFloat(form.latAnim.value);
+    let tzoffset = parseFloat(form.tzAnim.value);
+    let tz = {tz:-tzoffset*60};
+    let tzof = Math.abs(tzoffset) + 0.5/60; // used for rounding
     if (tzoffset >= 0) {
         tz.tzString = "+";
     }  else {
         tz.tzString = "-";
     }
-    var hs = Math.floor(tzof).toString();
+    let hs = Math.floor(tzof).toString();
     if (hs.length < 2) {hs = "0"+hs;}
-    var ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
+    let ms = Math.floor(60*(tzof-Math.floor(tzof))).toString();
     if (ms.length < 2) {ms = "0"+ms;}
     tz.tzString += hs+ms;
-    var yy = parseInt(form.yearAnim.value);
-    var mm = parseInt(form.monthAnim.value);
-    var dd = parseInt(form.dayAnim.value);
-    var h = parseInt(form.hourAnim.value);
-    var m = parseInt(form.minuteAnim.value);
-    var s = parseFloat(form.secondAnim.value);
-    var dt = parseFloat(form.timeStepAnim.value);
-    var fr = parseInt(form.frameRateAnim.value);
+    let yy = parseInt(form.yearAnim.value);
+    let mm = parseInt(form.monthAnim.value);
+    let dd = parseInt(form.dayAnim.value);
+    let h = parseInt(form.hourAnim.value);
+    let m = parseInt(form.minuteAnim.value);
+    let s = parseFloat(form.secondAnim.value);
+    let dt = parseFloat(form.timeStepAnim.value);
+    let fr = parseInt(form.frameRateAnim.value);
     
     // sanity check
-    var errid = "#animationErrorlocs";
+    let errid = "#animationErrorlocs";
     $(errid).empty();
-    var min = -180, max = 180;
-    var message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
+    let min = -180, max = 180;
+    let message = "Invalid longitude! Longitude must be a number between -180 and 180. West of Greenwich is negative; east of Greenwich is positive.";
     sanityCheck(long,"#longAnim",min,max,message,errid);
     
     min = -90; max = 90;
@@ -280,13 +280,13 @@ function animationSetup(form, loc) {
     sanityCheck(fr, "#frameRateAnim",min,max,message,errid);
     
     if ($(errid).text()=="") {
-        var animId = "#animationSetup"+loc;
+        let animId = "#animationSetup"+loc;
         $(animId).slideUp();
         $(animId).empty();
         $('button.menu').attr("disabled", false);
         $('button.setupAnimate').attr("disabled", false);
         $('button.controlAnimate').attr("disabled", false);
-        var d;
+        let d;
         if (loc==1) {
             place1 = place;
             long1 = long;
@@ -300,8 +300,8 @@ function animationSetup(form, loc) {
             d = date2;
             tz2 = {tz:tz.tz, tzString:tz.tzString};
         }
-        var D = getDm(yy,mm,dd,0);
-        var date = CalDat(D);
+        let D = getDm(yy,mm,dd,0);
+        let date = CalDat(D);
         d.yyyy = date.yy; d.mm=date.mm; d.dd = date.dd;
         d.h = h; d.m = m; d.s = s;
         d.tz = tz.tz; d.tzString = tz.tzString;
@@ -310,8 +310,8 @@ function animationSetup(form, loc) {
         d.D = getDm(d.yyyy,d.mm,d.dd,tz.tz) + (h+m/60+s/3600)/24;
         d.T = d.D/36525;
         d.dT = DeltaT(d.T);
-        var GMST = getGMST(d);
-        var LST = getSidereal(GMST,long);
+        let GMST = getGMST(d);
+        let LST = getSidereal(GMST,long);
         d.LST = LST.hour;
         d.LST_rad = LST.rad;
         d.LSTstring = LST.string;

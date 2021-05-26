@@ -36,12 +36,12 @@
 */
 
 function UranusPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Uranus_X0(t) + Uranus_X1(t) + Uranus_X2(t) + 
+       let t = 0.1*T;
+       let X = Uranus_X0(t) + Uranus_X1(t) + Uranus_X2(t) + 
            Uranus_X3(t) + Uranus_X4(t) + Uranus_X5(t);
-       var Y = Uranus_Y0(t) + Uranus_Y1(t) + Uranus_Y2(t) + 
+       let Y = Uranus_Y0(t) + Uranus_Y1(t) + Uranus_Y2(t) + 
            Uranus_Y3(t) + Uranus_Y4(t) + Uranus_Y5(t);
-       var Z = Uranus_Z0(t) + Uranus_Z1(t) + Uranus_Z2(t) + 
+       let Z = Uranus_Z0(t) + Uranus_Z1(t) + Uranus_Z2(t) + 
            Uranus_Z3(t) + Uranus_Z4(t) + Uranus_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -49,7 +49,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_X0 (t) // 1464 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 19.17370730359*Math.cos(5.48133416489 + 74.7815985673*t);
    X0 += 1.32272523872;
    X0 += 0.44402496796*Math.cos(1.65967519586 + 149.5631971346*t);
@@ -1521,7 +1521,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_X1 (t) // 649 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 += 0.00739730021*Math.cos(6.01067825116 + 149.5631971346*t);
    X1 -= 0.00526878306;
    X1 += 0.00239840801*Math.cos(5.33657762707 + 73.297125859*t);
@@ -2178,7 +2178,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_X2 (t) // 249 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00016015732*Math.cos(3.83700026619 + 74.7815985673*t);
    X2 += 0.00010915299*Math.cos(3.02987776270 + 149.5631971346*t);
    X2 += 0.00007497619*Math.cos(3.83429136661 + 11.0457002639*t);
@@ -2435,7 +2435,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_X3 (t) // 84 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00001307049;
    X3 += 0.00000679651*Math.cos(2.93375081556 + 70.8494453042*t);
    X3 += 0.00000631782*Math.cos(4.88998230611 + 78.7137518304*t);
@@ -2527,7 +2527,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_X4 (t) // 12 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 -= 0.00000062987;
    X4 += 0.00000034199*Math.cos(0.42702885820 + 63.7358983034*t);
    X4 += 0.00000026702*Math.cos(5.34493737706 + 149.5631971346*t);
@@ -2547,7 +2547,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_X5 (t) // 1 term of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000000000;
    return X5*t*t*t*t*t;
 }
@@ -2556,7 +2556,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Y0 (t) // 1447 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 19.16518231584*Math.cos(3.91045677002 + 74.7815985673*t);
    Y0 += 0.44390465203*Math.cos(0.08884111329 + 149.5631971346*t);
    Y0 -= 0.16256125476;
@@ -4011,7 +4011,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Y1 (t) // 659 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 += 0.02157896385;
    Y1 += 0.00739227349*Math.cos(4.43963890935 + 149.5631971346*t);
    Y1 += 0.00238545685*Math.cos(3.76882493145 + 73.297125859*t);
@@ -4678,7 +4678,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Y2 (t) // 255 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 -= 0.00034812647;
    Y2 += 0.00016589194*Math.cos(2.29556740620 + 74.7815985673*t);
    Y2 += 0.00010905147*Math.cos(1.45737963668 + 149.5631971346*t);
@@ -4941,7 +4941,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Y3 (t) // 80 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00001211380;
    Y3 += 0.00000668539*Math.cos(1.35719575778 + 70.8494453042*t);
    Y3 += 0.00000634232*Math.cos(3.31949833714 + 78.7137518304*t);
@@ -5029,7 +5029,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Y4 (t) // 12 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00000049430;
    Y4 += 0.00000034198*Math.cos(5.13940292251 + 63.7358983034*t);
    Y4 += 0.00000026702*Math.cos(3.77414105026 + 149.5631971346*t);
@@ -5049,7 +5049,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Y5 (t) // 1 term of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000000;
    return Y5*t*t*t*t*t;
 }
@@ -5058,7 +5058,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Z0 (t) // 235 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.25878127698*Math.cos(2.61861272578 + 74.7815985673*t);
    Z0 -= 0.01774318778;
    Z0 += 0.00599316131*Math.cos(5.08119500585 + 149.5631971346*t);
@@ -5301,7 +5301,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Z1 (t) // 98 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00655916626*Math.cos(0.01271947660 + 74.7815985673*t);
    Z1 += 0.00049648951;
    Z1 += 0.00023874178*Math.cos(2.73870491220 + 149.5631971346*t);
@@ -5407,7 +5407,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Z2 (t) // 33 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00014697858*Math.cos(1.75149165003 + 74.7815985673*t);
    Z2 -= 0.00001600044;
    Z2 += 0.00000257139*Math.cos(5.91766895295 + 73.297125859*t);
@@ -5448,7 +5448,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Z3 (t) // 12 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000406961*Math.cos(3.16314034460 + 74.7815985673*t);
    Z3 -= 0.00000032961;
    Z3 += 0.00000011311*Math.cos(4.44380758422 + 149.5631971346*t);
@@ -5468,7 +5468,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Z4 (t) // 1 term of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000000000;
    return Z4*t*t*t*t;
 }
@@ -5477,7 +5477,7 @@ function UranusPosVSOP(T) {
 
    function Uranus_Z5 (t) // 1 term of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000000;
    return Z5*t*t*t*t*t;
 }

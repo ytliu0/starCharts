@@ -36,12 +36,12 @@
 */
 
 function NeptunePosVSOP(T) {
-       var t = 0.1*T;
-       var X = Neptune_X0(t) + Neptune_X1(t) + Neptune_X2(t) + 
+       let t = 0.1*T;
+       let X = Neptune_X0(t) + Neptune_X1(t) + Neptune_X2(t) + 
            Neptune_X3(t) + Neptune_X4(t) + Neptune_X5(t);
-       var Y = Neptune_Y0(t) + Neptune_Y1(t) + Neptune_Y2(t) + 
+       let Y = Neptune_Y0(t) + Neptune_Y1(t) + Neptune_Y2(t) + 
            Neptune_Y3(t) + Neptune_Y4(t) + Neptune_Y5(t);
-       var Z = Neptune_Z0(t) + Neptune_Z1(t) + Neptune_Z2(t) + 
+       let Z = Neptune_Z0(t) + Neptune_Z1(t) + Neptune_Z2(t) + 
            Neptune_Z3(t) + Neptune_Z4(t) + Neptune_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -49,7 +49,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_X0 (t) // 772 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 30.05890004476*Math.cos(5.31211340029 + 38.1330356378*t);
    X0 -= 0.27080164222;
    X0 += 0.13505661755*Math.cos(3.50078975634 + 76.2660712756*t);
@@ -829,7 +829,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_X1 (t) // 330 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 += 0.00255840261*Math.cos(2.01935686795 + 36.6485629295*t);
    X1 += 0.00243125299*Math.cos(5.46214902873 + 39.6175083461*t);
    X1 += 0.00118398168*Math.cos(2.88251845061 + 76.2660712756*t);
@@ -1167,7 +1167,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_X2 (t) // 102 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00005371138;
    X2 += 0.00004536283*Math.cos(5.02700751836 + 36.6485629295*t);
    X2 += 0.00004350766*Math.cos(2.45420254304 + 39.6175083461*t);
@@ -1277,7 +1277,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_X3 (t) // 33 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00000192703*Math.cos(0.83849647680 + 36.6485629295*t);
    X3 += 0.00000182218*Math.cos(0.36067577276 + 39.6175083461*t);
    X3 += 0.00000180880;
@@ -1318,7 +1318,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_X4 (t) // 7 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 += 0.00000004229*Math.cos(1.43244844928 + 515.463871093*t);
    X4 += 0.00000004334*Math.cos(5.41647101628 + 433.7117378768*t);
    X4 += 0.00000003547*Math.cos(5.75562173057 + 990.2294059144*t);
@@ -1333,7 +1333,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_X5 (t) // 1 term of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000000000;
    return X5*t*t*t*t*t;
 }
@@ -1342,7 +1342,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Y0 (t) // 746 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 30.06056351665*Math.cos(3.74086294714 + 38.1330356378*t);
    Y0 -= 0.30205857683;
    Y0 += 0.13506391797*Math.cos(1.92953034883 + 76.2660712756*t);
@@ -2096,7 +2096,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Y1 (t) // 325 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 -= 0.00352947493;
    Y1 += 0.00256125493*Math.cos(0.44757496817 + 36.6485629295*t);
    Y1 += 0.00243147725*Math.cos(3.89099798696 + 39.6175083461*t);
@@ -2429,7 +2429,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Y2 (t) // 97 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 += 0.00004539421*Math.cos(3.45613207922 + 36.6485629295*t);
    Y2 += 0.00004347956*Math.cos(0.88317230351 + 39.6175083461*t);
    Y2 -= 0.00003595394;
@@ -2534,7 +2534,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Y3 (t) // 34 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00000192703*Math.cos(5.55088601013 + 36.6485629295*t);
    Y3 += 0.00000182218*Math.cos(5.07306416874 + 39.6175083461*t);
    Y3 += 0.00000176062;
@@ -2576,7 +2576,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Y4 (t) // 7 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00000004229*Math.cos(6.14485774863 + 515.463871093*t);
    Y4 += 0.00000004334*Math.cos(3.84569500845 + 433.7117378768*t);
    Y4 += 0.00000003547*Math.cos(1.04321243122 + 990.2294059144*t);
@@ -2591,7 +2591,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Y5 (t) // 1 term of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000000;
    return Y5*t*t*t*t*t;
 }
@@ -2600,7 +2600,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Z0 (t) // 133 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.92866054405*Math.cos(1.44103930278 + 38.1330356378*t);
    Z0 += 0.01245978462;
    Z0 += 0.00474333567*Math.cos(2.52218774238 + 36.6485629295*t);
@@ -2741,7 +2741,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Z1 (t) // 37 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00154885971*Math.cos(2.14239039664 + 38.1330356378*t);
    Z1 += 0.00007783708*Math.cos(4.40146905905 + 36.6485629295*t);
    Z1 += 0.00006862414*Math.cos(1.65930160610 + 39.6175083461*t);
@@ -2786,7 +2786,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Z2 (t) // 11 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00001264840*Math.cos(1.91401498992 + 38.1330356378*t);
    Z2 += 0.00000130346*Math.cos(1.12728833394 + 36.6485629295*t);
    Z2 += 0.00000127993*Math.cos(4.77241139328 + 39.6175083461*t);
@@ -2805,7 +2805,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Z3 (t) // 2 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000124222*Math.cos(3.06928911462 + 38.1330356378*t);
    Z3 += 0.00000004438*Math.cos(3.98008913039 + 36.6485629295*t);
    return Z3*t*t*t;
@@ -2815,7 +2815,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Z4 (t) // 1 term of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000000000;
    return Z4*t*t*t*t;
 }
@@ -2824,7 +2824,7 @@ function NeptunePosVSOP(T) {
 
    function Neptune_Z5 (t) // 1 term of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000000;
    return Z5*t*t*t*t*t;
 }

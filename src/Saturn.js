@@ -33,12 +33,12 @@
 */
 
 function SaturnPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Saturn_X0(t) + Saturn_X1(t) + Saturn_X2(t) + 
+       let t = 0.1*T;
+       let X = Saturn_X0(t) + Saturn_X1(t) + Saturn_X2(t) + 
            Saturn_X3(t) + Saturn_X4(t) + Saturn_X5(t);
-       var Y = Saturn_Y0(t) + Saturn_Y1(t) + Saturn_Y2(t) + 
+       let Y = Saturn_Y0(t) + Saturn_Y1(t) + Saturn_Y2(t) + 
            Saturn_Y3(t) + Saturn_Y4(t) + Saturn_Y5(t);
-       var Z = Saturn_Z0(t) + Saturn_Z1(t) + Saturn_Z2(t) + 
+       let Z = Saturn_Z0(t) + Saturn_Z1(t) + Saturn_Z2(t) + 
            Saturn_Z3(t) + Saturn_Z4(t) + Saturn_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -46,7 +46,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_X0 (t) // 1652 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 9.51638335797*Math.cos(0.87441380794 + 213.299095438*t);
    X0 += 0.26412374238*Math.cos(0.12390892620 + 426.598190876*t);
    X0 += 0.06760430339*Math.cos(4.16767145778 + 206.1855484372*t);
@@ -1706,7 +1706,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_X1 (t) // 892 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 += 0.07575103962;
    X1 += 0.03085041716*Math.cos(4.27565749128 + 426.598190876*t);
    X1 += 0.02714918399*Math.cos(5.85229412397 + 206.1855484372*t);
@@ -2606,7 +2606,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_X2 (t) // 481 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00560746334*Math.cos(1.26401632282 + 206.1855484372*t);
    X2 += 0.00545834518*Math.cos(3.62343709657 + 220.4126424388*t);
    X2 -= 0.00443342186;
@@ -3095,7 +3095,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_X3 (t) // 215 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00077115952*Math.cos(2.97714385362 + 206.1855484372*t);
    X3 += 0.00075340436*Math.cos(1.89208005248 + 220.4126424388*t);
    X3 -= 0.00018450895;
@@ -3318,7 +3318,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_X4 (t) // 87 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 += 0.00007959921*Math.cos(4.70523623364 + 206.1855484372*t);
    X4 += 0.00007836652*Math.cos(0.13981693631 + 220.4126424388*t);
    X4 += 0.00001511196*Math.cos(0.06561560462 + 227.5261894396*t);
@@ -3413,7 +3413,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_X5 (t) // 31 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000589250*Math.cos(0.13910544483 + 206.1855484372*t);
    X5 += 0.00000585873*Math.cos(4.66559223624 + 220.4126424388*t);
    X5 += 0.00000225585*Math.cos(4.60652710308 + 227.5261894396*t);
@@ -3452,7 +3452,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Y0 (t) // 1658 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 9.52986882699*Math.cos(5.58600556665 + 213.299095438*t);
    Y0 -= 0.79387988806;
    Y0 += 0.26441781302*Math.cos(4.83528061849 + 426.598190876*t);
@@ -5118,7 +5118,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Y1 (t) // 917 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 += 0.05373889135;
    Y1 += 0.03090575152*Math.cos(2.70346890906 + 426.598190876*t);
    Y1 += 0.02741594312*Math.cos(4.26667636015 + 206.1855484372*t);
@@ -6043,7 +6043,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Y2 (t) // 465 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 += 0.00563706537*Math.cos(5.97115878242 + 206.1855484372*t);
    Y2 += 0.00547012116*Math.cos(2.05154973426 + 220.4126424388*t);
    Y2 += 0.00458518613;
@@ -6516,7 +6516,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Y3 (t) // 201 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00077376615*Math.cos(1.40391048961 + 206.1855484372*t);
    Y3 += 0.00075564351*Math.cos(0.31962896379 + 220.4126424388*t);
    Y3 -= 0.00022843837;
@@ -6725,7 +6725,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Y4 (t) // 88 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00007978886*Math.cos(3.13229268011 + 206.1855484372*t);
    Y4 += 0.00007868379*Math.cos(4.84940260021 + 220.4126424388*t);
    Y4 += 0.00001514835*Math.cos(4.77675733867 + 227.5261894396*t);
@@ -6821,7 +6821,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Y5 (t) // 32 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000589080*Math.cos(4.84910386986 + 206.1855484372*t);
    Y5 += 0.00000590114*Math.cos(3.08953743297 + 220.4126424388*t);
    Y5 += 0.00000226448*Math.cos(3.03832080293 + 227.5261894396*t);
@@ -6861,7 +6861,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Z0 (t) // 420 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.41356950940*Math.cos(3.60234142982 + 213.299095438*t);
    Z0 += 0.01148283576*Math.cos(2.85128367469 + 426.598190876*t);
    Z0 += 0.01214249867;
@@ -7289,7 +7289,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Z1 (t) // 217 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.01906503283*Math.cos(4.94544746116 + 213.299095438*t);
    Z1 -= 0.00528301265;
    Z1 += 0.00130262284*Math.cos(2.26140980879 + 206.1855484372*t);
@@ -7514,7 +7514,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Z2 (t) // 87 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00131275155*Math.cos(0.08868998101 + 213.299095438*t);
    Z2 += 0.00030147649*Math.cos(3.91396203887 + 206.1855484372*t);
    Z2 += 0.00019322173*Math.cos(0.09228748624 + 220.4126424388*t);
@@ -7609,7 +7609,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Z3 (t) // 44 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00004559419*Math.cos(1.70646871501 + 213.299095438*t);
    Z3 += 0.00004779074*Math.cos(5.57723756330 + 206.1855484372*t);
    Z3 += 0.00003965402;
@@ -7661,7 +7661,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Z4 (t) // 19 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000574306*Math.cos(0.96387396086 + 206.1855484372*t);
    Z4 += 0.00000252516*Math.cos(2.90188946355 + 220.4126424388*t);
    Z4 += 0.00000244875*Math.cos(2.96492296609 + 213.299095438*t);
@@ -7688,7 +7688,7 @@ function SaturnPosVSOP(T) {
 
    function Saturn_Z5 (t) // 6 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000053400*Math.cos(2.61403861391 + 206.1855484372*t);
    Z5 += 0.00000018015*Math.cos(1.15819542312 + 220.4126424388*t);
    Z5 -= 0.00000010802;

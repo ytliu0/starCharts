@@ -36,12 +36,12 @@
 */
 
 function VenusPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Venus_X0(t) + Venus_X1(t) + Venus_X2(t) + 
+       let t = 0.1*T;
+       let X = Venus_X0(t) + Venus_X1(t) + Venus_X2(t) + 
            Venus_X3(t) + Venus_X4(t) + Venus_X5(t);
-       var Y = Venus_Y0(t) + Venus_Y1(t) + Venus_Y2(t) + 
+       let Y = Venus_Y0(t) + Venus_Y1(t) + Venus_Y2(t) + 
            Venus_Y3(t) + Venus_Y4(t) + Venus_Y5(t);
-       var Z = Venus_Z0(t) + Venus_Z1(t) + Venus_Z2(t) + 
+       let Z = Venus_Z0(t) + Venus_Z1(t) + Venus_Z2(t) + 
            Venus_Z3(t) + Venus_Z4(t) + Venus_Z5(t);
        
        return {X:X, Y:Y, Z:Z};
@@ -49,7 +49,7 @@ function VenusPosVSOP(T) {
 
    function Venus_X0 (t) // 548 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 0.72211281391*Math.cos(3.17575836361 + 10213.285546211*t);
    X0 += 0.00486448018;
    X0 += 0.00244500474*Math.cos(4.05566613861 + 20426.571092422*t);
@@ -605,7 +605,7 @@ function VenusPosVSOP(T) {
 
    function Venus_X1 (t) // 338 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 -= 0.00033862636;
    X1 += 0.00017234992*Math.cos(0.92721124604 + 20426.571092422*t);
    X1 += 0.00006510416*Math.cos(2.19289889733 + 10213.285546211*t);
@@ -951,7 +951,7 @@ function VenusPosVSOP(T) {
 
    function Venus_X2 (t) // 99 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 += 0.00000704794*Math.cos(5.09874399916 + 20426.571092422*t);
    X2 += 0.00000624477*Math.cos(3.86836776757 + 10213.285546211*t);
    X2 -= 0.00000649010;
@@ -1058,7 +1058,7 @@ function VenusPosVSOP(T) {
 
    function Venus_X3 (t) // 5 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 += 0.00000073606;
    X3 += 0.00000019386*Math.cos(5.23038243202 + 10213.285546211*t);
    X3 += 0.00000024718*Math.cos(3.25340548805 + 20426.571092422*t);
@@ -1071,7 +1071,7 @@ function VenusPosVSOP(T) {
 
    function Venus_X4 (t) // 4 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 += 0.00000000946*Math.cos(0.39076344760 + 10213.285546211*t);
    X4 -= 0.00000000546;
    X4 += 0.00000000289*Math.cos(0.95993858755 + 20426.571092422*t);
@@ -1083,7 +1083,7 @@ function VenusPosVSOP(T) {
 
    function Venus_X5 (t) // 3 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 -= 0.00000000063;
    X5 += 0.00000000029*Math.cos(1.94730457757 + 10213.285546211*t);
    X5 += 0.00000000022*Math.cos(0.34341584207 + 20426.571092422*t);
@@ -1094,7 +1094,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Y0 (t) // 565 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 0.72324820731*Math.cos(1.60573808356 + 10213.285546211*t);
    Y0 -= 0.00549506273;
    Y0 += 0.00244884790*Math.cos(2.48564954004 + 20426.571092422*t);
@@ -1667,7 +1667,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Y1 (t) // 325 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 += 0.00039231430;
    Y1 += 0.00017282326*Math.cos(5.63824735900 + 20426.571092422*t);
    Y1 += 0.00005968075*Math.cos(3.60854944086 + 10213.285546211*t);
@@ -2000,7 +2000,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Y2 (t) // 99 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 -= 0.00002007155;
    Y2 += 0.00000702052*Math.cos(3.52724964753 + 20426.571092422*t);
    Y2 += 0.00000265709*Math.cos(4.68091836985 + 10213.285546211*t);
@@ -2107,7 +2107,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Y3 (t) // 5 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 += 0.00000022966*Math.cos(0.38709241285 + 10213.285546211*t);
    Y3 += 0.00000024860*Math.cos(1.68572825734 + 20426.571092422*t);
    Y3 -= 0.00000003743;
@@ -2120,7 +2120,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Y4 (t) // 4 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 += 0.00000000801*Math.cos(2.03074942043 + 10213.285546211*t);
    Y4 += 0.00000000690;
    Y4 += 0.00000000286*Math.cos(5.64884337944 + 20426.571092422*t);
@@ -2132,7 +2132,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Y5 (t) // 3 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000029*Math.cos(3.51424873779 + 10213.285546211*t);
    Y5 += 0.00000000022*Math.cos(5.05580482246 + 20426.571092422*t);
    Y5 += 0.00000000018;
@@ -2143,7 +2143,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Z0 (t) // 190 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.04282990302*Math.cos(0.26703856476 + 10213.285546211*t);
    Z0 -= 0.00035588343;
    Z0 += 0.00014501879*Math.cos(1.14696911390 + 20426.571092422*t);
@@ -2341,7 +2341,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Z1 (t) // 108 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00208096402*Math.cos(1.88967278742 + 10213.285546211*t);
    Z1 += 0.00001264989*Math.cos(3.71037501321 + 20426.571092422*t);
    Z1 += 0.00001364144;
@@ -2457,7 +2457,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Z2 (t) // 45 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00009148044*Math.cos(3.34791005272 + 10213.285546211*t);
    Z2 += 0.00000163977;
    Z2 += 0.00000013554*Math.cos(5.33914310904 + 20426.571092422*t);
@@ -2510,7 +2510,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Z3 (t) // 10 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000272005*Math.cos(4.87648116140 + 10213.285546211*t);
    Z3 -= 0.00000013656;
    Z3 += 0.00000001743*Math.cos(0.42985032723 + 20426.571092422*t);
@@ -2528,7 +2528,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Z4 (t) // 3 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000006175*Math.cos(0.17121460361 + 10213.285546211*t);
    Z4 -= 0.00000000125;
    Z4 += 0.00000000041*Math.cos(2.50364136928 + 20426.571092422*t);
@@ -2539,7 +2539,7 @@ function VenusPosVSOP(T) {
 
    function Venus_Z5 (t) // 3 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000108*Math.cos(1.67439739641 + 10213.285546211*t);
    Z5 += 0.00000000025;
    Z5 += 0.00000000003*Math.cos(3.66751123903 + 20426.571092422*t);

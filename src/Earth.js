@@ -36,14 +36,14 @@
 */
 
 function EarthPosVSOP(T) {
-       var t = 0.1*T;
-       var X = Earth_X0(t) + Earth_X1(t) + Earth_X2(t) + 
+       let t = 0.1*T;
+       let X = Earth_X0(t) + Earth_X1(t) + Earth_X2(t) + 
            Earth_X3(t) + Earth_X4(t) + Earth_X5(t);
-       var Y = Earth_Y0(t) + Earth_Y1(t) + Earth_Y2(t) + 
+       let Y = Earth_Y0(t) + Earth_Y1(t) + Earth_Y2(t) + 
            Earth_Y3(t) + Earth_Y4(t) + Earth_Y5(t);
-       var Z = Earth_Z0(t) + Earth_Z1(t) + Earth_Z2(t) + 
+       let Z = Earth_Z0(t) + Earth_Z1(t) + Earth_Z2(t) + 
            Earth_Z3(t) + Earth_Z4(t) + Earth_Z5(t);
-       var r = Math.sqrt(X*X+Y*Y+Z*Z);
+       let r = Math.sqrt(X*X+Y*Y+Z*Z);
        
        return {X:X, Y:Y, Z:Z};
 }
@@ -51,7 +51,7 @@ function EarthPosVSOP(T) {
 
    function Earth_X0 (t) // 843 terms of order 0
 {
-   var X0 = 0;
+   let X0 = 0;
    X0 += 0.99982928844*Math.cos(1.75348568475 + 6283.0758499914*t);
    X0 += 0.00835257300*Math.cos(1.71034539450 + 12566.1516999828*t);
    X0 += 0.00561144206;
@@ -902,7 +902,7 @@ function EarthPosVSOP(T) {
 
    function Earth_X1 (t) // 491 terms of order 1
 {
-   var X1 = 0;
+   let X1 = 0;
    X1 += 0.00123403056;
    X1 += 0.00051500156*Math.cos(6.00266267204 + 12566.1516999828*t);
    X1 += 0.00001290726*Math.cos(5.95943124583 + 18849.2275499742*t);
@@ -1401,7 +1401,7 @@ function EarthPosVSOP(T) {
 
    function Earth_X2 (t) // 204 terms of order 2
 {
-   var X2 = 0;
+   let X2 = 0;
    X2 -= 0.00004143217;
    X2 += 0.00002175695*Math.cos(4.39999849572 + 12566.1516999828*t);
    X2 += 0.00000995233*Math.cos(0.20790847155 + 6283.0758499914*t);
@@ -1613,7 +1613,7 @@ function EarthPosVSOP(T) {
 
    function Earth_X3 (t) // 18 terms of order 3
 {
-   var X3 = 0;
+   let X3 = 0;
    X3 -= 0.00000175213;
    X3 += 0.00000072337*Math.cos(2.89303952476 + 12566.1516999828*t);
    X3 += 0.00000008364*Math.cos(3.85500954096 + 6283.0758499914*t);
@@ -1639,7 +1639,7 @@ function EarthPosVSOP(T) {
 
    function Earth_X4 (t) // 15 terms of order 4
 {
-   var X4 = 0;
+   let X4 = 0;
    X4 += 0.00000004022;
    X4 += 0.00000001927*Math.cos(1.18746233453 + 12566.1516999828*t);
    X4 += 0.00000000491*Math.cos(5.29890244491 + 6283.0758499914*t);
@@ -1662,7 +1662,7 @@ function EarthPosVSOP(T) {
 
    function Earth_X5 (t) // 6 terms of order 5
 {
-   var X5 = 0;
+   let X5 = 0;
    X5 += 0.00000000108;
    X5 += 0.00000000043*Math.cos(6.08789652058 + 12566.1516999828*t);
    X5 += 0.00000000025*Math.cos(5.33779665346 + 6438.4962494256*t);
@@ -1676,7 +1676,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Y0 (t) // 854 terms of order 0
 {
-   var Y0 = 0;
+   let Y0 = 0;
    Y0 += 0.99989211030*Math.cos(0.18265890456 + 6283.0758499914*t);
    Y0 -= 0.02442699036;
    Y0 += 0.00835292314*Math.cos(0.13952878991 + 12566.1516999828*t);
@@ -2538,7 +2538,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Y1 (t) // 496 terms of order 1
 {
-   var Y1 = 0;
+   let Y1 = 0;
    Y1 += 0.00093046324;
    Y1 += 0.00051506609*Math.cos(4.43180499286 + 12566.1516999828*t);
    Y1 += 0.00001290800*Math.cos(4.38860548540 + 18849.2275499742*t);
@@ -3042,7 +3042,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Y2 (t) // 202 terms of order 2
 {
-   var Y2 = 0;
+   let Y2 = 0;
    Y2 += 0.00005080208;
    Y2 += 0.00002178016*Math.cos(2.82957544235 + 12566.1516999828*t);
    Y2 += 0.00001020487*Math.cos(4.63746718598 + 6283.0758499914*t);
@@ -3252,7 +3252,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Y3 (t) // 17 terms of order 3
 {
-   var Y3 = 0;
+   let Y3 = 0;
    Y3 -= 0.00000128116;
    Y3 += 0.00000072366*Math.cos(1.32019314413 + 12566.1516999828*t);
    Y3 += 0.00000013847*Math.cos(5.37444701633 + 6283.0758499914*t);
@@ -3277,7 +3277,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Y4 (t) // 15 terms of order 4
 {
-   var Y4 = 0;
+   let Y4 = 0;
    Y4 -= 0.00000004187;
    Y4 += 0.00000001931*Math.cos(5.89883838000 + 12566.1516999828*t);
    Y4 += 0.00000000595*Math.cos(0.51679590840 + 6283.0758499914*t);
@@ -3300,7 +3300,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Y5 (t) // 6 terms of order 5
 {
-   var Y5 = 0;
+   let Y5 = 0;
    Y5 += 0.00000000072;
    Y5 += 0.00000000043*Math.cos(4.51710019379 + 12566.1516999828*t);
    Y5 += 0.00000000025*Math.cos(3.76700032666 + 6438.4962494256*t);
@@ -3314,7 +3314,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Z0 (t) // 178 terms of order 0
 {
-   var Z0 = 0;
+   let Z0 = 0;
    Z0 += 0.00000279620*Math.cos(3.19870156017 + 84334.66158130829*t);
    Z0 += 0.00000101625*Math.cos(5.42248110597 + 5507.5532386674*t);
    Z0 += 0.00000080461*Math.cos(3.88027157914 + 5223.6939198022*t);
@@ -3500,7 +3500,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Z1 (t) // 120 terms of order 1
 {
-   var Z1 = 0;
+   let Z1 = 0;
    Z1 += 0.00227822442*Math.cos(3.41372504278 + 6283.0758499914*t);
    Z1 += 0.00005429282;
    Z1 += 0.00001903183*Math.cos(3.37061270964 + 12566.1516999828*t);
@@ -3628,7 +3628,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Z2 (t) // 53 terms of order 2
 {
-   var Z2 = 0;
+   let Z2 = 0;
    Z2 += 0.00009721989*Math.cos(5.15233725915 + 6283.0758499914*t);
    Z2 -= 0.00000349501;
    Z2 += 0.00000067136*Math.cos(0.64403888586 + 12566.1516999828*t);
@@ -3689,7 +3689,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Z3 (t) // 12 terms of order 3
 {
-   var Z3 = 0;
+   let Z3 = 0;
    Z3 += 0.00000276077*Math.cos(0.59413258730 + 6283.0758499914*t);
    Z3 -= 0.00000025551;
    Z3 += 0.00000001810*Math.cos(0.11612262117 + 12566.1516999828*t);
@@ -3709,7 +3709,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Z4 (t) // 6 terms of order 4
 {
-   var Z4 = 0;
+   let Z4 = 0;
    Z4 += 0.00000005751*Math.cos(2.27069090892 + 6283.0758499914*t);
    Z4 += 0.00000001305;
    Z4 += 0.00000000060*Math.cos(4.26712050846 + 12566.1516999828*t);
@@ -3723,7 +3723,7 @@ function EarthPosVSOP(T) {
 
    function Earth_Z5 (t) // 2 terms of order 5
 {
-   var Z5 = 0;
+   let Z5 = 0;
    Z5 += 0.00000000114*Math.cos(4.31169156923 + 6283.0758499914*t);
    Z5 += 0.00000000035;
    return Z5*t*t*t*t*t;
