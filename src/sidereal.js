@@ -154,6 +154,10 @@ function init_cont() {
     starChart();
 }
 
+function new_eval(expr) {
+    return Function('return '+expr)();
+}
+
 // Determine initial settings from url query string
 function initial_settings_from_url(p, D, loc) {
     // set location
@@ -167,7 +171,11 @@ function initial_settings_from_url(p, D, loc) {
         if (!isNaN(rotate)) {
             rotate -= 360*Math.floor(rotate/360);
             rotate *= Math.PI/180;
-            eval('rotate'+loc+' = rotate');
+            if (loc==1) {
+                rotate1 = rotate;
+            } else {
+                rotate2 = rotate;
+            }
         }
     }
     // show/hide buttons
@@ -208,16 +216,22 @@ function set_location_from_url1(p, loc) {
         let lat = parseFloat(p.get('lat'+loc));
         if (!isNaN(lng) && !isNaN(lat) && 
            lng >= -180 && lng <= 180 && lat >=-90 && lat <=90) {
-            eval('long'+loc+' = lng'); 
-            eval('lat'+loc+' = lat'); 
-            eval('place'+loc+' = ""');
+            if (loc==1) {
+                long1 = lng; lat1 = lat; place1 = '';
+            } else {
+                long2 = lng; lat2 = lat; place2 = '';
+            }
         }
     }
     if (p.has('tz'+loc)) {
         let tz = parseFloat(p.get('tz'+loc));
         if (tz.toString().length > 6) { tz = tz.toFixed(2);}
         if (!isNaN(tz) && tz >= -12 && tz <= 12) {
-            eval('tz'+loc+' = {tz:-tz*60, tzString:(tz >= 0 ? "+"+tz:tz.toString())}');
+            if (loc==1) {
+                tz1 = {tz:-tz*60, tzString:(tz >= 0 ? "+"+tz:tz.toString())};
+            } else {
+                tz2 = {tz:-tz*60, tzString:(tz >= 0 ? "+"+tz:tz.toString())};
+            }
         }
     }
 }
@@ -239,9 +253,15 @@ function set_location_from_url2(p, loc) {
         let cities = eval(reg + '_cities()');
         if (ind >= cities.length) { return;}
         let city = cities[ind];
-        eval('place'+loc+' = city[0]+", "+city[1]');
-        eval('lat'+loc+' = city[2]');
-        eval('long'+loc+' = city[3]');
+        if (loc==1) {
+            place1 = city[0]+', '+city[1];
+            lat1 = city[2];
+            long1 = city[3];
+        } else {
+            place2 = city[0]+', '+city[1];
+            lat2 = city[2];
+            long2 = city[3];
+        }
         let setTz = 'setTz'+loc;
         if (p.has(setTz)) {
             let tz = parseFloat(p.get(setTz));
@@ -249,7 +269,11 @@ function set_location_from_url2(p, loc) {
                 if (tz.toString().length > 6) { tz = tz.toFixed(2);}
                 let tzString = (tz >= 0 ? '+'+tz:tz.toString());
                 tz *= -60;
-                eval('tz'+loc+' = {tz:tz, tzString:tzString}');
+                if (loc==1) {
+                    tz1 = {tz:tz, tzString:tzString};
+                } else {
+                    tz2 = {tz:tz, tzString:tzString};
+                }
             }
         }
     }
@@ -399,7 +423,7 @@ function setupChangeLocCityMenu(para) {
 }
 
 function addCity(divId, regionCode) {
-    let city = eval(regionCode+'_cities()');
+    let city = new_eval(regionCode+'_cities()');
     // city is a 2D array of the form 
     // [[city0, country0, latitude0, longitude0, elevation0, UTCoffset0], 
     //  [city1, country1, latitude1, longitude1, elevation1, UTCoffset1],
@@ -423,7 +447,7 @@ function addCity(divId, regionCode) {
 function setDefaultCustomTimeZone(divId, regionCode) {
     let ind = parseInt($('#'+divId+'selectCity').val(), 10);
     if (ind != -1) {
-        let tz = parseFloat(eval(regionCode+'_cities()['+ind+'][5]'));
+        let tz = parseFloat(new_eval(regionCode+'_cities()['+ind+'][5]'));
         $('#'+divId+'tzCustomInput').val(tz);
     }
 }
@@ -480,10 +504,16 @@ function changeLocationsAndTimes() {
                     break;
                 }
             }
-            let city = eval(reg+'_cities()['+ind+']');
-            eval('place'+loc+' = city[0]+", "+city[1]');
-            eval('lat'+loc+' = city[2]');
-            eval('long'+loc+' = city[3]');
+            let city = new_eval(reg+'_cities()['+ind+']');
+            if (loc==1) {
+                place1 = city[0]+', '+city[1];
+                lat1 = city[2];
+                long1 = city[3];
+            } else {
+                place2 = city[0]+', '+city[1];
+                lat2 = city[2];
+                long2 = city[3];
+            }
             if ($('#'+divId+'tzCustom').prop('checked')) {
                 let id = '#'+divId+'tzCustomInput';
                 let tz = parseFloat($(id).val());
@@ -567,12 +597,21 @@ function changeLocationsAndTimes() {
             D = getDm(date.yy,date.mm,date.dd,tz) + (hh+mm/60+s/3600)/24;
             let T = D/36525;
             let dT = DeltaT(T);
-            eval('date'+loc+'= {yyyy:date.yy, mm:date.mm, dd:date.dd, h:hh, m:mm, s:s, tz:tz, tzString:tzString, dateString:dateString, timeString:timeString, D:D, T:T, dT:dT}');
-            let GMST = eval('getGMST(date'+loc+')');
-            let LST = eval('getSidereal(GMST,long'+loc+')');
-            eval('date'+loc+'.LST = LST.hour');
-            eval('date'+loc+'.LST_rad = LST.rad');
-            eval('date'+loc+'.LSTstring = LST.string');
+            if (loc==1) {
+                date1 = {yyyy:date.yy, mm:date.mm, dd:date.dd, h:hh, m:mm, s:s, tz:tz, tzString:tzString, dateString:dateString, timeString:timeString, D:D, T:T, dT:dT};
+                let GMST = getGMST(date1);
+                let LST = getSidereal(GMST,long1);
+                date1.LST = LST.hour;
+                date1.LST_rad = LST.rad;
+                date1.LSTstring = LST.string;
+            } else {
+                date2 = {yyyy:date.yy, mm:date.mm, dd:date.dd, h:hh, m:mm, s:s, tz:tz, tzString:tzString, dateString:dateString, timeString:timeString, D:D, T:T, dT:dT};
+                let GMST = getGMST(date2);
+                let LST = getSidereal(GMST,long2);
+                date2.LST = LST.hour;
+                date2.LST_rad = LST.rad;
+                date2.LSTstring = LST.string;
+            }
         }
     }
     

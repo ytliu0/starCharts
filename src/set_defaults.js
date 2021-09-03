@@ -19,6 +19,10 @@ function init() {
     setupLocCityMenu(para);
 }
 
+function new_eval(expr) {
+    return Function('return '+expr)();
+}
+
 function switchLocForm(loc, form) {
     $('#Loc'+loc+'Form'+form).show();
     $('#Loc'+loc+'Form'+(1-form)).hide();
@@ -124,7 +128,7 @@ function setupLocCityMenu(para) {
 }
 
 function addCity(divId, regionCode) {
-    let city = eval(regionCode+'_cities()');
+    let city = new_eval(regionCode+'_cities()');
     // city is a 2D array of the form 
     // [[city0, country0, latitude0, longitude0, elevation0, UTCoffset0], 
     //  [city1, country1, latitude1, longitude1, elevation1, UTCoffset1],
@@ -148,7 +152,7 @@ function addCity(divId, regionCode) {
 function setDefaultCustomTimeZone(divId, regionCode) {
     let ind = parseInt($('#'+divId+'selectCity').val(), 10);
     if (ind != -1) {
-        let tz = parseFloat(eval(regionCode+'_cities()['+ind+'][5]'));
+        let tz = parseFloat(new_eval(regionCode+'_cities()['+ind+'][5]'));
         $('#'+divId+'tzCustomInput').val(tz);
     }
 }
