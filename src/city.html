@@ -80,13 +80,17 @@ input.accordion:checked + label.accordion {
 <script>
 "use strict";
 document.getElementById('wrapper').style.display = 'block';
+
+function new_eval(expr) {
+    return Function('return '+expr)();
+}
     
 function print_cities_in_region(regCode, regName, parent) {
     let txt = '<h2>'+regName+'</h2>';
     txt += '<input type="checkbox" class="accordion" id="'+regCode+'" />';
     txt += '<label for="'+regCode+'" class="accordion">Click here to show/hide cities in this region</label>';
     txt += '<div class="content">';
-    let city = eval(regCode + '_cities()');
+    let city = new_eval(regCode + '_cities()');
     let nrow = 15, n = city.length, j;
     for (j=0; j < n; j++) {
         if (j % nrow==0) {

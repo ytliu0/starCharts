@@ -250,7 +250,7 @@ function set_location_from_url2(p, loc) {
         if (isNaN(ind) || ind < 0) { valid = false;}
     }
     if (valid) {
-        let cities = eval(reg + '_cities()');
+        let cities = new_eval(reg + '_cities()');
         if (ind >= cities.length) { return;}
         let city = cities[ind];
         if (loc==1) {
