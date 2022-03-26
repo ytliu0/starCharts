@@ -537,7 +537,7 @@ function riseSetPlanetsTwilights(LST0,locNum,lat,T) {
     let mag = illumPhase.mag.toFixed(1);
     
     txt ="<p>At 12:00 in the given time zone...<br />"
-    txt += "Fraction of Moon illuminated: "+illum.toFixed(2)+",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase: "+phase+",<br />";
+    txt += "Fraction of Moon illuminated: "+illum.toFixed(2)+" "+generate_svg_moon_phase(Lmoon, Lsun, illumPhase.cosi, 20)+",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Phase: "+phase+",<br />";
     txt += "Apparent Magnitude: "+mag+",&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Solar elongation: "+illumPhase.elongTxt+".</p>";
     $(locid).append(txt);
     
@@ -834,7 +834,7 @@ function calcRiseSetMultipleDates(input) {
                 let phase = illumPhase.phase;
                 let mag = illumPhase.mag.toFixed(1);
                 
-                txt += '<td>'+illum+'</td>';
+                txt += '<td>'+illum+' '+generate_svg_moon_phase(lam12, sun.lam2000, illumPhase.cosi, 20)+'</td>';
                 csvdata += illum + ', ';
                 txt += '<td>'+mag+'</td>';
                 csvdata += mag + ', ';

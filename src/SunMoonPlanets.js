@@ -865,7 +865,7 @@ function moonIlluminated(sunRa,sunDec,moonRa,moonDec, sunLam,moonLam,
         elongTxt += " W";
     }
     
-    return {illuminated:illum, phase:phase, elong:elong, elongTxt:elongTxt, mag:mag};
+    return {illuminated:illum, phase:phase, elong:elong, elongTxt:elongTxt, mag:mag, cosi:cosi};
 }
 
 // Elongation, phase angle and fraction illuminated for planets

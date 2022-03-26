@@ -1121,6 +1121,22 @@ function displayPopupSun(tip,para) {
     }
     let ra = convertDM(raDec.ra*rad_to_hr, "hm");
     let dec = convertDM(raDec.dec*rad_to_deg, "dm");
+    // Equation of time
+    let DU0 = Math.floor(date.D - 0.5) + 0.5;
+    let EOT = 0.06570748587250752*DU0;
+    EOT -= 24*Math.floor(EOT/24 + 0.5);
+    EOT += 18.697374558336001 - raDec.ra*rad_to_hr + 2.686296296296296e-7;
+    EOT += 0.00273781191135448*(date.h + date.m/60 + date.s/3600);
+    let T = date.T + date.dT;
+    EOT += T*(0.08541030618518518 + 2.577003148148148e-5*T);
+    if ("nu" in para) {
+        EOT += para.nu.Ee*rad_to_hr;
+    }
+    EOT -= 24*Math.floor(EOT/24 + 0.5);
+    let aEOT = Math.abs(EOT) + 0.5/3600;
+    let EOTm = Math.floor(60*aEOT);
+    let EOTs = Math.floor(60*(60*aEOT - EOTm));
+    let EOTc = (EOT < 0 ? '-'+EOTm:EOTm) + '<sup>m</sup>' + (EOTs < 10 ? '0'+EOTs:EOTs) + '<sup>s</sup>';
     // Angular diameter at 1 AU (arcmin)
     let ang1AU = 31.965; 
     let ang = ang1AU / sun.rGeo;
@@ -1136,6 +1152,7 @@ function displayPopupSun(tip,para) {
     } else {
         txt += '<tr><td>Ra, Dec (of date)</td> <td>'+ra+', '+dec+'</td></tr>';
     }
+    txt += '<tr><td>Equation of time</td><td>'+EOTc+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
 
     $(para.tipId+"Text").append(txt);
@@ -1180,11 +1197,11 @@ function displayPopupMoon(tip,para) {
     // illumination, phase and solar elongation
     let illumPhase = moonIlluminated(sun.ra,sun.dec,moon.ra,moon.dec, 
                                      Lsun,Lmoon, Dmoon, Dsun);
-    let illum = illumPhase.illuminated.toFixed(2);
+    let illum = illumPhase.illuminated.toFixed(2)+' '+generate_svg_moon_phase(Lmoon, Lsun, illumPhase.cosi, 16);
     let phase = illumPhase.phase;
     let elong = illumPhase.elongTxt;
     let mag = illumPhase.mag.toFixed(1);
-    
+
     let txt ="<table>";
     txt += '<tr><th colspan="2">Moon</th></tr>';
     txt += '<tr><td>Geocentric Distance</td><td>'+
@@ -1391,6 +1408,28 @@ function displayPopupStar(tip, para) {
     txt += '</table>'
 
     $(para.tipId+"Text").append(txt);
+}
+
+function generate_svg_moon_phase(Lmoon, Lsun, cosi, size) {
+    let a = size*0.475, b = Math.abs(cosi)*a, hs = 0.5*size;
+    a = parseFloat(a.toFixed(3));
+    b = parseFloat(b.toFixed(3));
+    let ytop = hs - a, ybottom = hs + a;
+    let dL = Lmoon - Lsun;
+    dL -= 2*Math.PI*Math.floor(0.5*dL/Math.PI + 0.5);
+    let s = '<svg height="'+size+'" width="'+size+'">';
+    let color_illum = 'white', color_black = '#696969';
+    if (cosi <= 0) {
+        s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_illum+'" stroke="none" />';
+        let sweep = (dL > 0 ? 0:1);
+        s += '<path d="M '+hs+' '+ytop+' A '+a+' '+a+' 0 0 '+sweep+' '+hs+' '+ybottom+' A '+b+' '+a+' 0 0 '+sweep+' '+hs+' '+ytop+'" fill="'+color_black+'" stroke="none" />';
+    } else {
+        s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_black+'" stroke:none; />';
+        let sweep = (dL > 0 ? 0:1);
+        s += '<path d="M '+hs+' '+ytop+' A '+b+' '+a+' 0 0 '+sweep+' '+hs+' '+ybottom+' A '+a+' '+a+' 0 0 '+sweep+' '+hs+' '+ytop+'" fill="'+color_illum+'" stroke="none" />';
+    }
+    s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" stroke="'+color_black+'" fill="none" /></svg>';
+    return s;
 }
 
 // Set up parameters for drawing stars and planets

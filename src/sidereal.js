@@ -614,7 +614,7 @@ function changeLocationsAndTimes() {
             }
         }
     }
-    
+ 
     if ($('#changeLoc1Manual').prop('checked')) {
         validate_manual_input(1);
     } else {
@@ -696,8 +696,9 @@ function getGMST(d) {
     // Get Julian date at midnight GMST
     let D0 = Math.floor(d.D-0.5)+0.5;
     // Get hours according to the UTC
-    let H = d.h + d.m/60 + d.s/3600 + d.tz/60;
-    H -= 24*Math.floor(H/24);
+    //let H = d.h + d.m/60 + d.s/3600 + d.tz/60;
+    //H -= 24*Math.floor(H/24);
+    let H = 24*(d.D - D0);
 
     let GMST = 0.06570748587250752*D0;
     GMST -= 24*Math.floor(GMST/24);
@@ -1798,15 +1799,17 @@ function displayPopup(e, loc) {
         // set up pararameters to be passed to the functions 
         // that displays the popup...
         // Sidereal times, latitude
-        let d,long,lat;
+        let d,long,lat,UT_offset;
         if (loc==1) {
             d = date1;
             long = long1;
             lat = lat1*Math.PI/180;
+            UT_offset = -tz1.tz/60;
         } else {
             d = date2;
             long = long2;
             lat = lat2*Math.PI/180;
+            UT_offset = -tz2.tz/60;
         }
         let hours = d.h + d.m/60 + d.s/3600;
         // sidereal time at midnight local time; used to compute
@@ -1814,7 +1817,7 @@ function displayPopup(e, loc) {
         let LST0 = d.LST_rad - 1.00273781191135448*hours*Math.PI/12;
         LST0 -= 2*Math.PI*Math.floor(LST0*0.5/Math.PI);
         let para = {loc:loc, lat:lat, LST:d.LST_rad, LST0:LST0, 
-                   T:d.T, dT:d.dT, hours:hours};
+                   T:d.T, dT:d.dT, hours:hours, LMT:hours-UT_offset+long/15};
         // Nutation (only calculate when -50 < TD < 10)
         let TD = d.T+d.dT;
         if (TD > -50 && TD < 10) {
@@ -1904,6 +1907,16 @@ function displayPopupSun(tip,para) {
     let conste = conNames[get_constellation(raDec.ra, raDec.dec)];
     let ra2000Topo = convertDM(raDec.ra*rad_to_hr, "hm");
     let dec2000Topo = convertDM(raDec.dec*rad_to_deg, "dm");
+    // Equation of time 
+    let asuntime = (LST - aber.ra)*rad_to_hr + 12;
+    asuntime -= 24*Math.floor(asuntime/24);
+    let EOT = asuntime - para.LMT;
+    EOT -= 24*Math.floor(EOT/24 + 0.5);
+    let aEOT = Math.abs(EOT) + 0.5/3600;
+    let EOTm = Math.floor(60*aEOT);
+    let EOTs = Math.floor(60*(60*aEOT - EOTm));
+    let EOTc = (EOT < 0 ? '-'+EOTm:EOTm)+'<sup>m</sup>'+(EOTs < 10 ? '0'+EOTs:EOTs)+'<sup>s</sup>';
+    asuntime = convertDM(asuntime, "hm");
     // Angular diameter at 1 AU (arcmin)
     let ang1AU = 31.965; 
     let ang = ang1AU / sun.rGeo;
@@ -1961,6 +1974,8 @@ function displayPopupSun(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
+    txt += '<tr><td>Apparent solar time</td><td>'+asuntime+'</td></tr>';
+    txt += '<tr><td>Equation of time</td><td>'+EOTc+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
@@ -2066,7 +2081,7 @@ function displayPopupMoon(tip,para) {
     // illumination, phase and apparent magnitude
     let illumPhase = moonIlluminated(sun.ra,sun.dec,topo.raTopo,topo.decTopo, 
                                      Lsun,Lmoon, rTopo, Dsun);
-    let illum = illumPhase.illuminated.toFixed(2);
+    let illum = illumPhase.illuminated.toFixed(2)+' '+generate_svg_moon_phase(Lmoon, Lsun, illumPhase.cosi, 16);
     let phase = illumPhase.phase;
     let elong = illumPhase.elongTxt;
     let mag = illumPhase.mag.toFixed(1);
@@ -2406,6 +2421,28 @@ function displayPopupStar(tip, para) {
     
     let tipText = "#tip"+para.loc+"text";
     $(tipText).append(txt);
+}
+
+function generate_svg_moon_phase(Lmoon, Lsun, cosi, size) {
+    let a = size*0.475, b = Math.abs(cosi)*a, hs = 0.5*size;
+    a = parseFloat(a.toFixed(3));
+    b = parseFloat(b.toFixed(3));
+    let ytop = hs - a, ybottom = hs + a;
+    let dL = Lmoon - Lsun;
+    dL -= 2*Math.PI*Math.floor(0.5*dL/Math.PI + 0.5);
+    let s = '<svg height="'+size+'" width="'+size+'">';
+    let color_illum = 'white', color_black = '#696969';
+    if (cosi <= 0) {
+        s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_illum+'" stroke="none" />';
+        let sweep = (dL > 0 ? 0:1);
+        s += '<path d="M '+hs+' '+ytop+' A '+a+' '+a+' 0 0 '+sweep+' '+hs+' '+ybottom+' A '+b+' '+a+' 0 0 '+sweep+' '+hs+' '+ytop+'" fill="'+color_black+'" stroke="none" />';
+    } else {
+        s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_black+'" stroke:none; />';
+        let sweep = (dL > 0 ? 0:1);
+        s += '<path d="M '+hs+' '+ytop+' A '+b+' '+a+' 0 0 '+sweep+' '+hs+' '+ybottom+' A '+a+' '+a+' 0 0 '+sweep+' '+hs+' '+ytop+'" fill="'+color_illum+'" stroke="none" />';
+    }
+    s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" stroke="'+color_black+'" fill="none" /></svg>';
+    return s;
 }
 
 // Set up parameters for drawing stars and planets
