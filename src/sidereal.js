@@ -2437,7 +2437,7 @@ function generate_svg_moon_phase(Lmoon, Lsun, cosi, size) {
         let sweep = (dL > 0 ? 0:1);
         s += '<path d="M '+hs+' '+ytop+' A '+a+' '+a+' 0 0 '+sweep+' '+hs+' '+ybottom+' A '+b+' '+a+' 0 0 '+sweep+' '+hs+' '+ytop+'" fill="'+color_black+'" stroke="none" />';
     } else {
-        s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_black+'" stroke:none; />';
+        s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_black+'" stroke="none" />';
         let sweep = (dL > 0 ? 0:1);
         s += '<path d="M '+hs+' '+ytop+' A '+b+' '+a+' 0 0 '+sweep+' '+hs+' '+ybottom+' A '+a+' '+a+' 0 0 '+sweep+' '+hs+' '+ytop+'" fill="'+color_illum+'" stroke="none" />';
     }
