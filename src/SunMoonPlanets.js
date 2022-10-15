@@ -898,5 +898,5 @@ function elongationPhase(planet,sun) {
     let phaseAng = Math.acos(cosi)*rad_to_deg;
     
     return {elongation:ElongString, illuminated:illum.toFixed(2), 
-            phaseAng:phaseAng, elongFloat:Elong};
+            phaseAng:phaseAng, elongFloat:Elong, cosi:cosi};
 }

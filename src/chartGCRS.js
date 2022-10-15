@@ -1154,6 +1154,7 @@ function displayPopupSun(tip,para) {
     }
     txt += '<tr><td>Equation of time</td><td>'+EOTc+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
+    txt += '</table>';
 
     $(para.tipId+"Text").append(txt);
 }
@@ -1197,10 +1198,11 @@ function displayPopupMoon(tip,para) {
     // illumination, phase and solar elongation
     let illumPhase = moonIlluminated(sun.ra,sun.dec,moon.ra,moon.dec, 
                                      Lsun,Lmoon, Dmoon, Dsun);
-    let illum = illumPhase.illuminated.toFixed(2)+' '+generate_svg_moon_phase(Lmoon, Lsun, illumPhase.cosi, 16);
+    let illum = illumPhase.illuminated.toFixed(2);
     let phase = illumPhase.phase;
     let elong = illumPhase.elongTxt;
     let mag = illumPhase.mag.toFixed(1);
+    let svgp = {sunRa:sun.ra, sunDec:sun.dec, ra:moon.ra, dec:moon.dec, cosi:illumPhase.cosi, size:150};
 
     let txt ="<table>";
     txt += '<tr><th colspan="2">Moon</th></tr>';
@@ -1220,6 +1222,8 @@ function displayPopupMoon(tip,para) {
         txt += '<tr><td>Geocentric Ra, Dec (of date)</td> <td>'+ra+', '+dec+'</td></tr>';
     }
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
+    txt += '<tr><td colspan="2">Phase Appearance (north is up)<br />'+generate_svg_phase(svgp)+'</td></tr>';
+    txt += '</table>';
 
     $(para.tipId+"Text").append(txt);
 }
@@ -1234,9 +1238,8 @@ function displayPopupPlanet(tip,para) {
     let planet, sun;
     if (highPrecCalInTips) {
         planet = planetGeoVSOP(TD, tip.object, true);
-        sun = {rGeo:planet.dSunEarth, 
-               lam2000:planet.lamSun2000, 
-               bet2000:planet.betSun2000};
+        sun = {rGeo:planet.dSunEarth, ra:planet.raSun, dec:planet.decSun,
+               lam2000:planet.lamSun2000, bet2000:planet.betSun2000};
     } else {
         let planets = planetPos(TD, calculate);
         planet = planets[ind];
@@ -1277,6 +1280,7 @@ function displayPopupPlanet(tip,para) {
                   Uranus:69.938001009781189,
                   Neptune:67.897384309708713};
     let ang = ang1AU[tip.object]/rGeo;
+    let svgp = {sunRa:sun.ra, sunDec:sun.dec, ra:planet.ra, dec:planet.dec, cosi:elongIllum.cosi, size:150};
     
     let txt ="<table>";
     txt += '<tr><th colspan="2">'+tip.object+'</th></tr>';
@@ -1295,6 +1299,11 @@ function displayPopupPlanet(tip,para) {
         txt += '<tr><td>Ra, Dec (of date)</td> <td>'+ra+', '+dec+'</td></tr>';
     }
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
+    // Add svg phase image of the planet for mercury, Venus and Mars
+    if (ind==0 || ind==1 || ind==3) {
+        txt += '<tr><td colspan="2">Phase Appearance (north is up)<br />'+generate_svg_phase(svgp)+'</td></tr>';
+    }
+    txt += '</table>';
     
     $(para.tipId+"Text").append(txt);
 }
@@ -1430,6 +1439,34 @@ function generate_svg_moon_phase(Lmoon, Lsun, cosi, size) {
     }
     s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" stroke="'+color_black+'" fill="none" /></svg>';
     return s;
+}
+
+function generate_svg_phase(p) {
+    let shdalp = Math.sin(0.5*(p.sunRa - p.ra)), sdec = Math.sin(p.dec);
+    let chi = Math.atan2(Math.cos(p.sunDec)*Math.sin(p.sunRa - p.ra), 
+    Math.sin(p.sunDec-p.dec) + 2*Math.cos(p.sunDec)*sdec*shdalp*shdalp);
+    let cchi = Math.cos(chi), schi = Math.sin(chi);
+    let a = p.size*0.3, hs = 0.5*p.size;
+    let x1 = hs - cchi*a, y1 = hs + a*schi, x2 = hs + cchi*a, y2 = hs - a*schi;
+    let b = a*Math.abs(p.cosi);
+    let color_illum = 'white', color_black = '#696969';
+    let r2d = 180/Math.PI;
+    let svg = '<svg width="'+p.size+'" height="'+p.size+'">';
+    svg += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_black+'" stroke="none" />';
+    if (p.cosi >= 0) {
+        svg += '<path d="M '+x1+' '+y1+' A '+a+' '+b+' '+(-chi*r2d)+' 0 0 '+x2+' '+y2+' A '+a+' '+a+' 0 0 0 '+x1+' '+y1+'" fill="'+color_illum+'" stroke="none" />';
+    } else {
+        svg += '<path d="M '+x1+' '+y1+' A '+a+' '+b+' '+(-chi*r2d)+' 0 1 '+x2+' '+y2+' A '+a+' '+a+' 0 0 0 '+x1+' '+y1+'" fill="'+color_illum+'" stroke="none" />';
+    }
+    svg += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" stroke="'+color_black+'" fill="none" />';
+    // Label north direction 
+    let xn1 = hs, yn1 = hs - a;
+    let xn2 = hs, yn2 = hs - 1.125*a;
+    let xt = hs - 5, yt = hs - 1.2*a;
+    svg += '<path d="M '+xn1+' '+yn1+' L '+xn2+' '+yn2+'" stroke="'+color_black+'" />';
+    svg += '<text x="'+xt+'" y="'+yt+'" fill="black">N</text>';
+    svg += '</svg>';
+    return svg;
 }
 
 // Set up parameters for drawing stars and planets

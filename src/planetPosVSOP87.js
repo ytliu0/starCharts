@@ -98,6 +98,9 @@ function planetGeoVSOP(T, planet, lightTime) {
     let sinEps = 0.397776978008764;
     let YgeoEq = cosEps*Ygeo - sinEps*Zgeo;
     let ZgeoEq = sinEps*Ygeo + cosEps*Zgeo;
+    let XsunEq = -earth.X;
+    let YsunEq = -cosEps*earth.Y + sinEps*earth.Z;
+    let ZsunEq = -sinEps*earth.Y - cosEps*earth.Z;
     
     // Ra and Dec wrt J2000
     let ra2000 = Math.atan2(YgeoEq, Xgeo);
@@ -108,6 +111,11 @@ function planetGeoVSOP(T, planet, lightTime) {
     let xp = p.p11*Xgeo + p.p12*YgeoEq + p.p13*ZgeoEq;
     let yp = p.p21*Xgeo + p.p22*YgeoEq + p.p23*ZgeoEq;
     let zp = p.p31*Xgeo + p.p32*YgeoEq + p.p33*ZgeoEq;
+    let xsun = p.p11*XsunEq + p.p12*YsunEq + p.p13*ZsunEq;
+    let ysun = p.p21*XsunEq + p.p22*YsunEq + p.p23*ZsunEq;
+    let zsun = p.p31*XsunEq + p.p32*YsunEq + p.p33*ZsunEq;
+    let raSun = Math.atan2(ysun, xsun);
+    let decSun = Math.asin(zsun/Math.sqrt(xsun*xsun + ysun*ysun + zsun*zsun));
     let ra = Math.atan2(yp,xp);
     let dec = Math.asin(zp/rGeo);
     
@@ -117,5 +125,5 @@ function planetGeoVSOP(T, planet, lightTime) {
             lam2000:lam2000, bet2000:bet2000, 
             ra2000:ra2000, dec2000:dec2000, ra:ra, dec:dec, 
             dSunEarth:dSunEarth, lamSun2000:lamSun2000, 
-            betSun2000:betSun2000};
+            betSun2000:betSun2000, raSun:raSun, decSun:decSun};
 }

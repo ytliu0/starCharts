@@ -27,6 +27,7 @@ div#wrapper {
     left:-200px;
     top:100px;
     display:none;
+    z-index:10;
 }
 
 .tip table, .tip th, .tip td {

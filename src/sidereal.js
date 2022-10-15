@@ -1983,6 +1983,7 @@ function displayPopupSun(tip,para) {
     txt += '<tr><td>Civ. Twi. beg., end</td> <td>'+civ+'</td></tr>';
     txt += '<tr><td>Nat. Twi. beg., end</td> <td>'+nat+'</td></tr>';
     txt += '<tr><td>Ast. Twi. beg., end</td> <td>'+ast+'</td></tr>';
+    txt += '</table>';
     
     let tipText = "#tip"+para.loc+"text";
     $(tipText).append(txt);
@@ -2081,7 +2082,7 @@ function displayPopupMoon(tip,para) {
     // illumination, phase and apparent magnitude
     let illumPhase = moonIlluminated(sun.ra,sun.dec,topo.raTopo,topo.decTopo, 
                                      Lsun,Lmoon, rTopo, Dsun);
-    let illum = illumPhase.illuminated.toFixed(2)+' '+generate_svg_moon_phase(Lmoon, Lsun, illumPhase.cosi, 16);
+    let illum = illumPhase.illuminated.toFixed(2);
     let phase = illumPhase.phase;
     let elong = illumPhase.elongTxt;
     let mag = illumPhase.mag.toFixed(1);
@@ -2102,6 +2103,8 @@ function displayPopupMoon(tip,para) {
         Rise = "circumpolar";
         Set = "circumpolar";
     }
+    let svgp = {sunRa:sun.ra, sunDec:sun.dec, ra:aber.ra, dec:aber.dec, cosi:illumPhase.cosi, 
+        alt:hor.alt, sinA:-hor.sinA, sinLat:sinLat, cosLat:cosLat, size:150};
     
     let txt ="<table>";
     txt += '<tr><th colspan="2">Moon</th></tr>';
@@ -2130,6 +2133,8 @@ function displayPopupMoon(tip,para) {
     txt += '<tr><td>Rise (Azimuth)</td> <td>'+Rise+'</td></tr>';
     txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
     txt += '<tr><td>Set (Azimuth)</td> <td>'+Set+'</td></tr>';
+    txt += '<tr><td colspan="2">Phase Appearance (zenith is up)<br />'+generate_svg_phase(svgp)+'</td></tr>';
+    txt += '</table>';
     
     let tipText = "#tip"+para.loc+"text";
     $(tipText).append(txt);
@@ -2145,9 +2150,8 @@ function displayPopupPlanet(tip,para) {
     let planet, sun;
     if (highPrecCalInTips) {
         planet = planetGeoVSOP(TD, tip.object, true);
-        sun = {rGeo:planet.dSunEarth, 
-               lam2000:planet.lamSun2000, 
-               bet2000:planet.betSun2000};
+        sun = {rGeo:planet.dSunEarth, ra:planet.raSun, dec:planet.decSun,
+               lam2000:planet.lamSun2000, bet2000:planet.betSun2000};
     } else {
         let planets = planetPos(TD, calculate);
         planet = planets[ind];
@@ -2226,6 +2230,8 @@ function displayPopupPlanet(tip,para) {
     let alt = (hor.alt + atmosphericRefraction(hor.alt, 101, 286))*rad_to_deg;
     let azi = Math.atan2(hor.sinA,hor.cosA)*rad_to_deg + 180;
     alt = alt.toFixed(2)+"&deg;";  azi = azi.toFixed(2)+"&deg;";
+    let svgp = {sunRa:sun.ra, sunDec:sun.dec, ra:aber.ra, dec:aber.dec, cosi:elongIllum.cosi, 
+        alt:hor.alt, sinA:-hor.sinA, sinLat:sinLat, cosLat:cosLat, size:150};
     // rise ans set
     let ra=[], dec=[];
     let T0 = TD - para.hours/876600;
@@ -2266,7 +2272,12 @@ function displayPopupPlanet(tip,para) {
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
     txt += '<tr><td>Upper Transit (Altitude)</td> <td>'+Transit+'</td></tr>';
-    
+    // Add svg phase image of the planet for mercury, Venus and Mars
+    if (ind==0 || ind==1 || ind==3) {
+        txt += '<tr><td colspan="2">Phase Appearance (zenith is up)<br />'+generate_svg_phase(svgp)+'</td></tr>';
+    }
+    txt += '</table>';
+
     $(tipText).append(txt);
 }
 
@@ -2443,6 +2454,38 @@ function generate_svg_moon_phase(Lmoon, Lsun, cosi, size) {
     }
     s += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" stroke="'+color_black+'" fill="none" /></svg>';
     return s;
+}
+
+function generate_svg_phase(p) {
+    let shdalp = Math.sin(0.5*(p.sunRa - p.ra)), sdec = Math.sin(p.dec);
+    let chi = Math.atan2(Math.cos(p.sunDec)*Math.sin(p.sunRa - p.ra), 
+    Math.sin(p.sunDec-p.dec) + 2*Math.cos(p.sunDec)*sdec*shdalp*shdalp);
+    let w = Math.atan2(p.cosLat*p.sinA, (p.sinLat - sdec*Math.sin(p.alt))/Math.cos(p.alt));
+    if (Math.abs(Math.abs(p.alt) - Math.PI*0.5) < 1e-10) { w = 0.0;}
+    let chiZ = chi + w;
+    let cchi = Math.cos(chiZ), schi = Math.sin(chiZ);
+    let a = p.size*0.3, hs = 0.5*p.size;
+    let x1 = hs - cchi*a, y1 = hs + a*schi, x2 = hs + cchi*a, y2 = hs - a*schi;
+    let b = a*Math.abs(p.cosi);
+    let color_illum = 'white', color_black = '#696969';
+    let r2d = 180/Math.PI;
+    let svg = '<svg width="'+p.size+'" height="'+p.size+'">';
+    svg += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" fill="'+color_black+'" stroke="none" />';
+    if (p.cosi >= 0) {
+        svg += '<path d="M '+x1+' '+y1+' A '+a+' '+b+' '+(-chiZ*r2d)+' 0 0 '+x2+' '+y2+' A '+a+' '+a+' 0 0 0 '+x1+' '+y1+'" fill="'+color_illum+'" stroke="none" />';
+    } else {
+        svg += '<path d="M '+x1+' '+y1+' A '+a+' '+b+' '+(-chiZ*r2d)+' 0 1 '+x2+' '+y2+' A '+a+' '+a+' 0 0 0 '+x1+' '+y1+'" fill="'+color_illum+'" stroke="none" />';
+    }
+    svg += '<circle cx="'+hs+'" cy="'+hs+'" r="'+a+'" stroke="'+color_black+'" fill="none" />';
+    // Label north direction 
+    let sw = Math.sin(w), cw = Math.cos(w);
+    let xn1 = hs - a*sw, yn1 = hs - a*cw;
+    let xn2 = hs - 1.125*a*sw, yn2 = hs - 1.125*a*cw;
+    let xt = hs - 1.2*a*sw - 5*cw, yt = hs - 1.2*a*cw + 5*sw;
+    svg += '<path d="M '+xn1+' '+yn1+' L '+xn2+' '+yn2+'" stroke="'+color_black+'" />';
+    svg += '<text x="'+xt+'" y="'+yt+'" fill="black" rotate="'+(-w*r2d)+'">N</text>';
+    svg += '</svg>';
+    return svg;
 }
 
 // Set up parameters for drawing stars and planets
