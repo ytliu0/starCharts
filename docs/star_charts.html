@@ -1237,18 +1237,18 @@ $$
 
 <p>The equations for the rise, set, upper transit times of the Sun, Moon and planets, as well as the beginning and ending of twilight, are still given by equations \eqref{eq:riseSetStars} and \eqref{eq:upperTransitStars}. The only difference is that the right ascension and declination for the Sun, Moon and planets change more rapidly over the course of a day. The two equations should be written more clearly as follows.</p>
 \begin{align}
-  h'_{\pm} &= \frac{(H_{\pm}(\delta(h'_{\pm})) + \alpha(h'_{\pm}) - t_{s0})
- {\rm mod} 24^{\rm h}}{1.00273781191135448} 
+  h'_{\pm} &= \frac{(H_{\pm}(\delta(h'_{\pm})) + \alpha(h'_{\pm}) - t_{s0})\ 
+ {\rm mod}\ 24^{\rm h}}{1.00273781191135448} 
 \label{eq:riseSetPlanets} \\ \nonumber \cr 
-  h'_{\rm upper transit} &= \frac{(\alpha(h'_{\rm upper transit}) - t_{s0})
- {\rm mod} 24^{\rm h}}{1.00273781191135448} 
+  h'_{\rm upper transit} &= \frac{(\alpha(h'_{\rm upper transit}) - t_{s0})\ 
+ {\rm mod}\ 24^{\rm h}}{1.00273781191135448} 
 \label{eq:upperTransitPlanets}
 \end{align}
 <p>These equations explicitly indicate that the rise/set/upper transit time depends on the values of <span class="greek">&alpha;</span> and <span class="greek">&delta;</span> at the rise/set/upper transit times. Since <span class="greek">&alpha;</span> and <span class="greek">&delta;</span> can no longer be considered as constants over the course of a day, the unknown rise/set/upper transit time appears on both sides of the equations. The equations may be solved iteratively. For the Sun and planets, <span class="greek">&alpha;</span> and <span class="greek">&delta;</span> change slowly over the course of a day. Treating them as constants will not cause an error of more than a few minutes, which is sufficient. However, the Moon moves rapidly over the course of a day and treating <span class="greek">&alpha;</span> and <span class="greek">&delta;</span> as constants will cause a large error.</p>
 
 <p>There are two other complications. The time between two successive rise/set/upper transit times is one sidereal day for stars. This is not true for the Sun, Moon and planets. The most extreme case is the Moon, where the average time between two successive rise/set/upper transit times is 24 hours and 50 minutes. As a result, it is possible to have no rise/set/transit on a given day. Another complication is that at high latitudes, the rise and set times of the Sun, Moon and planets are sensitive to the change in declination when the object is close to being circumpolar or close to being invisible all day. These two complications make the iterative procedure difficult to implement. As a result, I use the algorithm described in Sections 3.7 and 3.8 of the book <a href="https://www.springer.com/us/book/9783540672210#" target="_blank"><i>Astronomy on the Personal Computer</i></a> by O. Montenbruck and T. Pfleger, 4th edition, Springer 2000 (corrected fourth printing 2009) to calculate the rise, set and transit times. The algorithm is based on quadratic interpolation.</p>
 
-<p>The idea is to first calculate the hour angle \( H(h') \) and altitude \( a(h') \) at local times \( 0^{\rm h} \), \( 1^{\rm h} \), ..., \( 24^{\rm h} \), i.e. at \( h'=0, 1, ..., 24 \). Divide the day into 12 intervals: [0<sup>h</sup>, 2<sup>h</sup>), [2<sup>h</sup>, 4<sup>h</sup>), ..., 22<sup>h</sup>, 24<sup>h</sup>). Next values of \( H(h') \) and \( a(h') \) in each of the 12 intervals are approximated by a quadratic interpolation. Therefore, there are approximate analytic formulae for \( H(h') \) and \( a(h') \) throughout the day and the rise, set, and upper transit times are then solved by the equations \( a(h')=a_{rs} \) and \( H(h')=0 \) using analytic expressions. </p>
+<p>The idea is to first calculate the hour angle \( H(h') \) and altitude \( a(h') \) at local times 0<sup>h</sup>, 1<sup>h</sup>, ..., 24<sup>h</sup>, i.e. at \( h'=0, 1, ..., 24 \). Divide the day into 12 intervals: [0<sup>h</sup>, 2<sup>h</sup>), [2<sup>h</sup>, 4<sup>h</sup>), ..., [22<sup>h</sup>, 24<sup>h</sup>). Next values of \( H(h') \) and \( a(h') \) in each of the 12 intervals are approximated by a quadratic interpolation. Therefore, there are approximate analytic formulae for \( H(h') \) and \( a(h') \) throughout the day and the rise, set, and upper transit times are then solved by the equations \( a(h')=a_{rs} \) and \( H(h')=0 \) using analytic expressions. </p>
 
 <p>The procedure for the rise, set, beginning and ending of twilight works as follows. For \( h' \) in a particular time interval, define</p>
 $$   x = h'-h'_0 \ \ \ , \ \ \ y = \sin [a(h')] - \sin a_{rs} ,$$
