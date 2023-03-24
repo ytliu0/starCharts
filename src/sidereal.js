@@ -853,6 +853,10 @@ function starChartLoc(loc) {
         let raDec = galacticNorthPole(TD);
         pDraw.galPoleRa = raDec.ra;
         pDraw.galPoleDec = raDec.dec;
+        // ra and dec of Sgr A*
+        raDec = galacticCenter(TD);
+        pDraw.galCenRa = raDec.ra;
+        pDraw.galCenDec = raDec.dec;
     }
     
     objects.conLines = constellationLines();
@@ -954,6 +958,7 @@ function drawStarsPlanets(Canvas, objects,pDraw,LST,lat) {
         pole = {ra:pDraw.galPoleRa, dec:pDraw.galPoleDec, 
                linestyle:[14,15], color:"magenta"};
         drawCircle(Ctx,LST,cosLat,sinLat,pole,gpara);
+        drawGalacticCenter(Ctx, LST, cosLat, sinLat, pDraw.galCenRa, pDraw.galCenDec, gpara);
     }
    if (pDraw.showEquator) {
        // celestial north pole: dec = pi/2
@@ -1465,6 +1470,20 @@ function draw_mw_polygon(Ctx, LST, mwpoly, sb, cosLat,sinLat, gpara, fillColor) 
     }
 }
 
+// Sgr A*
+function drawGalacticCenter(ctx, LST, cosLat, sinLat, ra, dec, gpara) {
+    let coord = ra_dec_to_xy_above({ra:ra, dec:dec}, LST, cosLat, sinLat, gpara);
+    if (coord.x > -998) {
+        let s = 5;
+        ctx.save();
+        ctx.fillStyle = 'magenta';
+        ctx.beginPath();
+        ctx.arc(coord.x, coord.y, s, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
 // Connect the points in 'array' to a line. Only draw the points 
 // above the horizon.
 // Note that the first point starts at index 1 not 0.
@@ -1488,6 +1507,21 @@ function galacticNorthPole(T) {
     let ra0 = 3.366012906575397, dec0 = 0.4734787372451951;
     let p = precession_matrix(0,T);
     return(precessed_ra_dec(ra0,dec0,p));
+}
+
+// Ra and Dec of Sgr A* relative to the equinox of the date
+function galacticCenter(T) {
+    // 3D position of Sgr A* at J2000 in kpc
+    let x0 = -0.4372574538483036, y0 = -6.9827518193438181, z0 = -3.8794307505747145; 
+    // 3D velocity of Sgr A* in kpc/century
+    let vx = -1.154527115906393e-05, vy = 1.117619916911477e-05, vz = -1.881522674419981e-05;
+    // 3D position at T centuries after J2000
+    let x = x0 + vx*T, y = y0 + vy*T, z = z0 + vz*T;
+    let r = Math.sqrt(x*x + y*y + z*z);
+    // J2000 RA and DEC of Sgr A* at T centuries after J2000
+    let ra = Math.atan2(y,x), dec = Math.asin(z/r);
+    let p = precession_matrix(0,T);
+    return(precessed_ra_dec(ra, dec, p));
 }
 
 // Draw constellation lines and/or set up tooltips

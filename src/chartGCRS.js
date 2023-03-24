@@ -226,6 +226,7 @@ function drawStarChart(para) {
     
     if (para.pDraw.showGalactic) {
         drawCircle(ctx,3.366012906575397,0.4734787372451951, para);
+        drawGalacticCenter(ctx, para);
     }
     
     if (para.pDraw.showEcliptic) {
@@ -519,6 +520,28 @@ function drawConstellationLinesAndAddTips(ctx,newStar,showConLines,
                 }
             }
          });
+    }
+}
+
+// Sgr A*
+function drawGalacticCenter(ctx, gpara) {
+    // 3D position of Sgr A* at J2000 in kpc
+    let x0 = -0.4372574538483036, y0 = -6.9827518193438181, z0 = -3.8794307505747145; 
+    // 3D velocity of Sgr A* in kpc/century
+    let vx = -1.154527115906393e-05, vy = 1.117619916911477e-05, vz = -1.881522674419981e-05;
+    // 3D position at T centuries after J2000
+    let T = date.T + date.dT;
+    let x = x0 + vx*T, y = y0 + vy*T, z = z0 + vz*T;
+    let r = Math.sqrt(x*x + y*y + z*z);
+    // J2000 RA and DEC of Sgr A* at T centuries after J2000
+    let ra = Math.atan2(y,x), dec = Math.asin(z/r);
+    let coord = getXY(ra, dec, gpara);
+    if (coord.inChart) {
+        ctx.fillStyle = 'pink';
+        let s = 5;
+        ctx.beginPath();
+        ctx.arc(coord.x, coord.y, s, 0, 2*Math.PI);
+        ctx.fill();
     }
 }
 

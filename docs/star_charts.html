@@ -23,6 +23,7 @@
   div#wrapper0 {
     margin-left:auto;
     margin-right:auto;
+    /* max-width:800px; */
     display:none;
   }
   sect {
@@ -91,8 +92,7 @@
     max-width:100%;
   }
 
-  /* The side navigation menu */
-  .sidenav {
+.sidenav {
     height: 100%;
     width: 200px; 
     position: fixed; /* Stay in place */
@@ -102,9 +102,8 @@
     background-color:gainsboro; 
     overflow-x: hidden; /* Disable horizontal scroll */
     padding-top: 10px; /* Place content 60px from the top */
-  }
+}
 
-/* The navigation menu links */
 .sidenav a {
   margin-left:5px;
   text-decoration: none;
@@ -113,13 +112,11 @@
   display: block;
 }
 
-/* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   font-weight:bold;
   background-color:yellow;
 }
 
-/* Position and style the close button (top right corner) */
 .sidenav .closebtn {
   position:sticky;
   top: 0;
@@ -130,7 +127,6 @@
   background-color:gainsboro;
 }
 
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
@@ -145,7 +141,6 @@
   width:100%;
 }
 
-/* Page content */
 #main {
   margin-left: 200px; 
 }
@@ -180,7 +175,7 @@
    <br /><br />
 <h1>Calculations in Star Charts</h1>
 <h3><a href="https://publish.illinois.edu/ytliu/" target="_blank">Yuk Tung Liu</a></h3>
-<h3>First draft: 2018-07-10, last major update: 2022-03-25</h3>
+<h3>First draft: 2018-07-10, last major update: 2023-03-24</h3>
 
 <p style="font-weight:bold;color:red;">Note: This is an (experimental) HTML version of <a href="star_charts.pdf" target="_blank">this pdf file</a>. Use the pdf if your browser doesn't render some texts and equations correctly. In case of any discrepancy between the two versions, the pdf version shall prevail.</p>
 
@@ -890,6 +885,19 @@ $$ m(t) = m_0 + 5\log_{10}(D/D_0) ,$$
 
 <p>In the local star charts, altitude \( a \) and azimuth \( A \) in the popup box are calculated in the exact same way as in the previous subsection if the time is outside the interval 3000 BCE and 3000 CE. When the time is between 3000 BCE and 3000 CE, a star's apparent Ra and Dec corrected for space motion, parallax, precession, nutation and aberration of light are used to compute \( a \) and \( A \). Specifically, the hour angle is computed using \( H=t_s-\alpha \), where \( t_s \) is the local apparent sidereal time calculated from \( t_s={\rm GAST}+\lambda \). The Greenwich apparent sidereal time is calculated using \( {\rm GAST = GMST} + E_e \), with GMST computed from equation \eqref{eq:GMST} and \( E_e \) computed from equations \eqref{eq:Ee}, \eqref{eq:Dpsi} and \eqref{eq:epsA}. Next \( a \) and \( A \) are computed using equations \eqref{eq:aAFromHdel1}-\eqref{eq:aAFromHdel3}. Then the altitude is adjusted by the atmospheric refraction according to equation \eqref{eq:atmRefraction}.</p>
 
+<subsect id="sect_stars_SgrAstar">Sagittarius A<sup>*</sup></subsect>
+
+<p>When the <span style="background-color:#D8D8D8">Galactic</span> button on the webpages is active, the galactic equator is shown together with the location of the galactic center if it's inside the chart. There are several different notions of galactic center, although their locations are probably indistinguishable on our low-resolution star charts. Here we represent the galactic center by the location of the compact radio source <a href="https://en.wikipedia.org/wiki/Sagittarius_A*" target="_blank">Sagittarius A<sup>*</sup></a>.</p>
+
+<p>The calculation of the position of Sgr A<sup>*</sup> is the same as the stars. According to <a href="https://iopscience.iop.org/article/10.1086/424960" target="_blank">Reid and Brunthaler
+  (ApJ 616, 872, 2004; doi: 10.1086/424960)</a>, the J2000 Ra and Dec of Sgr A* are \( \alpha_0=17^{\rm h}45^{\rm m}40.04^{\rm s} \) and \( \delta_0 = -29^{\circ}00'28.12'' \). Assuming a distance of 8kpc, the 3D position is represented by</p>
+$$ \boldsymbol{r_0} = (-0.4372574538\ -6.9827518193\ -3.8794307506)^T {\rm kpc} .$$
+<p>The proper motion is given by \( \boldsymbol{\mu} = (-3.151 \boldsymbol{e_E} - 5.547 \boldsymbol{e_N}) \) milliarcsec/year, where \( \boldsymbol{e_E}=\boldsymbol{e_{\alpha}}/\cos \delta_0 \) is the unit vector in the east direction and \( \boldsymbol{e_N}=\boldsymbol{e_{\delta}} \) is the unit vector in the north direction. Ignoring the radial velocity, the apparent 3D velocity of Sgr A<sup>*</sup> is</p>
+$$
+  \boldsymbol{v} = (-1.1545\times 10^{-5}\ \ 1.1176\times 10^{-5}\ \ -1.8815\times 10^{-5})^T {\rm kpc/century} .
+$$
+<p>Position of Sgr A<sup>*</sup> at time \( T \) centuries after J2000 is given by \( \boldsymbol{r}(T) = \boldsymbol{r_0} + \boldsymbol{v} T \). At the distance of 8pc, the parallax is 0.000125" and can be ignored.</p>
+
 <sect id="sect_milkyway">Milky Way</sect>
 
 <subsect id="sect_milkyway_simulated">Simulated Image</subsect>
@@ -1292,13 +1300,13 @@ $$
 
 <li id="expl2013"><p><span class="ref">[Urban &amp; Seidelmann]</span> S.E. Urban and P.K. Seidelmann. <i>Explanatory Supplement to the Astronomical Almanac</i>, 3rd edition, University Science Books, Mill Valley, California (2013). Errata: <a href="https://aa.usno.navy.mil/downloads/exp_supp_errata.pdf" target="_blank">https://aa.usno.navy.mil/downloads/exp_supp_errata.pdf</a></p></li>
 </ul>
-</div> <!-- end of main -->
+</div>
 <br /><br />
 <footer>
-    <hr />
-    <p style="text-align:center;">&copy; 2018&ndash;2023 by Yuk Tung Liu</p>
+  <hr />
+  <p style="text-align:center;">&copy; 2018&ndash;2023 by Yuk Tung Liu</p>
 </footer>
-</div> <!-- end of wrapper -->
+</div> 
 <noscript>
 <h2>Oops!</h2>
 <p>You must enable JavaScript to use this page.</p>
@@ -1338,6 +1346,7 @@ let r = ref.length;
 let figs = document.querySelectorAll("figure");
 let nfigs = figs.length;
 for (i=0; i<n; i++) {
+  // add citation to notes and figures
   for (j=0; j<r; j++) {
       if (cita[i].href.includes("#"+ref[j].id)) {
         cita[i].textContent = refn[j].textContent;
@@ -1351,7 +1360,6 @@ for (i=0; i<n; i++) {
     }
   }
 }
-
 let div = document.createElement('DIV');
 div.id = 'mySidenav';
 div.classList.add('sidenav');
