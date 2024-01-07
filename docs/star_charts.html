@@ -183,7 +183,7 @@
 <div id="main">
    <br /><br />
 <h1>Calculations in Star Charts</h1>
-<h3><a href="https://publish.illinois.edu/ytliu/" target="_blank">Yuk Tung Liu</a></h3>
+<h3>Yuk Tung Liu</h3>
 <h3>First draft: 2018-07-10, last major update: 2023-03-24</h3>
 
 <p style="font-weight:bold;color:red;">Note: This is an (experimental) HTML version of <a href="star_charts.pdf" target="_blank">this pdf file</a>. Use the pdf if your browser doesn't render some texts and equations correctly. In case of any discrepancy between the two versions, the pdf version shall prevail.</p>
@@ -588,7 +588,7 @@ $$
 <p>The mapping \( (a,A) \rightarrow (x_g,y_g) \) is given by</p>
 $$ 
   r = r_h \tan\left( \frac{\pi}{4} -\frac{a}{2}\right) \ \ , \ \ 
-  x_g = \frac{w}{2} + r \sin A \ \ , \ \ y_g = \frac{h}{2} + r \cos A , 
+  x_g = \frac{w}{2} - r \sin A \ \ , \ \ y_g = \frac{h}{2} - r \cos A , 
 \label{eq:stereographicHor}
 $$
 <p>where \( r_h = 0.47\max(w,h) \). The equation can be considered as two transformations: \( a \rightarrow r \) and \( (r,A) \rightarrow (x_g, y_g) \). Under this mapping, the zenith is mapped to the center of the canvas. Contours of \( a \) are circles of radius \( r_h\tan(\pi/4 - a/2) \) centered at the center of the canvas. Thus, the value of \( r_h \) is the radius of the horizon. The value 0.47 is to make rooms for drawing labels outside the horizon.</p>
@@ -611,7 +611,7 @@ $$
 \end{align}
 <p>where \( r_h = 0.465\max(w,h) \) and \( \Delta \alpha = \alpha - \alpha_c \). The width and height are set to \( w=h=700 \) pixels. For the first chart, \( \delta_c=\pi/2 \). For the third chart, \( \delta_c=-\pi/2 \). The value of \( \alpha_c \) determines the orientation of the GCRS Ra lines. For example, if \( \alpha_c=0 \) in the first chart, the line \( \alpha=0 \) is a horizontal line from the graph center \( (w/2,h/2) \) to the middle left point \( (w/2 - r_h, h/2) \). </p>
 
-<p>Note that when \( \delta_c=\pi/2 \), \( \delta = a \) and \( \Delta \alpha = -\pi/2 - A \), equations \eqref{eq:stereographicXg} and \eqref{eq:stereographicYg} reduce to equation \eqref{eq:stereographicHor} since it can be shown that \( \tan(\pi/4 - a/2) = \cos a/(1+\sin a) \).</p>
+<p>Note that when \( \delta_c=\pi/2 \), \( \delta = a \) and \( \Delta \alpha = \pi/2 - A \), equations \eqref{eq:stereographicXg} and \eqref{eq:stereographicYg} reduce to equation \eqref{eq:stereographicHor} since it can be shown that \( \tan(\pi/4 - a/2) = \cos a/(1+\sin a) \).</p>
 
 <subsubsect id="sect_maps_gcrs_allsky">All-Sky Chart</subsubsect>
 
