@@ -453,6 +453,20 @@ function recomputeStarPos(T,stars) {
     }
 }
 
+// Calculate the Greenwich apparent sidereal time in hours 
+function getGAST(d, Dpsi='8') {
+    let D0 = Math.floor(d.D);
+    let fday = (d.h + d.m/60 + d.s/3600)/24 + 0.5;
+    fday -= Math.floor(fday);
+    let ERA = mod2pi_omgDf(0.01720217957524373, D0, 0) + fday*6.300387486754831 - 1.38822409435583;
+    fday += 36525*d.dT;
+    let jd_int = Math.floor(D0 + 2451545 + fday);
+    fday -= Math.floor(fday);
+    let Eo = Eo_Vondrak_longT(jd_int, fday, Dpsi);
+    let GAST = (ERA - Eo)*12/Math.PI;
+    return GAST - 24*Math.floor(GAST/24);
+}
+
 // Draw constellation lines and/or add tooltips.
 // The line information is stored in the object conLine. 
 // It is an array that has the following structure:
@@ -1145,16 +1159,18 @@ function displayPopupSun(tip,para) {
     let ra = convertDM(raDec.ra*rad_to_hr, "hm");
     let dec = convertDM(raDec.dec*rad_to_deg, "dm");
     // Equation of time
-    let DU0 = Math.floor(date.D - 0.5) + 0.5;
-    let EOT = 0.06570748587250752*DU0;
-    EOT -= 24*Math.floor(EOT/24 + 0.5);
-    EOT += 18.697374558336001 - raDec.ra*rad_to_hr + 2.686296296296296e-7;
-    EOT += 0.00273781191135448*(date.h + date.m/60 + date.s/3600);
-    let T = date.T + date.dT;
-    EOT += T*(0.08541030618518518 + 2.577003148148148e-5*T);
-    if ("nu" in para) {
-        EOT += para.nu.Ee*rad_to_hr;
-    }
+    // let DU0 = Math.floor(date.D - 0.5) + 0.5;
+    // let EOT = 0.06570748587250752*DU0;
+    // EOT -= 24*Math.floor(EOT/24 + 0.5);
+    // EOT += 18.697374558336001 - raDec.ra*rad_to_hr + 2.686296296296296e-7;
+    // EOT += 0.00273781191135448*(date.h + date.m/60 + date.s/3600);
+    // let T = date.T + date.dT;
+    // EOT += T*(0.08541030618518518 + 2.577003148148148e-5*T);
+    // if ("nu" in para) {
+    //     EOT += para.nu.Ee*rad_to_hr;
+    // }
+    // EOT -= 24*Math.floor(EOT/24 + 0.5);
+    let EOT = 12 + getGAST(date) - date.h - date.m/60 - date.s/3600 - raDec.ra*rad_to_hr;
     EOT -= 24*Math.floor(EOT/24 + 0.5);
     let aEOT = Math.abs(EOT) + 0.5/3600;
     let EOTm = Math.floor(60*aEOT);

@@ -59,8 +59,8 @@ function playAnimation(loc,dframes) {
     d.m = Math.floor((hour - d.h)*60);
     d.s = 3600*(hour - d.h - d.m/60);
     d.timeString = generateTimeString(d.h,d.m,d.s);
-    let GMST = getGMST(d);
-    let LST = getSidereal(GMST,long);
+    let GAST = getGAST(d);
+    let LST = getSidereal(GAST,long);
     d.LST = LST.hour;
     d.LST_rad = LST.rad;
     d.LSTstring = LST.string;
@@ -310,8 +310,8 @@ function animationSetup(form, loc) {
         d.D = getDm(d.yyyy,d.mm,d.dd,tz.tz) + (h+m/60+s/3600)/24;
         d.T = d.D/36525;
         d.dT = DeltaT(d.T);
-        let GMST = getGMST(d);
-        let LST = getSidereal(GMST,long);
+        let GAST = getGAST(d);
+        let LST = getSidereal(GAST,long);
         d.LST = LST.hour;
         d.LST_rad = LST.rad;
         d.LSTstring = LST.string;

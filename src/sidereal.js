@@ -114,8 +114,8 @@ function init_cont() {
              h:date.h, m:date.m, s:date.s, tz:tz1.tz, 
              tzString:tz1.tzString, dateString:date.dateString, 
              timeString:date.timeString, D:D, T:T, dT:dT};
-    let GMST = getGMST(date1);
-    let LST = getSidereal(GMST,long1);
+    let GAST = getGAST(date1);
+    let LST = getSidereal(GAST,long1);
     date1.LST = LST.hour;
     date1.LST_rad = LST.rad;
     date1.LSTstring = LST.string;
@@ -131,8 +131,8 @@ function init_cont() {
              tz:tz2.tz, tzString:tz2.tzString,
              dateString:date.dateString, timeString:date.timeString, 
              D:D, T:T, dT:dT};
-    GMST = getGMST(date2);
-    LST = getSidereal(GMST,long2);
+    GAST = getGAST(date2);
+    LST = getSidereal(GAST,long2);
     date2.LST = LST.hour;
     date2.LST_rad = LST.rad;
     date2.LSTstring = LST.string;
@@ -599,15 +599,15 @@ function changeLocationsAndTimes() {
             let dT = DeltaT(T);
             if (loc==1) {
                 date1 = {yyyy:date.yy, mm:date.mm, dd:date.dd, h:hh, m:mm, s:s, tz:tz, tzString:tzString, dateString:dateString, timeString:timeString, D:D, T:T, dT:dT};
-                let GMST = getGMST(date1);
-                let LST = getSidereal(GMST,long1);
+                let GAST = getGAST(date1);
+                let LST = getSidereal(GAST,long1);
                 date1.LST = LST.hour;
                 date1.LST_rad = LST.rad;
                 date1.LSTstring = LST.string;
             } else {
                 date2 = {yyyy:date.yy, mm:date.mm, dd:date.dd, h:hh, m:mm, s:s, tz:tz, tzString:tzString, dateString:dateString, timeString:timeString, D:D, T:T, dT:dT};
-                let GMST = getGMST(date2);
-                let LST = getSidereal(GMST,long2);
+                let GAST = getGAST(date2);
+                let LST = getSidereal(GAST,long2);
                 date2.LST = LST.hour;
                 date2.LST_rad = LST.rad;
                 date2.LSTstring = LST.string;
@@ -635,8 +635,8 @@ function changeLocationsAndTimes() {
                     tzString:tz2.tzString, dateString:date.dateString, 
                     timeString:date.timeString, D:date1.D, 
                     T:date1.T, dT:date1.dT};
-            let GMST = getGMST(date2);
-            let LST = getSidereal(GMST, long2);
+            let GAST = getGAST(date2);
+            let LST = getSidereal(GAST, long2);
             date2.LST = LST.hour;
             date2.LST_rad = LST.rad;
             date2.LSTstring = LST.string;
@@ -691,7 +691,7 @@ function rotInput(loc) {
     }
 }
 
-// Calculate the mean Greenwich sidereal time in hours 
+// Calculate the Greenwich mean sidereal time in hours 
 function getGMST(d) {
     // Get Julian date at midnight GMST
     let D0 = Math.floor(d.D-0.5)+0.5;
@@ -715,34 +715,23 @@ function getGMST(d) {
     return GMST;
 }
 
-// Calculate the apparent Greenwich sidereal time in hours 
-// using the formula on 
-// http://aa.usno.navy.mil/faq/docs/GAST.php
-// Here d is the new date object
-//function getGMAT(d) {
-//    // Get Julian date at midnight GMST
-//    let D0 = Math.floor(d.D-0.5)+0.5;
-//    // Get hours according to the UTC
-//    let H = d.h + d.m/60 + d.s/3600 + d.tz/60;
-//    H -= 24*Math.floor(H/24);
-//
-//    let GMST = 0.06570982441908*D0;
-//    GMST -= 24*Math.floor(GMST/24);
-//    GMST += 6.697374558 + 1.00273790935*H + 2.5862e-5*d.T*d.T;
-//    GMST -= 24*Math.floor(GMST/24);
-//    let deg_to_rad = Math.PI/180;
-//    let Omega = 125.04-0.052954*d.D;
-//    let L = 280.47+0.98565*d.D;
-//    Omega = (Omega - 360*Math.floor(Omega/360))*deg_to_rad;
-//    L = (L - 360*Math.floor(L/360))*deg_to_rad;
-//    let eps = (23.4393 - 4e-7*d.D)*deg_to_rad;
-//    let Dpsi = -0.000319*Math.sin(Omega) - 0.000024*Math.sin(2*L);
-//    return GMST + Dpsi*Math.cos(eps);
-//}
+// Calculate the Greenwich apparent sidereal time in hours 
+function getGAST(d, Dpsi='8') {
+    let D0 = Math.floor(d.D);
+    let fday = (d.h + d.m/60 + d.s/3600)/24 + d.tz/1440 + 0.5;
+    fday -= Math.floor(fday);
+    let ERA = mod2pi_omgDf(0.01720217957524373, D0, 0) + fday*6.300387486754831 - 1.38822409435583;
+    fday += 36525*d.dT;
+    let jd_int = Math.floor(D0 + 2451545 + fday);
+    fday -= Math.floor(fday);
+    let Eo = Eo_Vondrak_longT(jd_int, fday, Dpsi);
+    let GAST = (ERA - Eo)*12/Math.PI;
+    return GAST - 24*Math.floor(GAST/24);
+}
 
-// Calculate the sidereal time from GMST and longitude
-function getSidereal(GMST,long) {
-    let LST = GMST + long/15;
+// Calculate the apparent sidereal time from GAST and longitude
+function getSidereal(GAST,long) {
+    let LST = GAST + long/15;
     LST = LST - 24*Math.floor(LST/24); // LST in hours
     let LST_rad = LST*Math.PI/12; // LST in radian
     let LSTr = LST + 0.5/3600; // used for rounding
@@ -1856,7 +1845,7 @@ function displayPopup(e, loc) {
         let TD = d.T+d.dT;
         if (TD > -50 && TD < 10) {
             para.nu = nutation(TD);
-            para.LAST = para.LST + para.nu.Ee;
+            para.LAST = para.LST;
         }
         
         if (tip.object=="star") {
@@ -2004,10 +1993,10 @@ function displayPopupSun(tip,para) {
     txt += '<tr><td>Topocentric Ra, Dec (J2000)</td> <td>'+ra2000Topo+', '+dec2000Topo+'</td></tr>';
     if ("nu" in para) {
         txt += '<tr><td>App. Topo. Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
-        txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LAST*12/Math.PI,"hm")+'</td></tr>';
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
+    txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     txt += '<tr><td>Apparent solar time</td><td>'+asuntime+'</td></tr>';
     txt += '<tr><td>Equation of time</td><td>'+EOTc+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
@@ -2158,10 +2147,10 @@ function displayPopupMoon(tip,para) {
     txt += '<tr><td>Topocentric Ra, Dec (J2000)</td> <td>'+topoRa2000+', '+topoDec2000+'</td></tr>';
     if ("nu" in para) {
         txt += '<tr><td>App. Topo. Ra, Dec (of date)</td> <td>'+topoRa+', '+topoDec+'</td></tr>';
-        txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LAST*12/Math.PI,"hm")+'</td></tr>';
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+topoRa+', '+topoDec+'</td></tr>';
     }
+    txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azimuth)</td> <td>'+Rise+'</td></tr>';
@@ -2297,11 +2286,11 @@ function displayPopupPlanet(tip,para) {
     txt += '<tr><td>Geocentric Ra, Dec (J2000)</td> <td>'+ra2000+', '+dec2000+'</td></tr>';
     txt += '<tr><td>Topocentric Ra, Dec (J2000)</td> <td>'+ra2000Topo+', '+dec2000Topo+'</td></tr>';
     if ("nu" in para) {
-        txt += '<tr><td>App. Topo. Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
-        txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LAST*12/Math.PI,"hm")+'</td></tr>';
+        txt += '<tr><td>App. Topo. Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';    
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
+    txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
     txt += '<tr><td>Rise (Azi), Set</td> <td>'+RiseSet+'</td></tr>';
@@ -2437,10 +2426,10 @@ function displayPopupStar(tip, para) {
     txt += "<tr><td>Ra, Dec (J2000)</td> <td>"+ra2000+", "+dec2000+"</td></tr>";
     if ("nu" in para) {
         txt += '<tr><td>App. Ra, Dec (of date)</td> <td>'+raStr+', '+decStr+'</td></tr>';
-        txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LAST*12/Math.PI,"hm")+'</td></tr>';
     } else {
         txt += "<tr><td>Ra, Dec (of date)</td> <td>"+raStr+", "+decStr+"</td></tr>";
     }
+    txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     
     // Alt and Azimuth
     let raDec = {ra:ra, dec:dec};

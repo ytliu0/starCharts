@@ -389,28 +389,19 @@ function riseSetShowHideRADec(Class) {
     }
 }
 
-// Calculate the local sidereal time at midnight of the time zone
+// Calculate the local sidereal time at midnight of the time zone (in radians).
 // Here D is the number of dates from J2000.0, tz is the timezone 
-// offset in minutes
-function getLST0(D,T,long,tz) {
-    // Get Julian date at midnight GMST
-    let D0 = Math.floor(D-0.5)+0.5;
-    // Get hours from tz
-    let H = tz/60;
-    if (H < 0) {H += 24;}
-    let GMST = 0.06570748587250752*D0;
-    GMST -= 24*Math.floor(GMST/24);
-    GMST += 6.697374558336001 + 1.00273781191135448*H;
-    GMST -= 24*Math.floor(GMST/24);
-//    GMST += -2.686296296296296e-07 +T*(0.08541030618518518 
-//                                       + T*(2.577003148148148e-05 
-//                                           + T*(-8.148148148148149e-12 - 
-//                                               T*5.547407407407407e-10)));
-    GMST += 2.686296296296296e-07 +T*(0.08541030618518518 
-                                       + T*2.577003148148148e-05);
-    let LST0 = GMST + long*12/Math.PI;
-    LST0 -= 24*Math.floor(LST0/24); // LST in hours
-    return LST0*Math.PI/12; // LST in radian
+// offset in minutes (west is positive).
+function getLST0(D,dT,long,tz) {
+    let D0 = Math.floor(D - 0.5 - tz/1440);
+    let fday = 0.5 + tz/1440;
+    let ERA = mod2pi_omgDf(0.01720217957524373, D0, 0) + fday*6.300387486754831 - 1.38822409435583;
+    fday += dT*36525;
+    D0 += Math.floor(fday);
+    fday -= Math.floor(fday);
+    let LST0 = ERA - Eo_Vondrak_longT(D0 + 2451545, fday, '8') + long;
+    LST0 -= 2*Math.PI*Math.floor(0.5*LST0/Math.PI); 
+    return LST0;
 }
 
 // Calculate the rise, set and transit times of object for one location
@@ -426,7 +417,7 @@ function riseSetLoc(loc) {
     let Dm = getDm(loc.yyyy,loc.mm,loc.dd,loc.tz);
     let T = Dm/36525;
     // local sidereal time at midnight local time
-    let LST0 = getLST0(Dm,T+DeltaT(T),loc.long,loc.tz);
+    let LST0 = getLST0(Dm,DeltaT(T),loc.long,loc.tz);
     
     riseSetPlanetsTwilights(LST0,loc.locNum,loc.lat,T)
     riseSetBrightestStars(LST0, loc.locNum, loc.lat, T+DeltaT(T));
@@ -695,7 +686,7 @@ function calcRiseSetMultipleDates(input) {
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
                 let d = D - input.tz/24;
-                LST0 = getLST0(d,T+dT,long,-input.tz*60);
+                LST0 = getLST0(d,dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td>';
                 csvdata += dateString+', ';
                 for (i=0; i<25; i++) {
@@ -789,7 +780,7 @@ function calcRiseSetMultipleDates(input) {
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
                 let d = D - input.tz/24;
-                LST0 = getLST0(d,T+dT,long,-input.tz*60);
+                LST0 = getLST0(d,dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td>';
                 csvdata += dateString+', ';
                 let lam12, Dmoon;
@@ -880,7 +871,7 @@ function calcRiseSetMultipleDates(input) {
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
                 let d = D - input.tz/24;
-                LST0 = getLST0(d,T+dT,long,-input.tz*60);
+                LST0 = getLST0(d,dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td> ';
                 csvdata += dateString+', ';
                 let sun, planet;
@@ -945,7 +936,7 @@ function calcRiseSetMultipleDates(input) {
                 T = T1 + count*deltaT;
                 dT = DeltaT(T);
                 let d = D - input.tz/24;
-                LST0 = getLST0(d,T+dT,long,-input.tz*60);
+                LST0 = getLST0(d,dT,long,-input.tz*60);
                 txt = '<tr> <td>'+dateString+'</td> ';
                 csvdata += dateString+', ';
                 if (Math.abs(T-Tepoch) > 0.1) {
