@@ -2097,6 +2097,7 @@ function displayPopupMoon(tip,para) {
     let topoDec2000 = convertDM(raDec.dec*rad_to_deg,"dm"); 
     // Alt and Azimuth
     raDec = {ra:aber.ra, dec:aber.dec};
+    let HA = convertDM((LST - raDec.ra)*rad_to_hr, "hm");
     let hor = ra_dec_to_alt_az(raDec, LST, cosLat,sinLat);
     // add atm refraction
     let alt = (hor.alt + atmosphericRefraction(hor.alt, 101, 286))*rad_to_deg;
@@ -2150,6 +2151,7 @@ function displayPopupMoon(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+topoRa+', '+topoDec+'</td></tr>';
     }
+    txt += '<tr><td>Hour angle</td><td>'+HA+'</td></tr>';
     txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
@@ -2249,6 +2251,7 @@ function displayPopupPlanet(tip,para) {
     let ang = ang1AU[tip.object]/rGeo;
     // Alt and Azimuth
     raDec = {ra:aber.ra, dec:aber.dec};
+    let HA = convertDM((LST - raDec.ra)*rad_to_hr, "hm");
     let hor = ra_dec_to_alt_az(raDec, LST, cosLat,sinLat);
     let alt = (hor.alt + atmosphericRefraction(hor.alt, 101, 286))*rad_to_deg;
     let azi = Math.atan2(hor.sinA,hor.cosA)*rad_to_deg + 180;
@@ -2290,6 +2293,7 @@ function displayPopupPlanet(tip,para) {
     } else {
         txt += '<tr><td>Topocentric Ra, Dec (of date)</td> <td>'+raTopo+', '+decTopo+'</td></tr>';
     }
+    txt += '<tr><td>Hour angle</td><td>'+HA+'</td></tr>';
     txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     txt += '<tr><td>Constellation</td><td>'+conste+'</td></tr>';
     txt += '<tr><td>Altitude, Azimuth</td> <td>'+alt+', '+azi+'</td></tr>';
@@ -2429,9 +2433,11 @@ function displayPopupStar(tip, para) {
     } else {
         txt += "<tr><td>Ra, Dec (of date)</td> <td>"+raStr+", "+decStr+"</td></tr>";
     }
+    let HA = convertDM((LST - ra)*rad_to_hr, "hm");
+    txt += '<tr><td>Hour angle</td><td>'+HA+'</td></tr>';
     txt += '<tr><td>Apparent Sidereal Time</td> <td>'+convertDM(para.LST*12/Math.PI,"hm")+'</td></tr>';
     
-    // Alt and Azimuth
+    // Alt, Azimuth, atmospheric refraction corrected hour angle and declination
     let raDec = {ra:ra, dec:dec};
     let cosLat = Math.cos(para.lat);
     let sinLat = Math.sin(para.lat);
