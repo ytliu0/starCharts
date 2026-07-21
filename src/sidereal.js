@@ -70,9 +70,9 @@ function init_cont() {
         long1 = parseFloat(tmp1);
         lat1 = parseFloat(tmp2);
     } else {
-        place1 = "Champaign, IL, USA";
-        long1 = -88.2434; 
-        lat1 = 40.1164;
+        place1 = "UT San Antonio, TX, USA";
+        long1 = -98.6174; 
+        lat1 = 29.5866;
     }
     let tz1String;
     // Use computer's clock for the time zone
